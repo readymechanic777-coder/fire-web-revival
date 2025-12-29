@@ -9,7 +9,7 @@ const Footer = () => {
           <div className="flex items-center gap-2">
             <Flame className="w-6 h-6 text-primary" />
             <span className="font-display font-bold text-lg text-gradient-fire">
-              IGNITE 2025
+              AVISHKAAR S4
             </span>
           </div>
 
