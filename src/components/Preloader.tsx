@@ -105,12 +105,12 @@ const Preloader = ({ onComplete }: { onComplete: () => void }) => {
 
       {/* Title */}
       <motion.h1
-        className="text-2xl md:text-3xl font-orbitron font-bold text-gradient-fire mb-6"
+        className="text-4xl md:text-6xl lg:text-7xl font-orbitron font-bold text-gradient-fire mb-8 tracking-wider"
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.2 }}
       >
-        IGNITE 2026
+        AVISHKAAR 2026
       </motion.h1>
 
       {/* Progress bar */}
