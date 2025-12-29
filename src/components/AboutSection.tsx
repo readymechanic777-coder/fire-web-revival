@@ -31,30 +31,18 @@ const AboutSection = () => {
       <div className="absolute inset-0 bg-gradient-to-b from-background via-ash to-background" />
       
       <div className="relative z-10 container mx-auto px-4">
-        {/* Header with terminal style */}
+        {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
-          className="flex items-center justify-center gap-4 mb-4"
+          className="text-center mb-16"
         >
-          <span className="font-mono text-muted-foreground text-sm flex items-center gap-2">
-            <span className="text-primary">{">"}</span> cat <span className="text-primary">about.md</span>
-          </span>
           <h2 className="text-3xl md:text-5xl font-display font-black text-gradient-fire tracking-wide">
             ABOUT AVISHKAAR
           </h2>
         </motion.div>
-
-        {/* Underline */}
-        <motion.div
-          initial={{ scaleX: 0 }}
-          whileInView={{ scaleX: 1 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6, delay: 0.2 }}
-          className="w-24 h-1 bg-muted-foreground/30 mx-auto mb-16"
-        />
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
           {/* Terminal-style readme card */}
