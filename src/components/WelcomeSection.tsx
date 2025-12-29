@@ -1,31 +1,7 @@
-import { useState, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-
-// Indian language translations for AVISHKAAR
-const translations = [
-  { text: "ആവിഷ്കാർ", lang: "Malayalam" },
-  { text: "AVISHKAAR", lang: "English" },
-  { text: "आविष्कार", lang: "Hindi" },
-  { text: "ஆவிஷ்கார்", lang: "Tamil" },
-  { text: "ఆవిష్కార్", lang: "Telugu" },
-  { text: "আবিষ্কার", lang: "Bengali" },
-  { text: "ಆವಿಷ್ಕಾರ್", lang: "Kannada" },
-  { text: "આવિષ્કાર", lang: "Gujarati" },
-  { text: "ਆਵਿਸ਼ਕਾਰ", lang: "Punjabi" },
-  { text: "ଆଭିଷ୍କାର", lang: "Odia" },
-  { text: "आविष्कार", lang: "Marathi" },
-];
+import { motion } from "framer-motion";
+import TypingEffect from "./TypingEffect";
 
 const WelcomeSection = () => {
-  const [currentIndex, setCurrentIndex] = useState(0);
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setCurrentIndex((prev) => (prev + 1) % translations.length);
-    }, 2500);
-    return () => clearInterval(interval);
-  }, []);
-
   return (
     <section className="relative py-24 md:py-32 overflow-hidden" id="welcome">
       {/* Background */}
@@ -81,7 +57,7 @@ const WelcomeSection = () => {
           className="text-center mb-8"
         >
           <motion.h2
-            className="text-3xl md:text-5xl font-display font-black italic mb-8"
+            className="text-3xl md:text-5xl font-display font-black italic mb-4"
             style={{
               background: 'linear-gradient(135deg, hsl(45, 100%, 55%), hsl(25, 100%, 50%), hsl(15, 100%, 45%))',
               backgroundClip: 'text',
@@ -97,66 +73,33 @@ const WelcomeSection = () => {
             }}
             transition={{ duration: 2, repeat: Infinity }}
           >
-            Welcome to Avishkaar Season 4
+            Welcome to
           </motion.h2>
         </motion.div>
 
-        {/* Animated Language Text */}
-        <div className="relative min-h-[120px] md:min-h-[180px] flex items-center justify-center mb-12">
-          <AnimatePresence mode="wait">
-            <motion.div
-              key={currentIndex}
-              initial={{ opacity: 0, scale: 0.8, y: 20 }}
-              animate={{ opacity: 1, scale: 1, y: 0 }}
-              exit={{ opacity: 0, scale: 0.8, y: -20 }}
-              transition={{ duration: 0.5, ease: "easeInOut" }}
-              className="text-center"
-            >
-              <motion.span
-                className="text-5xl md:text-7xl lg:text-9xl font-display font-black block"
-                style={{
-                  background: 'linear-gradient(135deg, hsl(300, 100%, 70%), hsl(280, 100%, 65%), hsl(320, 100%, 75%))',
-                  backgroundClip: 'text',
-                  WebkitBackgroundClip: 'text',
-                  color: 'transparent',
-                  textShadow: '0 0 40px hsl(300, 100%, 50% / 0.5)',
-                }}
-                animate={{
-                  filter: [
-                    'drop-shadow(0 0 20px hsl(300, 100%, 60% / 0.8)) drop-shadow(0 0 40px hsl(180, 100%, 50% / 0.4))',
-                    'drop-shadow(0 0 30px hsl(280, 100%, 65% / 0.9)) drop-shadow(0 0 60px hsl(200, 100%, 55% / 0.5))',
-                    'drop-shadow(0 0 20px hsl(300, 100%, 60% / 0.8)) drop-shadow(0 0 40px hsl(180, 100%, 50% / 0.4))',
-                  ]
-                }}
-                transition={{ duration: 1.5, repeat: Infinity }}
-              >
-                {translations[currentIndex].text}
-              </motion.span>
-              
-              {/* Language indicator */}
-              <motion.span
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 0.6 }}
-                className="text-sm text-muted-foreground mt-4 block font-display"
-              >
-                — {translations[currentIndex].lang} —
-              </motion.span>
-            </motion.div>
-          </AnimatePresence>
+        {/* Same Typing Effect as Hero Section */}
+        <motion.div
+          initial={{ opacity: 0, scale: 0.9 }}
+          whileInView={{ opacity: 1, scale: 1 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.8, delay: 0.2 }}
+          className="mb-4"
+        >
+          <TypingEffect />
+        </motion.div>
 
-          {/* Typing cursor */}
-          <motion.div
-            className="absolute right-[10%] md:right-[20%] top-1/2 -translate-y-1/2 w-1 h-16 md:h-24"
-            style={{
-              background: 'linear-gradient(to bottom, hsl(180, 100%, 50%), hsl(200, 100%, 55%))',
-              boxShadow: '0 0 10px hsl(180, 100%, 50%)',
-            }}
-            animate={{
-              opacity: [1, 0, 1],
-            }}
-            transition={{ duration: 0.8, repeat: Infinity }}
-          />
-        </div>
+        {/* Season 4 */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}
+          transition={{ delay: 0.4 }}
+          className="text-center mb-12"
+        >
+          <h3 className="text-2xl md:text-4xl font-display font-bold text-foreground tracking-[0.3em]">
+            SEASON 4
+          </h3>
+        </motion.div>
 
         {/* Welcome Text */}
         <motion.div
