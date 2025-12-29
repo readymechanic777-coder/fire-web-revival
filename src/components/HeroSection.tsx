@@ -2,6 +2,7 @@ import { motion } from "framer-motion";
 import EmberParticles from "./EmberParticles";
 import TypingEffect from "./TypingEffect";
 import { Flame, Zap, Users, ArrowDown, Trophy, Calendar, MapPin } from "lucide-react";
+import heroFireBg from "@/assets/hero-fire-bg.mp4";
 
 const HeroSection = () => {
   const scrollToAbout = () => {
@@ -13,8 +14,23 @@ const HeroSection = () => {
 
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
+      {/* Video Background */}
+      <div className="absolute inset-0 z-0">
+        <video
+          autoPlay
+          loop
+          muted
+          playsInline
+          className="absolute inset-0 w-full h-full object-cover opacity-40"
+        >
+          <source src={heroFireBg} type="video/mp4" />
+        </video>
+        {/* Dark overlay for better text readability */}
+        <div className="absolute inset-0 bg-background/60" />
+      </div>
+
       {/* Animated gradient background */}
-      <div className="absolute inset-0">
+      <div className="absolute inset-0 z-[1]">
         <motion.div
           className="absolute inset-0"
           style={{
