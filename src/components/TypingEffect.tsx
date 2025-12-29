@@ -62,11 +62,28 @@ const TypingEffect = () => {
       <div className="relative min-h-[100px] md:min-h-[140px] flex items-center justify-center">
         <motion.span
           key={currentIndex}
-          className="relative text-5xl md:text-7xl lg:text-9xl font-display font-black text-gradient-fire drop-shadow-[0_0_40px_hsl(var(--primary)/0.9)] drop-shadow-[0_0_80px_hsl(var(--primary)/0.5)]"
+          className="relative text-5xl md:text-7xl lg:text-9xl font-display font-black text-gradient-fire"
           initial={{ opacity: 0, scale: 0.8 }}
-          animate={{ opacity: 1, scale: 1 }}
+          animate={{ 
+            opacity: 1, 
+            scale: 1,
+            filter: [
+              "drop-shadow(0 0 20px hsl(25 100% 50% / 0.9)) drop-shadow(0 0 60px hsl(25 100% 50% / 0.5))",
+              "drop-shadow(0 0 40px hsl(15 100% 55% / 1)) drop-shadow(0 0 80px hsl(15 100% 55% / 0.7))",
+              "drop-shadow(0 0 25px hsl(35 100% 50% / 0.8)) drop-shadow(0 0 50px hsl(35 100% 50% / 0.4))",
+              "drop-shadow(0 0 35px hsl(20 100% 52% / 0.95)) drop-shadow(0 0 70px hsl(20 100% 52% / 0.6))",
+              "drop-shadow(0 0 20px hsl(25 100% 50% / 0.9)) drop-shadow(0 0 60px hsl(25 100% 50% / 0.5))",
+            ]
+          }}
           exit={{ opacity: 0, scale: 0.8 }}
-          transition={{ duration: 0.3 }}
+          transition={{ 
+            duration: 0.3,
+            filter: {
+              duration: 0.8,
+              repeat: Infinity,
+              ease: "easeInOut"
+            }
+          }}
         >
           {displayText}
           <span
