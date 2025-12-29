@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
 import EmberParticles from "./EmberParticles";
 import TypingEffect from "./TypingEffect";
+import MouseFollowParticles from "./MouseFollowParticles";
 import { Flame, Zap, Users, ArrowDown, Trophy, Calendar, MapPin } from "lucide-react";
 import heroFireBg from "@/assets/hero-fire-bg.mp4";
 
@@ -13,7 +14,9 @@ const HeroSection = () => {
   };
 
   return (
-    <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
+    <section id="hero-section" className="relative min-h-screen flex items-center justify-center overflow-hidden">
+      {/* Mouse Follow Particles */}
+      <MouseFollowParticles />
       {/* Video Background */}
       <div className="absolute inset-0 z-0">
         <video
