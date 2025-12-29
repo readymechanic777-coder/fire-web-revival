@@ -2,9 +2,7 @@ import { motion } from "framer-motion";
 import EmberParticles from "./EmberParticles";
 import TypingEffect from "./TypingEffect";
 import MouseFollowParticles from "./MouseFollowParticles";
-import { Flame, Zap, Users, ArrowDown, Trophy, Calendar, MapPin } from "lucide-react";
-import heroFireBg from "@/assets/hero-fire-bg.mp4";
-import heroFireFallback from "@/assets/hero-fire-fallback.jpg";
+import { Flame, Users, ArrowDown, Trophy, Calendar, MapPin } from "lucide-react";
 
 const HeroSection = () => {
   const scrollToAbout = () => {
@@ -18,39 +16,91 @@ const HeroSection = () => {
     <section id="hero-section" className="relative min-h-screen flex items-center justify-center overflow-hidden">
       {/* Mouse Follow Particles */}
       <MouseFollowParticles />
-      {/* Video Background with Fallback Image */}
+      
+      {/* Animated Gradient Background */}
       <div className="absolute inset-0 z-0">
-        {/* Fallback image that shows while video loads or if video fails */}
-        <img
-          src={heroFireFallback}
-          alt=""
-          className="absolute inset-0 w-full h-full object-cover"
-          style={{ filter: 'brightness(0.5)' }}
+        {/* Base dark background */}
+        <div className="absolute inset-0 bg-background" />
+        
+        {/* Primary fire gradient - bottom glow */}
+        <motion.div
+          className="absolute inset-0"
+          style={{
+            background: 'radial-gradient(ellipse 120% 80% at 50% 100%, hsl(20, 100%, 25%) 0%, hsl(0, 85%, 15%) 30%, transparent 70%)',
+          }}
+          animate={{
+            opacity: [0.8, 1, 0.8],
+          }}
+          transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
         />
-        {/* Video overlay - using iframe for better compatibility */}
-        <div className="absolute inset-0 overflow-hidden">
-          <video
-            autoPlay
-            loop
-            muted
-            playsInline
-            preload="metadata"
-            className="absolute inset-0 w-full h-full object-cover"
-            style={{ filter: 'brightness(0.5)' }}
-            onCanPlay={(e) => {
-              const video = e.currentTarget;
-              video.style.opacity = '1';
+        
+        {/* Secondary orange pulse */}
+        <motion.div
+          className="absolute inset-0"
+          style={{
+            background: 'radial-gradient(ellipse 100% 60% at 50% 110%, hsl(30, 100%, 50% / 0.4) 0%, transparent 60%)',
+          }}
+          animate={{
+            opacity: [0.5, 0.9, 0.5],
+            scale: [1, 1.1, 1],
+          }}
+          transition={{ duration: 2.5, repeat: Infinity, ease: "easeInOut" }}
+        />
+        
+        {/* Yellow/gold accent pulse */}
+        <motion.div
+          className="absolute inset-0"
+          style={{
+            background: 'radial-gradient(ellipse 80% 40% at 50% 120%, hsl(45, 100%, 55% / 0.3) 0%, transparent 50%)',
+          }}
+          animate={{
+            opacity: [0.3, 0.7, 0.3],
+            scale: [0.9, 1.15, 0.9],
+          }}
+          transition={{ duration: 2, repeat: Infinity, ease: "easeInOut", delay: 0.5 }}
+        />
+        
+        {/* Animated fire streaks */}
+        {[...Array(5)].map((_, i) => (
+          <motion.div
+            key={`streak-${i}`}
+            className="absolute bottom-0 w-32 h-[60vh]"
+            style={{
+              left: `${10 + i * 20}%`,
+              background: `linear-gradient(to top, hsl(${20 + i * 8}, 100%, ${50 - i * 5}% / 0.3), transparent 80%)`,
+              filter: 'blur(40px)',
             }}
-          >
-            <source src={heroFireBg} type="video/mp4" />
-            Your browser does not support the video tag.
-          </video>
-        </div>
-        {/* Dark gradient overlay for better text readability */}
+            animate={{
+              opacity: [0.2, 0.5, 0.2],
+              scaleY: [0.8, 1.2, 0.8],
+              x: [0, (i % 2 === 0 ? 20 : -20), 0],
+            }}
+            transition={{
+              duration: 3 + i * 0.5,
+              repeat: Infinity,
+              ease: "easeInOut",
+              delay: i * 0.3,
+            }}
+          />
+        ))}
+        
+        {/* Flickering overlay for fire effect */}
+        <motion.div
+          className="absolute inset-0"
+          style={{
+            background: 'linear-gradient(to top, hsl(15, 100%, 40% / 0.15) 0%, transparent 40%)',
+          }}
+          animate={{
+            opacity: [0.5, 0.8, 0.4, 0.7, 0.5],
+          }}
+          transition={{ duration: 0.5, repeat: Infinity, ease: "linear" }}
+        />
+        
+        {/* Vignette overlay */}
         <div 
           className="absolute inset-0" 
           style={{
-            background: 'linear-gradient(to bottom, hsl(0, 0%, 5% / 0.5) 0%, hsl(0, 0%, 5% / 0.2) 40%, hsl(0, 0%, 5% / 0.6) 100%)',
+            background: 'radial-gradient(ellipse at center, transparent 30%, hsl(0, 0%, 5% / 0.6) 100%)',
           }}
         />
       </div>
