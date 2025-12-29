@@ -8,6 +8,7 @@ import SponsorsSection from "@/components/SponsorsSection";
 import PartnersSection from "@/components/PartnersSection";
 import FAQSection from "@/components/FAQSection";
 import WelcomeSection from "@/components/WelcomeSection";
+import Footer from "@/components/Footer";
 
 const Index = () => {
   return (
@@ -22,6 +23,7 @@ const Index = () => {
       <PartnersSection />
       <FAQSection />
       <WelcomeSection />
+      <Footer />
     </div>
   );
 };
