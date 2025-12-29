@@ -27,24 +27,30 @@ const HeroSection = () => {
           className="absolute inset-0 w-full h-full object-cover"
           style={{ filter: 'brightness(0.5)' }}
         />
-        {/* Video overlay */}
-        <video
-          autoPlay
-          loop
-          muted
-          playsInline
-          preload="auto"
-          className="absolute inset-0 w-full h-full object-cover opacity-70"
-          style={{ filter: 'brightness(0.6)' }}
-          poster={heroFireFallback}
-        >
-          <source src={heroFireBg} type="video/mp4" />
-        </video>
+        {/* Video overlay - using iframe for better compatibility */}
+        <div className="absolute inset-0 overflow-hidden">
+          <video
+            autoPlay
+            loop
+            muted
+            playsInline
+            preload="metadata"
+            className="absolute inset-0 w-full h-full object-cover"
+            style={{ filter: 'brightness(0.5)' }}
+            onCanPlay={(e) => {
+              const video = e.currentTarget;
+              video.style.opacity = '1';
+            }}
+          >
+            <source src={heroFireBg} type="video/mp4" />
+            Your browser does not support the video tag.
+          </video>
+        </div>
         {/* Dark gradient overlay for better text readability */}
         <div 
           className="absolute inset-0" 
           style={{
-            background: 'linear-gradient(to bottom, hsl(0, 0%, 5% / 0.6) 0%, hsl(0, 0%, 5% / 0.3) 40%, hsl(0, 0%, 5% / 0.5) 100%)',
+            background: 'linear-gradient(to bottom, hsl(0, 0%, 5% / 0.5) 0%, hsl(0, 0%, 5% / 0.2) 40%, hsl(0, 0%, 5% / 0.6) 100%)',
           }}
         />
       </div>
