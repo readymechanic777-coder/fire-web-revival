@@ -60,11 +60,25 @@ const TypingEffect = () => {
   return (
     <div className="flex flex-col items-center">
       <div className="relative min-h-[100px] md:min-h-[140px] flex items-center justify-center">
+        {/* Glow effect behind text */}
+        <motion.div
+          className="absolute inset-0 blur-3xl opacity-60"
+          animate={{
+            background: [
+              "radial-gradient(circle, hsl(var(--primary) / 0.6) 0%, transparent 70%)",
+              "radial-gradient(circle, hsl(var(--secondary) / 0.6) 0%, transparent 70%)",
+              "radial-gradient(circle, hsl(var(--primary) / 0.6) 0%, transparent 70%)",
+            ],
+          }}
+          transition={{ duration: 2, repeat: Infinity }}
+        />
         <motion.span
           key={currentIndex}
-          className="text-5xl md:text-7xl lg:text-9xl font-display font-black text-gradient-fire"
-          initial={{ opacity: 0.8 }}
-          animate={{ opacity: 1 }}
+          className="relative text-5xl md:text-7xl lg:text-9xl font-display font-black text-gradient-fire drop-shadow-[0_0_30px_hsl(var(--primary)/0.8)] animate-pulse-glow"
+          initial={{ opacity: 0, scale: 0.8 }}
+          animate={{ opacity: 1, scale: 1 }}
+          exit={{ opacity: 0, scale: 0.8 }}
+          transition={{ duration: 0.3 }}
         >
           {displayText}
           <span
@@ -77,9 +91,10 @@ const TypingEffect = () => {
       <AnimatePresence mode="wait">
         <motion.span
           key={avishkaarLanguages[currentIndex].language}
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: -10 }}
+          initial={{ opacity: 0, y: 10, scale: 0.9 }}
+          animate={{ opacity: 1, y: 0, scale: 1 }}
+          exit={{ opacity: 0, y: -10, scale: 0.9 }}
+          transition={{ duration: 0.3 }}
           className="text-sm md:text-base text-muted-foreground font-display uppercase tracking-widest mt-2"
         >
           {avishkaarLanguages[currentIndex].language}
