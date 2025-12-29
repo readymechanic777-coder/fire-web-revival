@@ -19,22 +19,28 @@ function AnimatedNumber({ value, delay = 0 }: { value: number; delay?: number })
   return <motion.span>{rounded}</motion.span>;
 }
 
-// Timeline Item Component
-const TimelineItem = ({ phase, index }: { phase: { title: string; description: string[] }; index: number }) => {
+// Timeline Item Component with enhanced scroll effects
+const TimelineItem = ({ phase, index, totalItems }: { phase: { title: string; description: string[] }; index: number; totalItems: number }) => {
   const cardRef = useRef(null);
   const { scrollYProgress } = useScroll({
     target: cardRef,
-    offset: ["center end", "start center"]
+    offset: ["start end", "center center"]
   });
 
   const mouseX = useMotionValue(0);
   const mouseY = useMotionValue(0);
-  const dotScale = useTransform(scrollYProgress, [0.4, 0.5, 0.6], [1, 1.5, 1]);
-  const dotBoxShadow = useTransform(
+  
+  // Scroll-based animations
+  const opacity = useTransform(scrollYProgress, [0, 0.3, 0.6], [0.3, 1, 1]);
+  const scale = useTransform(scrollYProgress, [0, 0.3, 0.6], [0.8, 1, 1]);
+  const x = useTransform(scrollYProgress, [0, 0.3], [index % 2 === 0 ? -50 : 50, 0]);
+  const dotScale = useTransform(scrollYProgress, [0.2, 0.4, 0.6], [0.5, 1.5, 1]);
+  const dotGlow = useTransform(
     scrollYProgress,
-    [0.4, 0.5, 0.6],
-    ['0 0 0px hsl(var(--primary) / 0)', '0 0 15px hsl(var(--primary))', '0 0 0px hsl(var(--primary) / 0)']
+    [0.2, 0.4, 0.6],
+    ['0 0 0px hsl(var(--primary) / 0)', '0 0 25px hsl(var(--primary))', '0 0 10px hsl(var(--primary) / 0.5)']
   );
+  const lineProgress = useSpring(useTransform(scrollYProgress, [0, 0.5], [0, 1]), { stiffness: 100, damping: 30 });
 
   function handleMouseMove({ currentTarget, clientX, clientY }: React.MouseEvent) {
     const { left, top } = currentTarget.getBoundingClientRect();
@@ -42,48 +48,101 @@ const TimelineItem = ({ phase, index }: { phase: { title: string; description: s
     mouseY.set(clientY - top);
   }
 
+  const isLast = index === totalItems - 1;
+
   return (
-    <div ref={cardRef} className="relative flex gap-6 pb-12 last:pb-0">
-      {/* Timeline dot */}
+    <motion.div 
+      ref={cardRef} 
+      style={{ opacity, scale, x }}
+      className="relative flex gap-6 pb-8 last:pb-0"
+    >
+      {/* Timeline line and dot */}
       <div className="relative flex flex-col items-center">
+        {/* Animated dot */}
         <motion.div
-          style={{ scale: dotScale, boxShadow: dotBoxShadow }}
-          className="w-4 h-4 rounded-full bg-primary border-2 border-primary z-10"
-        />
-        {index !== 4 && <div className="w-0.5 h-full bg-border absolute top-4" />}
+          style={{ scale: dotScale, boxShadow: dotGlow }}
+          className="w-5 h-5 rounded-full bg-gradient-to-br from-primary to-secondary border-3 border-background z-10 flex items-center justify-center"
+        >
+          <motion.div 
+            className="w-2 h-2 bg-background rounded-full"
+            animate={{ scale: [1, 0.5, 1] }}
+            transition={{ duration: 2, repeat: Infinity }}
+          />
+        </motion.div>
+        
+        {/* Animated connecting line */}
+        {!isLast && (
+          <div className="relative w-0.5 h-full">
+            <div className="absolute inset-0 bg-border" />
+            <motion.div 
+              className="absolute top-0 left-0 w-full bg-gradient-to-b from-primary to-secondary origin-top"
+              style={{ scaleY: lineProgress, height: '100%' }}
+            />
+          </div>
+        )}
       </div>
 
       {/* Content card */}
       <motion.div
         onMouseMove={handleMouseMove}
-        initial={{ opacity: 0, x: -20 }}
-        whileInView={{ opacity: 1, x: 0 }}
-        viewport={{ once: true }}
-        transition={{ delay: index * 0.1 }}
-        className="flex-1 relative bg-card border border-border rounded-xl p-6 overflow-hidden group hover:border-primary/50 transition-colors"
+        whileHover={{ scale: 1.02, y: -5 }}
+        className="flex-1 relative bg-card/80 backdrop-blur-sm border border-border rounded-2xl p-6 overflow-hidden group hover:border-primary/50 transition-all duration-300"
       >
         {/* Spotlight effect */}
         <motion.div
-          className="pointer-events-none absolute -inset-px rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+          className="pointer-events-none absolute -inset-px rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"
           style={{
             background: useTransform(
               [mouseX, mouseY],
-              ([x, y]) => `radial-gradient(350px at ${x}px ${y}px, hsl(var(--primary) / 0.15), transparent 80%)`
+              ([x, y]) => `radial-gradient(400px at ${x}px ${y}px, hsl(var(--primary) / 0.2), transparent 70%)`
             ),
           }}
         />
+
+        {/* Phase number badge */}
+        <motion.div
+          initial={{ scale: 0 }}
+          whileInView={{ scale: 1 }}
+          viewport={{ once: true }}
+          transition={{ delay: index * 0.1, type: "spring" }}
+          className="absolute -top-3 -left-3 w-8 h-8 bg-gradient-to-br from-primary to-secondary rounded-full flex items-center justify-center text-background font-display font-bold text-sm shadow-lg"
+        >
+          {index + 1}
+        </motion.div>
         
-        <h4 className="text-lg font-display font-bold text-primary mb-3">{phase.title}</h4>
+        <h4 className="text-lg font-display font-bold text-primary mb-4 mt-2">{phase.title}</h4>
         <ul className="space-y-2">
           {phase.description.map((point, idx) => (
-            <li key={idx} className="text-sm text-muted-foreground flex items-start gap-2">
-              <span className="text-primary mt-1">•</span>
+            <motion.li 
+              key={idx} 
+              initial={{ opacity: 0, x: -10 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: idx * 0.1 }}
+              className="text-sm text-muted-foreground flex items-start gap-2"
+            >
+              <motion.span 
+                className="text-primary mt-1"
+                animate={{ opacity: [0.5, 1, 0.5] }}
+                transition={{ duration: 2, repeat: Infinity, delay: idx * 0.2 }}
+              >
+                ▸
+              </motion.span>
               {point}
-            </li>
+            </motion.li>
           ))}
         </ul>
+
+        {/* Animated border gradient */}
+        <motion.div
+          className="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-primary to-transparent"
+          initial={{ scaleX: 0, opacity: 0 }}
+          whileInView={{ scaleX: 1, opacity: 1 }}
+          viewport={{ once: true }}
+          transition={{ delay: 0.5, duration: 0.8 }}
+        />
       </motion.div>
-    </div>
+    </motion.div>
   );
 };
 
@@ -189,13 +248,19 @@ const Timeline = ({ type }: { type: 'virtual' | 'physical' }) => {
   const phases = type === 'virtual' ? virtualPhases : physicalPhases;
 
   return (
-    <div ref={timelineRef} className="py-8">
-      <h3 className="text-2xl font-display font-bold text-primary mb-8 text-center">
+    <div ref={timelineRef} className="py-12">
+      <motion.h3 
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        className="text-3xl md:text-4xl font-display font-black text-gradient-fire mb-12 text-center italic"
+      >
         {type === 'virtual' ? 'Virtual' : 'Physical'} Timeline
-      </h3>
-      <div className="relative max-w-2xl mx-auto">
+      </motion.h3>
+      
+      <div className="relative max-w-3xl mx-auto">
         {phases.map((phase, index) => (
-          <TimelineItem key={index} phase={phase} index={index} />
+          <TimelineItem key={index} phase={phase} index={index} totalItems={phases.length} />
         ))}
       </div>
     </div>
@@ -337,7 +402,7 @@ const PrizePoolDisplay = ({ type }: { type: 'virtual' | 'physical' }) => {
   );
 };
 
-// Important Dates Component
+// Important Dates Component - Grid Layout
 const ImportantDates = ({ type }: { type: 'virtual' | 'physical' }) => {
   const virtualDates = [
     { event: 'Registrations Open', date: 'Oct 23, 2025' },
@@ -345,6 +410,8 @@ const ImportantDates = ({ type }: { type: 'virtual' | 'physical' }) => {
     { event: 'Problem Statements Release', date: 'Nov 25, 2025 - 10:00 AM' },
     { event: 'Hackathon Begins', date: 'Nov 25, 2025 - 11:00 AM' },
     { event: 'Hackathon Ends', date: 'Nov 26, 2025 - 11:00 AM' },
+    { event: 'Project Submission Deadline', date: 'Nov 26, 2025 - 09:00 AM to 11:00 AM' },
+    { event: 'Online Pitching', date: 'Nov 26, 2025 - 10:00 AM Onwards' },
     { event: 'Results Announcement', date: 'Nov 26, 2025' },
   ];
 
@@ -352,44 +419,88 @@ const ImportantDates = ({ type }: { type: 'virtual' | 'physical' }) => {
     { event: 'Registrations Open', date: 'Oct 23, 2025' },
     { event: 'Abstract & Video Submission', date: 'Nov 20, 2025' },
     { event: 'Shortlisting Results', date: 'Nov 30, 2025' },
-    { event: 'Mentorship Phase', date: 'Dec 1 - Dec 21, 2025' },
-    { event: 'Reporting at Campus', date: 'Dec 26, 2025' },
-    { event: 'Hackathon Days', date: 'Dec 27-29, 2025' },
-    { event: 'Awards Ceremony', date: 'Dec 29, 2025' },
+    { event: 'Mentorship Phase Begins', date: 'Dec 1, 2025' },
+    { event: 'Mentorship Phase Ends', date: 'Dec 21, 2025' },
+    { event: 'Reporting at Campus', date: 'Dec 26, 2025 (Evening)' },
+    { event: 'Hackathon Begins', date: 'Dec 27, 2025 - 9:00 AM' },
+    { event: 'Hackathon Ends', date: 'Dec 29, 2025 - 9:00 AM' },
+    { event: 'Final Jury & Awards', date: 'Dec 29, 2025 - 2:00 PM onwards' },
   ];
 
   const dates = type === 'virtual' ? virtualDates : physicalDates;
 
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-      className="bg-card border border-border rounded-2xl p-6"
-    >
-      <div className="flex items-center gap-2 mb-6">
-        <Calendar className="w-5 h-5 text-primary" />
-        <h3 className="text-xl font-display font-bold text-foreground">Important Dates</h3>
-      </div>
-      <div className="space-y-3">
+    <div className="py-12">
+      {/* Header */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        className="text-center mb-8"
+      >
+        <h3 className="text-3xl md:text-4xl font-display font-black text-gradient-fire italic">
+          Important Dates
+        </h3>
+      </motion.div>
+
+      {/* Grid of date cards */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         {dates.map((item, index) => (
           <motion.div
             key={item.event}
-            initial={{ opacity: 0, x: -10 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: index * 0.05 }}
-            className="flex items-center gap-3 group"
+            initial={{ opacity: 0, y: 30, scale: 0.9 }}
+            whileInView={{ opacity: 1, y: 0, scale: 1 }}
+            viewport={{ once: true, margin: "-50px" }}
+            transition={{ 
+              delay: index * 0.08,
+              type: "spring",
+              stiffness: 100,
+              damping: 15
+            }}
+            whileHover={{ 
+              scale: 1.05, 
+              y: -5,
+              boxShadow: "0 20px 40px -20px hsl(var(--primary) / 0.4)"
+            }}
+            className="group relative"
           >
-            <div className="w-2 h-2 rounded-full bg-primary group-hover:scale-150 transition-transform" />
-            <div className="flex-1">
-              <p className="text-sm font-medium text-foreground">{item.event}</p>
-              <p className="text-xs text-muted-foreground">{item.date}</p>
+            <div className="relative bg-card border border-border rounded-xl p-6 h-full overflow-hidden transition-all duration-300 hover:border-primary/50">
+              {/* Animated border glow */}
+              <motion.div
+                className="absolute inset-0 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+                style={{
+                  background: "linear-gradient(135deg, hsl(var(--primary) / 0.1), transparent, hsl(var(--primary) / 0.05))",
+                }}
+              />
+              
+              {/* Top accent line */}
+              <motion.div
+                className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-primary via-secondary to-primary"
+                initial={{ scaleX: 0 }}
+                whileInView={{ scaleX: 1 }}
+                viewport={{ once: true }}
+                transition={{ delay: index * 0.1 + 0.3, duration: 0.5 }}
+              />
+
+              {/* Content */}
+              <div className="relative text-center">
+                <h4 className="text-base font-display font-bold text-foreground mb-3 leading-tight">
+                  {item.event}
+                </h4>
+                <p className="text-sm font-mono text-primary">
+                  {item.date}
+                </p>
+              </div>
+
+              {/* Bottom glow effect */}
+              <motion.div
+                className="absolute bottom-0 left-1/2 -translate-x-1/2 w-0 h-0.5 bg-primary group-hover:w-3/4 transition-all duration-500"
+              />
             </div>
           </motion.div>
         ))}
       </div>
-    </motion.div>
+    </div>
   );
 };
 
@@ -599,14 +710,11 @@ const HackathonSection = () => {
               <PrizePoolDisplay type={activeTab} />
             </div>
 
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-              <div className="lg:col-span-2">
-                <Timeline type={activeTab} />
-              </div>
-              <div>
-                <ImportantDates type={activeTab} />
-              </div>
-            </div>
+            {/* Important Dates - Full width grid */}
+            <ImportantDates type={activeTab} />
+
+            {/* Timeline - Full width */}
+            <Timeline type={activeTab} />
           </motion.div>
         </AnimatePresence>
       </div>
