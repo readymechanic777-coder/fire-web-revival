@@ -7,6 +7,7 @@ import GallerySection from "@/components/GallerySection";
 import SponsorsSection from "@/components/SponsorsSection";
 import PartnersSection from "@/components/PartnersSection";
 import FAQSection from "@/components/FAQSection";
+import WelcomeSection from "@/components/WelcomeSection";
 
 const Index = () => {
   return (
@@ -20,6 +21,7 @@ const Index = () => {
       <SponsorsSection />
       <PartnersSection />
       <FAQSection />
+      <WelcomeSection />
     </div>
   );
 };
