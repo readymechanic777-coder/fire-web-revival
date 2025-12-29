@@ -19,6 +19,95 @@ function AnimatedNumber({ value, delay = 0 }: { value: number; delay?: number })
   return <motion.span>{rounded}</motion.span>;
 }
 
+// Countdown Timer Component
+const CountdownTimer = ({ targetDate, type }: { targetDate: Date; type: 'virtual' | 'physical' }) => {
+  const [timeLeft, setTimeLeft] = useState({
+    days: 0,
+    hours: 0,
+    minutes: 0,
+    seconds: 0,
+  });
+
+  useEffect(() => {
+    const calculateTimeLeft = () => {
+      const now = new Date().getTime();
+      const target = targetDate.getTime();
+      const difference = target - now;
+
+      if (difference > 0) {
+        setTimeLeft({
+          days: Math.floor(difference / (1000 * 60 * 60 * 24)),
+          hours: Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)),
+          minutes: Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60)),
+          seconds: Math.floor((difference % (1000 * 60)) / 1000),
+        });
+      }
+    };
+
+    calculateTimeLeft();
+    const timer = setInterval(calculateTimeLeft, 1000);
+
+    return () => clearInterval(timer);
+  }, [targetDate]);
+
+  const timeUnits = [
+    { label: 'Days', value: timeLeft.days },
+    { label: 'Hours', value: timeLeft.hours },
+    { label: 'Minutes', value: timeLeft.minutes },
+    { label: 'Seconds', value: timeLeft.seconds },
+  ];
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      className="mb-6"
+    >
+      <div className="flex items-center gap-2 mb-3">
+        <Clock className="w-4 h-4 text-primary" />
+        <span className="text-sm font-display text-muted-foreground">
+          {type === 'virtual' ? 'Virtual Starts In' : 'Physical Starts In'}
+        </span>
+      </div>
+      <div className="flex gap-2">
+        {timeUnits.map((unit, index) => (
+          <motion.div
+            key={unit.label}
+            initial={{ scale: 0.8, opacity: 0 }}
+            whileInView={{ scale: 1, opacity: 1 }}
+            viewport={{ once: true }}
+            transition={{ delay: index * 0.1 }}
+            className="relative flex-1"
+          >
+            <div className="bg-background/80 border border-primary/30 rounded-lg p-2 text-center overflow-hidden group hover:border-primary/60 transition-colors">
+              {/* Fire glow effect */}
+              <motion.div
+                className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity"
+                style={{
+                  background: 'radial-gradient(circle at center, hsl(var(--primary) / 0.15), transparent 70%)',
+                }}
+              />
+              
+              <motion.span
+                key={unit.value}
+                initial={{ y: -10, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                className="relative block text-xl md:text-2xl font-display font-bold text-primary"
+              >
+                {String(unit.value).padStart(2, '0')}
+              </motion.span>
+              <span className="relative text-[10px] md:text-xs text-muted-foreground uppercase tracking-wider">
+                {unit.label}
+              </span>
+            </div>
+          </motion.div>
+        ))}
+      </div>
+    </motion.div>
+  );
+};
+
 // Fire Ember Particle for Timeline
 const TimelineEmber = ({ delay, side }: { delay: number; side: 'left' | 'right' }) => (
   <motion.div
@@ -666,6 +755,10 @@ const ImportantDates = ({ type }: { type: 'virtual' | 'physical' }) => {
 // Hackathon Description Card
 const HackathonCard = ({ type }: { type: 'virtual' | 'physical' }) => {
   const isVirtual = type === 'virtual';
+  
+  // Target dates: Virtual - 20/12/2026, Physical - 26/12/2026
+  const virtualDate = new Date('2026-12-20T00:00:00');
+  const physicalDate = new Date('2026-12-26T00:00:00');
 
   return (
     <motion.div
@@ -698,6 +791,12 @@ const HackathonCard = ({ type }: { type: 'virtual' | 'physical' }) => {
             </p>
           </div>
         </div>
+
+        {/* Countdown Timer */}
+        <CountdownTimer 
+          targetDate={isVirtual ? virtualDate : physicalDate} 
+          type={type} 
+        />
 
         <ul className="space-y-3 mb-6">
           {isVirtual ? (
