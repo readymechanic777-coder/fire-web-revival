@@ -1,6 +1,4 @@
 import { motion } from "framer-motion";
-import { Button } from "@/components/ui/button";
-import CountdownTimer from "./CountdownTimer";
 import EmberParticles from "./EmberParticles";
 import TypingEffect from "./TypingEffect";
 import { Flame, Zap, Users } from "lucide-react";
@@ -14,22 +12,63 @@ const HeroSection = () => {
       {/* Fire glow effect at bottom */}
       <div className="absolute bottom-0 left-0 right-0 h-96 bg-gradient-to-t from-primary/20 via-secondary/10 to-transparent" />
       
-      {/* Animated background circles */}
+      {/* Dynamic animated background orbs */}
       <motion.div
-        className="absolute top-1/4 left-1/4 w-96 h-96 bg-primary/10 rounded-full blur-3xl"
+        className="absolute top-1/4 left-1/4 w-96 h-96 bg-primary/20 rounded-full blur-3xl"
+        animate={{
+          scale: [1, 1.3, 1],
+          opacity: [0.3, 0.6, 0.3],
+          x: [0, 50, 0],
+          y: [0, -30, 0],
+        }}
+        transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
+      />
+      <motion.div
+        className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-secondary/20 rounded-full blur-3xl"
+        animate={{
+          scale: [1.2, 1, 1.2],
+          opacity: [0.4, 0.7, 0.4],
+          x: [0, -40, 0],
+          y: [0, 40, 0],
+        }}
+        transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
+      />
+      <motion.div
+        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-primary/10 rounded-full blur-3xl"
         animate={{
           scale: [1, 1.2, 1],
-          opacity: [0.3, 0.5, 0.3],
+          opacity: [0.2, 0.4, 0.2],
+          rotate: [0, 180, 360],
+        }}
+        transition={{ duration: 10, repeat: Infinity, ease: "linear" }}
+      />
+      
+      {/* Floating geometric shapes */}
+      <motion.div
+        className="absolute top-20 right-20 w-4 h-4 bg-primary/60 rotate-45"
+        animate={{
+          y: [0, -20, 0],
+          opacity: [0.5, 1, 0.5],
+          rotate: [45, 90, 45],
         }}
         transition={{ duration: 4, repeat: Infinity }}
       />
       <motion.div
-        className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-secondary/10 rounded-full blur-3xl"
+        className="absolute bottom-32 left-20 w-6 h-6 border-2 border-secondary/60 rotate-12"
         animate={{
-          scale: [1.2, 1, 1.2],
-          opacity: [0.4, 0.2, 0.4],
+          y: [0, 20, 0],
+          opacity: [0.5, 1, 0.5],
+          rotate: [12, -12, 12],
         }}
         transition={{ duration: 5, repeat: Infinity }}
+      />
+      <motion.div
+        className="absolute top-1/3 right-1/4 w-3 h-3 bg-accent/60 rounded-full"
+        animate={{
+          scale: [1, 1.5, 1],
+          opacity: [0.3, 0.8, 0.3],
+        }}
+        transition={{ duration: 3, repeat: Infinity }}
       />
 
       {/* Ember particles */}
@@ -50,7 +89,7 @@ const HeroSection = () => {
           </span>
         </motion.div>
 
-        {/* Typing Effect for AVISHKAAR */}
+        {/* Typing Effect for AVISHKAAR with glow */}
         <motion.div
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
@@ -72,26 +111,34 @@ const HeroSection = () => {
           </h2>
         </motion.div>
 
-        {/* Tagline */}
+        {/* New Tagline */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.5 }}
+          className="mb-4"
+        >
+          <p className="text-lg md:text-2xl font-display uppercase tracking-widest text-primary font-bold">
+            The Infinite Loop of Innovation
+          </p>
+        </motion.div>
+
+        {/* Sub-tagline */}
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ delay: 0.5 }}
+          transition={{ delay: 0.6 }}
           className="mb-8"
         >
-          <p className="text-lg md:text-xl font-display uppercase tracking-widest">
-            <span className="text-primary">[INNOVATION</span>
-            <span className="text-muted-foreground"> • </span>
-            <span className="text-accent">TECHNOLOGY</span>
-            <span className="text-muted-foreground"> • </span>
-            <span className="text-secondary">FUTURE]</span>
+          <p className="text-base md:text-lg text-muted-foreground font-display">
+            48-Hour National Level Hackathon | <span className="text-primary">Dream</span> • <span className="text-accent">Code</span> • <span className="text-secondary">Disrupt</span>
           </p>
         </motion.div>
 
         <motion.p
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ delay: 0.6 }}
+          transition={{ delay: 0.7 }}
           className="text-base md:text-lg text-muted-foreground max-w-2xl mx-auto mb-8"
         >
           The biggest 48-hour national hackathon where the brightest minds come together
@@ -102,8 +149,8 @@ const HeroSection = () => {
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.7 }}
-          className="flex flex-wrap justify-center gap-8 mb-10"
+          transition={{ delay: 0.8 }}
+          className="flex flex-wrap justify-center gap-8"
         >
           <div className="flex items-center gap-2">
             <Zap className="w-5 h-5 text-accent" />
@@ -111,41 +158,12 @@ const HeroSection = () => {
           </div>
           <div className="flex items-center gap-2">
             <Users className="w-5 h-5 text-accent" />
-            <span className="font-display text-foreground">500+ Hackers</span>
+            <span className="font-display text-foreground">500+ Innovators</span>
           </div>
           <div className="flex items-center gap-2">
             <Flame className="w-5 h-5 text-accent" />
             <span className="font-display text-foreground">48 Hours</span>
           </div>
-        </motion.div>
-
-        {/* Countdown */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.8 }}
-          className="mb-10"
-        >
-          <p className="text-sm text-muted-foreground font-display uppercase tracking-widest mb-4">
-            Event Starts In
-          </p>
-          <CountdownTimer />
-        </motion.div>
-
-        {/* CTA Buttons */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.9 }}
-          className="flex flex-col sm:flex-row gap-4 justify-center"
-        >
-          <Button variant="fire" size="xl">
-            <Flame className="w-5 h-5" />
-            Register Now
-          </Button>
-          <Button variant="outline" size="xl">
-            Learn More
-          </Button>
         </motion.div>
       </div>
 
