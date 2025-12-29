@@ -100,13 +100,45 @@
     @apply border-border;
   }
 
+  html {
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+  }
+
   body {
     @apply bg-background text-foreground font-body;
     font-feature-settings: "rlig" 1, "calt" 1;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
 
   h1, h2, h3, h4, h5, h6 {
     @apply font-display;
+  }
+
+  /* GPU acceleration for smoother animations */
+  .gpu-accelerate {
+    transform: translateZ(0);
+    backface-visibility: hidden;
+    perspective: 1000px;
+  }
+
+  /* Optimize animations for mobile */
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+
+  /* Smooth scrolling for anchor links */
+  [id] {
+    scroll-margin-top: 80px;
   }
 }
 
@@ -151,6 +183,7 @@
   }
 }
 
+/* Performance-optimized keyframes using transform and opacity only */
 @keyframes flicker {
   0%, 100% { opacity: 1; }
   50% { opacity: 0.8; }
@@ -158,8 +191,8 @@
 }
 
 @keyframes float {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-20px); }
+  0%, 100% { transform: translateY(0) translateZ(0); }
+  50% { transform: translateY(-20px) translateZ(0); }
 }
 
 @keyframes pulseGlow {
@@ -173,11 +206,33 @@
 
 @keyframes emberRise {
   0% {
-    transform: translateY(0) scale(1);
+    transform: translateY(0) scale(1) translateZ(0);
     opacity: 1;
   }
   100% {
-    transform: translateY(-100px) scale(0);
+    transform: translateY(-100px) scale(0) translateZ(0);
     opacity: 0;
+  }
+}
+
+/* Smooth scroll container */
+.scroll-smooth {
+  scroll-behavior: smooth;
+}
+
+/* Will-change for frequently animated elements */
+.will-animate {
+  will-change: transform, opacity;
+}
+
+/* Contain paint for better performance */
+.contain-paint {
+  contain: paint;
+}
+
+/* Touch optimization */
+@supports (touch-action: manipulation) {
+  a, button {
+    touch-action: manipulation;
   }
 }
