@@ -2,6 +2,7 @@ import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import CountdownTimer from "./CountdownTimer";
 import EmberParticles from "./EmberParticles";
+import TypingEffect from "./TypingEffect";
 import { Flame, Zap, Users } from "lucide-react";
 
 const HeroSection = () => {
@@ -44,27 +45,54 @@ const HeroSection = () => {
         >
           <span className="inline-flex items-center gap-2 bg-primary/20 border border-primary/50 rounded-full px-4 py-2 text-sm font-display uppercase tracking-wider text-primary">
             <Flame className="w-4 h-4" />
-            48 Hours of Innovation
+            48 Hours National Hackathon
             <Flame className="w-4 h-4" />
           </span>
         </motion.div>
 
-        <motion.h1
+        {/* Typing Effect for AVISHKAAR */}
+        <motion.div
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.8, delay: 0.2 }}
-          className="text-4xl md:text-6xl lg:text-8xl font-display font-black mb-6 leading-tight"
+          className="mb-4"
         >
-          <span className="text-gradient-fire animate-flicker">IGNITE</span>
-          <br />
-          <span className="text-foreground">HACKATHON 2025</span>
-        </motion.h1>
+          <TypingEffect />
+        </motion.div>
+
+        {/* Season 4 */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.4 }}
+          className="mb-6"
+        >
+          <h2 className="text-2xl md:text-4xl font-display font-bold text-foreground tracking-[0.3em]">
+            SEASON 4
+          </h2>
+        </motion.div>
+
+        {/* Tagline */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.5 }}
+          className="mb-8"
+        >
+          <p className="text-lg md:text-xl font-display uppercase tracking-widest">
+            <span className="text-primary">[INNOVATION</span>
+            <span className="text-muted-foreground"> • </span>
+            <span className="text-accent">TECHNOLOGY</span>
+            <span className="text-muted-foreground"> • </span>
+            <span className="text-secondary">FUTURE]</span>
+          </p>
+        </motion.div>
 
         <motion.p
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ delay: 0.4 }}
-          className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto mb-8"
+          transition={{ delay: 0.6 }}
+          className="text-base md:text-lg text-muted-foreground max-w-2xl mx-auto mb-8"
         >
           The biggest 48-hour national hackathon where the brightest minds come together
           to build, innovate, and set the tech world on fire!
@@ -74,7 +102,7 @@ const HeroSection = () => {
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.5 }}
+          transition={{ delay: 0.7 }}
           className="flex flex-wrap justify-center gap-8 mb-10"
         >
           <div className="flex items-center gap-2">
@@ -95,7 +123,7 @@ const HeroSection = () => {
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.6 }}
+          transition={{ delay: 0.8 }}
           className="mb-10"
         >
           <p className="text-sm text-muted-foreground font-display uppercase tracking-widest mb-4">
@@ -108,7 +136,7 @@ const HeroSection = () => {
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.8 }}
+          transition={{ delay: 0.9 }}
           className="flex flex-col sm:flex-row gap-4 justify-center"
         >
           <Button variant="fire" size="xl">

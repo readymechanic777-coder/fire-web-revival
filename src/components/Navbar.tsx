@@ -39,7 +39,7 @@ const Navbar = () => {
           <a href="#" className="flex items-center gap-2 group">
             <Flame className="w-8 h-8 text-primary group-hover:animate-flicker" />
             <span className="font-display font-bold text-xl text-gradient-fire">
-              IGNITE
+              AVISHKAAR
             </span>
           </a>
 
