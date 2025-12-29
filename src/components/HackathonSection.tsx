@@ -19,7 +19,7 @@ function AnimatedNumber({ value, delay = 0 }: { value: number; delay?: number })
   return <motion.span>{rounded}</motion.span>;
 }
 
-// Countdown Timer Component
+// Countdown Timer Component (Small - for cards)
 const CountdownTimer = ({ targetDate, type }: { targetDate: Date; type: 'virtual' | 'physical' }) => {
   const [timeLeft, setTimeLeft] = useState({
     days: 0,
@@ -81,7 +81,6 @@ const CountdownTimer = ({ targetDate, type }: { targetDate: Date; type: 'virtual
             className="relative flex-1"
           >
             <div className="bg-background/80 border border-primary/30 rounded-lg p-2 text-center overflow-hidden group hover:border-primary/60 transition-colors">
-              {/* Fire glow effect */}
               <motion.div
                 className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity"
                 style={{
@@ -100,6 +99,141 @@ const CountdownTimer = ({ targetDate, type }: { targetDate: Date; type: 'virtual
               <span className="relative text-[10px] md:text-xs text-muted-foreground uppercase tracking-wider">
                 {unit.label}
               </span>
+            </div>
+          </motion.div>
+        ))}
+      </div>
+    </motion.div>
+  );
+};
+
+// Large Countdown Timer Component (for section display)
+const LargeCountdownTimer = ({ type }: { type: 'virtual' | 'physical' }) => {
+  const virtualDate = new Date('2026-12-20T00:00:00');
+  const physicalDate = new Date('2026-12-26T00:00:00');
+  const targetDate = type === 'virtual' ? virtualDate : physicalDate;
+
+  const [timeLeft, setTimeLeft] = useState({
+    days: 0,
+    hours: 0,
+    minutes: 0,
+    seconds: 0,
+  });
+
+  useEffect(() => {
+    const calculateTimeLeft = () => {
+      const now = new Date().getTime();
+      const target = targetDate.getTime();
+      const difference = target - now;
+
+      if (difference > 0) {
+        setTimeLeft({
+          days: Math.floor(difference / (1000 * 60 * 60 * 24)),
+          hours: Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)),
+          minutes: Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60)),
+          seconds: Math.floor((difference % (1000 * 60)) / 1000),
+        });
+      }
+    };
+
+    calculateTimeLeft();
+    const timer = setInterval(calculateTimeLeft, 1000);
+
+    return () => clearInterval(timer);
+  }, [targetDate]);
+
+  const timeUnits = [
+    { label: 'Days', value: timeLeft.days },
+    { label: 'Hours', value: timeLeft.hours },
+    { label: 'Minutes', value: timeLeft.minutes },
+    { label: 'Seconds', value: timeLeft.seconds },
+  ];
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 30 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      className="py-12"
+    >
+      {/* Header */}
+      <motion.div className="text-center mb-8">
+        <div className="flex items-center justify-center gap-3 mb-4">
+          <motion.div
+            animate={{ scale: [1, 1.2, 1], opacity: [0.7, 1, 0.7] }}
+            transition={{ duration: 1.5, repeat: Infinity }}
+          >
+            <Clock className="w-8 h-8 text-primary" />
+          </motion.div>
+          <h3 className="text-2xl md:text-4xl font-display font-black text-gradient-fire">
+            {type === 'virtual' ? 'Virtual Hackathon' : 'Physical Hackathon'} Starts In
+          </h3>
+        </div>
+        <p className="text-muted-foreground">
+          {type === 'virtual' ? 'December 20, 2026' : 'December 26, 2026'}
+        </p>
+      </motion.div>
+
+      {/* Large Timer Display */}
+      <div className="flex justify-center gap-4 md:gap-8">
+        {timeUnits.map((unit, index) => (
+          <motion.div
+            key={unit.label}
+            initial={{ scale: 0.5, opacity: 0 }}
+            whileInView={{ scale: 1, opacity: 1 }}
+            viewport={{ once: true }}
+            transition={{ delay: index * 0.1, type: "spring", stiffness: 200 }}
+            className="relative group"
+          >
+            <div className="relative bg-card border-2 border-primary/40 rounded-2xl p-4 md:p-8 text-center overflow-hidden hover:border-primary transition-all duration-300 min-w-[80px] md:min-w-[140px]">
+              {/* Fire glow background */}
+              <motion.div
+                className="absolute inset-0 opacity-30 group-hover:opacity-50 transition-opacity"
+                style={{
+                  background: 'radial-gradient(circle at center bottom, hsl(var(--primary) / 0.3), transparent 70%)',
+                }}
+              />
+              
+              {/* Animated fire particles */}
+              <motion.div
+                className="absolute bottom-0 left-1/2 -translate-x-1/2 w-2 h-2 rounded-full bg-primary"
+                animate={{
+                  y: [-5, -20, -5],
+                  opacity: [0.5, 1, 0.5],
+                  scale: [0.8, 1.2, 0.8],
+                }}
+                transition={{ duration: 1.5, repeat: Infinity, delay: index * 0.2 }}
+              />
+              
+              {/* Number */}
+              <motion.span
+                key={unit.value}
+                initial={{ y: -20, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                className="relative block text-4xl md:text-7xl font-display font-black text-transparent bg-clip-text"
+                style={{
+                  background: 'linear-gradient(180deg, hsl(var(--primary)), hsl(25, 100%, 40%))',
+                  backgroundClip: 'text',
+                  WebkitBackgroundClip: 'text',
+                }}
+              >
+                {String(unit.value).padStart(2, '0')}
+              </motion.span>
+              
+              {/* Label */}
+              <span className="relative text-sm md:text-lg text-muted-foreground uppercase tracking-widest font-display mt-2 block">
+                {unit.label}
+              </span>
+
+              {/* Bottom glow line */}
+              <motion.div
+                className="absolute bottom-0 left-0 right-0 h-1"
+                style={{
+                  background: 'linear-gradient(to right, transparent, hsl(var(--primary)), transparent)',
+                }}
+                animate={{ opacity: [0.3, 0.8, 0.3] }}
+                transition={{ duration: 2, repeat: Infinity, delay: index * 0.3 }}
+              />
             </div>
           </motion.div>
         ))}
@@ -967,6 +1101,9 @@ const HackathonSection = () => {
               <HackathonCard type={activeTab} />
               <PrizePoolDisplay type={activeTab} />
             </div>
+
+            {/* Large Countdown Timer - Above Important Dates */}
+            <LargeCountdownTimer type={activeTab} />
 
             {/* Important Dates - Full width grid */}
             <ImportantDates type={activeTab} />
