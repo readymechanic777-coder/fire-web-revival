@@ -100,12 +100,10 @@ const SponsorsSection = () => {
                 stiffness: 100,
               }}
               whileHover={{ 
-                scale: 1.15, 
-                y: -10,
-                rotateY: 5,
-                rotateX: -5,
+                scale: 1.08, 
+                y: -8,
               }}
-              className="group relative perspective-1000"
+              className="group relative"
             >
               {/* Outer glow container */}
               <motion.div
@@ -115,33 +113,58 @@ const SponsorsSection = () => {
                 }}
               />
 
-              <div className="relative bg-white rounded-xl h-28 flex items-center justify-center p-4 overflow-hidden transition-all duration-500 group-hover:shadow-2xl">
-                {/* Animated rotating border */}
-                <motion.div
-                  className="absolute inset-0 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-                  style={{
-                    background: 'conic-gradient(from 0deg, hsl(45, 100%, 55%), hsl(25, 100%, 50%), hsl(15, 100%, 45%), hsl(45, 100%, 55%))',
-                    padding: '2px',
-                  }}
-                  animate={{
-                    rotate: [0, 360],
-                  }}
-                  transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
-                >
-                  <div className="w-full h-full bg-white rounded-xl" />
-                </motion.div>
-
-                {/* Fire wave effect on hover */}
-                <motion.div
-                  className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-                  style={{
-                    background: 'linear-gradient(180deg, transparent 0%, hsl(45, 100%, 55% / 0.1) 50%, hsl(25, 100%, 50% / 0.2) 100%)',
-                  }}
-                  animate={{
-                    y: ['100%', '-100%'],
-                  }}
-                  transition={{ duration: 1.5, repeat: Infinity }}
-                />
+              <div className="relative bg-white rounded-xl h-28 flex items-center justify-center p-4 overflow-hidden transition-all duration-500 group-hover:shadow-2xl border border-transparent group-hover:border-orange-400/30">
+                {/* Border beam effect */}
+                <div className="absolute inset-0 rounded-xl overflow-hidden opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                  {/* Top beam */}
+                  <motion.div
+                    className="absolute top-0 left-0 h-[2px] w-16"
+                    style={{
+                      background: 'linear-gradient(90deg, transparent, hsl(45, 100%, 55%), hsl(25, 100%, 50%), transparent)',
+                      boxShadow: '0 0 10px hsl(45, 100%, 55%), 0 0 20px hsl(25, 100%, 50%)',
+                    }}
+                    animate={{
+                      left: ['-20%', '120%'],
+                    }}
+                    transition={{ duration: 1.5, repeat: Infinity, ease: "linear" }}
+                  />
+                  {/* Right beam */}
+                  <motion.div
+                    className="absolute top-0 right-0 w-[2px] h-16"
+                    style={{
+                      background: 'linear-gradient(180deg, transparent, hsl(45, 100%, 55%), hsl(25, 100%, 50%), transparent)',
+                      boxShadow: '0 0 10px hsl(45, 100%, 55%), 0 0 20px hsl(25, 100%, 50%)',
+                    }}
+                    animate={{
+                      top: ['-20%', '120%'],
+                    }}
+                    transition={{ duration: 1.5, repeat: Infinity, ease: "linear", delay: 0.375 }}
+                  />
+                  {/* Bottom beam */}
+                  <motion.div
+                    className="absolute bottom-0 right-0 h-[2px] w-16"
+                    style={{
+                      background: 'linear-gradient(270deg, transparent, hsl(45, 100%, 55%), hsl(25, 100%, 50%), transparent)',
+                      boxShadow: '0 0 10px hsl(45, 100%, 55%), 0 0 20px hsl(25, 100%, 50%)',
+                    }}
+                    animate={{
+                      right: ['-20%', '120%'],
+                    }}
+                    transition={{ duration: 1.5, repeat: Infinity, ease: "linear", delay: 0.75 }}
+                  />
+                  {/* Left beam */}
+                  <motion.div
+                    className="absolute bottom-0 left-0 w-[2px] h-16"
+                    style={{
+                      background: 'linear-gradient(0deg, transparent, hsl(45, 100%, 55%), hsl(25, 100%, 50%), transparent)',
+                      boxShadow: '0 0 10px hsl(45, 100%, 55%), 0 0 20px hsl(25, 100%, 50%)',
+                    }}
+                    animate={{
+                      bottom: ['-20%', '120%'],
+                    }}
+                    transition={{ duration: 1.5, repeat: Infinity, ease: "linear", delay: 1.125 }}
+                  />
+                </div>
                 
                 {/* Placeholder logo */}
                 <motion.div 
