@@ -926,12 +926,6 @@ const HackathonCard = ({ type }: { type: 'virtual' | 'physical' }) => {
           </div>
         </div>
 
-        {/* Countdown Timer */}
-        <CountdownTimer 
-          targetDate={isVirtual ? virtualDate : physicalDate} 
-          type={type} 
-        />
-
         <ul className="space-y-3 mb-6">
           {isVirtual ? (
             <>
