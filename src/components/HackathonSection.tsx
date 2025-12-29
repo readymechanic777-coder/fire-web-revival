@@ -109,38 +109,37 @@ const CountdownTimer = ({ targetDate, type }: { targetDate: Date; type: 'virtual
 
 // Large Countdown Timer Component (for section display)
 const LargeCountdownTimer = ({ type }: { type: 'virtual' | 'physical' }) => {
-  const virtualDate = new Date('2026-12-20T00:00:00');
-  const physicalDate = new Date('2026-12-26T00:00:00');
-  const targetDate = type === 'virtual' ? virtualDate : physicalDate;
+  const getTargetDate = () => {
+    return type === 'virtual' 
+      ? new Date('2026-12-20T00:00:00').getTime() 
+      : new Date('2026-12-26T00:00:00').getTime();
+  };
 
-  const [timeLeft, setTimeLeft] = useState({
-    days: 0,
-    hours: 0,
-    minutes: 0,
-    seconds: 0,
-  });
+  const calculateTime = () => {
+    const now = new Date().getTime();
+    const target = getTargetDate();
+    const difference = target - now;
+
+    if (difference > 0) {
+      return {
+        days: Math.floor(difference / (1000 * 60 * 60 * 24)),
+        hours: Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)),
+        minutes: Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60)),
+        seconds: Math.floor((difference % (1000 * 60)) / 1000),
+      };
+    }
+    return { days: 0, hours: 0, minutes: 0, seconds: 0 };
+  };
+
+  const [timeLeft, setTimeLeft] = useState(calculateTime);
 
   useEffect(() => {
-    const calculateTimeLeft = () => {
-      const now = new Date().getTime();
-      const target = targetDate.getTime();
-      const difference = target - now;
-
-      if (difference > 0) {
-        setTimeLeft({
-          days: Math.floor(difference / (1000 * 60 * 60 * 24)),
-          hours: Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)),
-          minutes: Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60)),
-          seconds: Math.floor((difference % (1000 * 60)) / 1000),
-        });
-      }
-    };
-
-    calculateTimeLeft();
-    const timer = setInterval(calculateTimeLeft, 1000);
+    const timer = setInterval(() => {
+      setTimeLeft(calculateTime());
+    }, 1000);
 
     return () => clearInterval(timer);
-  }, [targetDate]);
+  }, [type]);
 
   const timeUnits = [
     { label: 'Days', value: timeLeft.days },

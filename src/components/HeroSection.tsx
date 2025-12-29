@@ -4,6 +4,7 @@ import TypingEffect from "./TypingEffect";
 import MouseFollowParticles from "./MouseFollowParticles";
 import { Flame, Zap, Users, ArrowDown, Trophy, Calendar, MapPin } from "lucide-react";
 import heroFireBg from "@/assets/hero-fire-bg.mp4";
+import heroFireFallback from "@/assets/hero-fire-fallback.jpg";
 
 const HeroSection = () => {
   const scrollToAbout = () => {
@@ -17,19 +18,35 @@ const HeroSection = () => {
     <section id="hero-section" className="relative min-h-screen flex items-center justify-center overflow-hidden">
       {/* Mouse Follow Particles */}
       <MouseFollowParticles />
-      {/* Video Background */}
+      {/* Video Background with Fallback Image */}
       <div className="absolute inset-0 z-0">
+        {/* Fallback image that shows while video loads or if video fails */}
+        <img
+          src={heroFireFallback}
+          alt=""
+          className="absolute inset-0 w-full h-full object-cover"
+          style={{ filter: 'brightness(0.5)' }}
+        />
+        {/* Video overlay */}
         <video
           autoPlay
           loop
           muted
           playsInline
-          className="absolute inset-0 w-full h-full object-cover opacity-40"
+          preload="auto"
+          className="absolute inset-0 w-full h-full object-cover opacity-70"
+          style={{ filter: 'brightness(0.6)' }}
+          poster={heroFireFallback}
         >
           <source src={heroFireBg} type="video/mp4" />
         </video>
-        {/* Dark overlay for better text readability */}
-        <div className="absolute inset-0 bg-background/60" />
+        {/* Dark gradient overlay for better text readability */}
+        <div 
+          className="absolute inset-0" 
+          style={{
+            background: 'linear-gradient(to bottom, hsl(0, 0%, 5% / 0.6) 0%, hsl(0, 0%, 5% / 0.3) 40%, hsl(0, 0%, 5% / 0.5) 100%)',
+          }}
+        />
       </div>
 
       {/* Animated gradient background */}
