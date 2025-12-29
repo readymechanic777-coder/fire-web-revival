@@ -4,6 +4,7 @@ import AboutSection from "@/components/AboutSection";
 import ThemesSection from "@/components/ThemesSection";
 import HackathonSection from "@/components/HackathonSection";
 import GallerySection from "@/components/GallerySection";
+import SponsorsSection from "@/components/SponsorsSection";
 
 const Index = () => {
   return (
@@ -14,6 +15,7 @@ const Index = () => {
       <ThemesSection />
       <HackathonSection />
       <GallerySection />
+      <SponsorsSection />
     </div>
   );
 };
