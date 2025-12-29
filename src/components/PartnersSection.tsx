@@ -123,7 +123,7 @@ const PartnersSection = () => {
               </motion.h3>
 
               {/* Partners in Category */}
-              <div className="flex flex-wrap justify-center gap-6">
+              <div className="flex flex-wrap justify-center gap-8">
                 {partners.map((partner, index) => (
                   <motion.div
                     key={partner.name}
@@ -135,31 +135,60 @@ const PartnersSection = () => {
                       type: "spring",
                     }}
                     whileHover={{
-                      scale: 1.1,
-                      y: -5,
+                      scale: 1.2,
+                      y: -8,
+                      rotateY: 10,
+                      rotateX: -5,
                     }}
-                    className="group relative"
+                    className="group relative perspective-1000"
                   >
-                    <div className="relative bg-white/90 backdrop-blur-sm rounded-xl h-20 w-24 flex items-center justify-center p-3 overflow-hidden transition-all duration-300">
-                      {/* Hover glow */}
-                      <motion.div
-                        className="absolute inset-0 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-                        style={{
-                          boxShadow: '0 0 25px hsl(25, 100%, 50% / 0.4)',
-                        }}
-                      />
+                    {/* Outer fire glow */}
+                    <motion.div
+                      className="absolute -inset-3 rounded-2xl opacity-0 group-hover:opacity-100 transition-all duration-500 blur-lg"
+                      style={{
+                        background: 'radial-gradient(circle, hsl(25, 100%, 50% / 0.6), hsl(45, 100%, 55% / 0.3), transparent)',
+                      }}
+                      animate={{
+                        scale: [1, 1.1, 1],
+                      }}
+                      transition={{ duration: 1.5, repeat: Infinity }}
+                    />
 
-                      {/* Fire border on hover */}
+                    <div className="relative bg-white/95 backdrop-blur-sm rounded-xl h-24 w-28 flex items-center justify-center p-3 overflow-hidden transition-all duration-500 group-hover:shadow-2xl">
+                      {/* Spinning border effect */}
                       <motion.div
-                        className="absolute inset-0 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"
+                        className="absolute inset-0 rounded-xl opacity-0 group-hover:opacity-100"
                         style={{
-                          background: 'linear-gradient(135deg, hsl(25, 100%, 50% / 0.2), transparent, hsl(45, 100%, 55% / 0.2))',
+                          background: 'conic-gradient(from 0deg, hsl(45, 100%, 55%), hsl(25, 100%, 50%), hsl(15, 100%, 45%), transparent, hsl(45, 100%, 55%))',
+                          padding: '2px',
                         }}
+                        animate={{
+                          rotate: [0, 360],
+                        }}
+                        transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
+                      >
+                        <div className="w-full h-full bg-white rounded-xl" />
+                      </motion.div>
+
+                      {/* Flame shimmer effect */}
+                      <motion.div
+                        className="absolute inset-0 opacity-0 group-hover:opacity-100"
+                        style={{
+                          background: 'linear-gradient(45deg, transparent 40%, hsl(45, 100%, 55% / 0.3) 50%, transparent 60%)',
+                          backgroundSize: '200% 200%',
+                        }}
+                        animate={{
+                          backgroundPosition: ['200% 200%', '-200% -200%'],
+                        }}
+                        transition={{ duration: 1.5, repeat: Infinity }}
                       />
 
                       {/* Placeholder logo */}
-                      <div className="relative z-10 text-center">
-                        <div
+                      <motion.div 
+                        className="relative z-10 text-center"
+                        whileHover={{ scale: 1.1 }}
+                      >
+                        <motion.div
                           className="text-xl font-display font-bold"
                           style={{
                             background: 'linear-gradient(135deg, hsl(25, 100%, 40%), hsl(15, 100%, 35%))',
@@ -169,37 +198,59 @@ const PartnersSection = () => {
                           }}
                         >
                           {partner.initials}
-                        </div>
-                      </div>
+                        </motion.div>
+                      </motion.div>
 
-                      {/* Fire particles on hover */}
-                      {[...Array(2)].map((_, i) => (
+                      {/* Rising ember particles */}
+                      {[...Array(5)].map((_, i) => (
                         <motion.div
                           key={i}
-                          className="absolute w-1 h-1 rounded-full bg-orange-400 opacity-0 group-hover:opacity-100"
+                          className="absolute rounded-full opacity-0 group-hover:opacity-100"
                           style={{
-                            left: `${35 + i * 30}%`,
-                            bottom: '0',
+                            left: `${20 + i * 15}%`,
+                            bottom: '-3px',
+                            width: `${2 + Math.random() * 2}px`,
+                            height: `${2 + Math.random() * 2}px`,
+                            background: `hsl(${30 + i * 8}, 100%, ${55 + i * 3}%)`,
+                            boxShadow: `0 0 ${3 + i}px hsl(${30 + i * 8}, 100%, 50%)`,
                           }}
                           animate={{
-                            y: [0, -20, -40],
+                            y: [0, -30, -60],
+                            x: [0, (i % 2 === 0 ? -1 : 1) * 8, 0],
                             opacity: [0, 1, 0],
-                            scale: [0.5, 1, 0],
+                            scale: [0.3, 1, 0],
                           }}
                           transition={{
-                            duration: 1.2,
+                            duration: 1,
                             repeat: Infinity,
-                            delay: i * 0.4,
+                            delay: i * 0.12,
                           }}
                         />
                       ))}
+
+                      {/* Pulse ring on hover */}
+                      <motion.div
+                        className="absolute inset-0 rounded-xl border-2 border-orange-400/50 opacity-0 group-hover:opacity-100"
+                        animate={{
+                          scale: [1, 1.1, 1],
+                          opacity: [0.5, 0, 0.5],
+                        }}
+                        transition={{ duration: 1.5, repeat: Infinity }}
+                      />
                     </div>
 
-                    {/* Partner name tooltip */}
+                    {/* Partner name tooltip with fire styling */}
                     <motion.div
-                      className="absolute -bottom-8 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap"
+                      className="absolute -bottom-10 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-all duration-300 transform translate-y-2 group-hover:translate-y-0"
                     >
-                      <span className="text-xs text-muted-foreground bg-card/80 px-2 py-1 rounded">
+                      <span 
+                        className="text-xs font-display font-medium px-3 py-1.5 rounded-full whitespace-nowrap"
+                        style={{
+                          background: 'linear-gradient(135deg, hsl(25, 100%, 50% / 0.2), hsl(45, 100%, 55% / 0.1))',
+                          border: '1px solid hsl(25, 100%, 50% / 0.3)',
+                          color: 'hsl(25, 100%, 60%)',
+                        }}
+                      >
                         {partner.name}
                       </span>
                     </motion.div>

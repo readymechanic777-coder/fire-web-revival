@@ -100,25 +100,57 @@ const SponsorsSection = () => {
                 stiffness: 100,
               }}
               whileHover={{ 
-                scale: 1.08, 
-                y: -5,
-                boxShadow: '0 20px 40px -15px hsl(25, 100%, 50% / 0.3)',
+                scale: 1.15, 
+                y: -10,
+                rotateY: 5,
+                rotateX: -5,
               }}
-              className="group relative"
+              className="group relative perspective-1000"
             >
-              <div className="relative bg-white rounded-xl h-24 flex items-center justify-center p-4 overflow-hidden transition-all duration-300">
-                {/* Animated border on hover */}
+              {/* Outer glow container */}
+              <motion.div
+                className="absolute -inset-2 rounded-2xl opacity-0 group-hover:opacity-100 transition-all duration-500 blur-xl"
+                style={{
+                  background: 'linear-gradient(135deg, hsl(45, 100%, 55% / 0.6), hsl(25, 100%, 50% / 0.4), hsl(15, 100%, 45% / 0.6))',
+                }}
+              />
+
+              <div className="relative bg-white rounded-xl h-28 flex items-center justify-center p-4 overflow-hidden transition-all duration-500 group-hover:shadow-2xl">
+                {/* Animated rotating border */}
                 <motion.div
-                  className="absolute inset-0 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"
+                  className="absolute inset-0 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"
                   style={{
-                    background: 'linear-gradient(135deg, hsl(25, 100%, 50% / 0.3), transparent, hsl(45, 100%, 55% / 0.3))',
+                    background: 'conic-gradient(from 0deg, hsl(45, 100%, 55%), hsl(25, 100%, 50%), hsl(15, 100%, 45%), hsl(45, 100%, 55%))',
+                    padding: '2px',
                   }}
+                  animate={{
+                    rotate: [0, 360],
+                  }}
+                  transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
+                >
+                  <div className="w-full h-full bg-white rounded-xl" />
+                </motion.div>
+
+                {/* Fire wave effect on hover */}
+                <motion.div
+                  className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                  style={{
+                    background: 'linear-gradient(180deg, transparent 0%, hsl(45, 100%, 55% / 0.1) 50%, hsl(25, 100%, 50% / 0.2) 100%)',
+                  }}
+                  animate={{
+                    y: ['100%', '-100%'],
+                  }}
+                  transition={{ duration: 1.5, repeat: Infinity }}
                 />
                 
-                {/* Placeholder logo - replace with actual images */}
-                <div className="relative z-10 text-center">
+                {/* Placeholder logo */}
+                <motion.div 
+                  className="relative z-10 text-center"
+                  whileHover={{ scale: 1.1 }}
+                  transition={{ type: "spring", stiffness: 300 }}
+                >
                   <div 
-                    className="text-2xl font-display font-bold"
+                    className="text-2xl font-display font-bold transition-all duration-300 group-hover:text-orange-500"
                     style={{
                       background: 'linear-gradient(135deg, hsl(25, 100%, 40%), hsl(15, 100%, 35%))',
                       backgroundClip: 'text',
@@ -128,32 +160,62 @@ const SponsorsSection = () => {
                   >
                     {sponsor.initials}
                   </div>
-                  <p className="text-xs text-gray-500 mt-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                  <p className="text-xs text-gray-500 mt-1 transform translate-y-4 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-300">
                     {sponsor.name}
                   </p>
-                </div>
+                </motion.div>
 
-                {/* Fire particles on hover */}
-                {[...Array(3)].map((_, i) => (
+                {/* Rising fire particles */}
+                {[...Array(6)].map((_, i) => (
                   <motion.div
                     key={i}
-                    className="absolute w-1 h-1 rounded-full bg-orange-400 opacity-0 group-hover:opacity-100"
+                    className="absolute rounded-full opacity-0 group-hover:opacity-100"
                     style={{
-                      left: `${30 + i * 20}%`,
-                      bottom: '0',
+                      left: `${15 + i * 14}%`,
+                      bottom: '-5px',
+                      width: `${3 + Math.random() * 3}px`,
+                      height: `${3 + Math.random() * 3}px`,
+                      background: `hsl(${25 + i * 5}, 100%, ${50 + i * 5}%)`,
+                      boxShadow: `0 0 ${4 + i}px hsl(${25 + i * 5}, 100%, 50%)`,
                     }}
                     animate={{
-                      y: [0, -30, -50],
+                      y: [0, -40, -80],
+                      x: [0, (i % 2 === 0 ? -1 : 1) * 10, (i % 2 === 0 ? -1 : 1) * 5],
                       opacity: [0, 1, 0],
-                      scale: [0.5, 1, 0],
+                      scale: [0.5, 1.2, 0],
                     }}
                     transition={{
-                      duration: 1.5,
+                      duration: 1.2,
                       repeat: Infinity,
-                      delay: i * 0.3,
+                      delay: i * 0.15,
+                      ease: "easeOut",
                     }}
                   />
                 ))}
+
+                {/* Corner flame accents */}
+                <motion.div
+                  className="absolute top-2 left-2 w-4 h-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                  style={{
+                    borderLeft: '2px solid hsl(25, 100%, 50%)',
+                    borderTop: '2px solid hsl(45, 100%, 55%)',
+                  }}
+                  animate={{
+                    borderColor: ['hsl(25, 100%, 50%)', 'hsl(45, 100%, 55%)', 'hsl(25, 100%, 50%)'],
+                  }}
+                  transition={{ duration: 1, repeat: Infinity }}
+                />
+                <motion.div
+                  className="absolute bottom-2 right-2 w-4 h-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                  style={{
+                    borderRight: '2px solid hsl(25, 100%, 50%)',
+                    borderBottom: '2px solid hsl(45, 100%, 55%)',
+                  }}
+                  animate={{
+                    borderColor: ['hsl(45, 100%, 55%)', 'hsl(25, 100%, 50%)', 'hsl(45, 100%, 55%)'],
+                  }}
+                  transition={{ duration: 1, repeat: Infinity }}
+                />
               </div>
             </motion.div>
           ))}
