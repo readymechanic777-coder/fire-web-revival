@@ -4,7 +4,7 @@ import EmberParticles from "./EmberParticles";
 import TypingEffect from "./TypingEffect";
 import MouseFollowParticles from "./MouseFollowParticles";
 import { Flame, Users, ArrowDown, Trophy, Calendar, MapPin } from "lucide-react";
-import heroVideo from "../assets/video.mp4";
+
 
 const HeroSection = () => {
   const scrollToAbout = () => {
@@ -21,20 +21,6 @@ const HeroSection = () => {
       
       {/* Animated Gradient Background */}
       <div className="absolute inset-0 z-0">
-        {/* Video Background */}
-        <div className="absolute inset-0">
-          <video
-            className="w-full h-full object-cover"
-            autoPlay
-            loop
-            muted
-            playsInline
-          >
-            <source src={heroVideo} type="video/mp4" />
-          </video>
-          {/* Overlay to blend video with theme */}
-          <div className="absolute inset-0 bg-black/40" />
-        </div>
         
         {/* Primary fire gradient - bottom glow */}
         <motion.div
