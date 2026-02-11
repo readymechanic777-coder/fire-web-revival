@@ -33,16 +33,17 @@ export default defineConfig(({ mode }) => ({
   },
 
   resolve: {
-    alias: {
-      "@": path.resolve(__dirname, "./src"),
+    alias: [
+      { find: "@", replacement: path.resolve(__dirname, "./src") },
 
-      // Force a single physical React + ReactDOM instance (prevents Invalid Hook Call)
-      react: reactPath,
-      "react-dom": reactDomPath,
-      "react-dom/client": reactDomClientPath,
-      "react/jsx-runtime": jsxRuntimePath,
-      "react/jsx-dev-runtime": jsxDevRuntimePath,
-    },
+      // Order matters: map subpath entries before the package root.
+      { find: /^react\/jsx-dev-runtime$/, replacement: jsxDevRuntimePath },
+      { find: /^react\/jsx-runtime$/, replacement: jsxRuntimePath },
+
+      { find: /^react-dom\/client$/, replacement: reactDomClientPath },
+      { find: /^react-dom$/, replacement: reactDomPath },
+      { find: /^react$/, replacement: reactPath },
+    ],
     dedupe: [
       "react",
       "react-dom",
