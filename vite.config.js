@@ -9,18 +9,33 @@ export default defineConfig(({ mode }) => ({
     host: "::",
     port: 8080,
   },
-  plugins: [
-    react(),
-    mode === 'development' && componentTagger(),
-  ].filter(Boolean),
+  plugins: [react(), mode === "development" && componentTagger()].filter(Boolean),
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "./src"),
+
+      // Force a single physical React + ReactDOM instance (prevents Invalid Hook Call)
       react: path.resolve(__dirname, "./node_modules/react"),
       "react-dom": path.resolve(__dirname, "./node_modules/react-dom"),
-      "react/jsx-runtime": path.resolve(__dirname, "./node_modules/react/jsx-runtime"),
-      "react/jsx-dev-runtime": path.resolve(__dirname, "./node_modules/react/jsx-dev-runtime"),
+      "react-dom/client": path.resolve(
+        __dirname,
+        "./node_modules/react-dom/client",
+      ),
+      "react/jsx-runtime": path.resolve(
+        __dirname,
+        "./node_modules/react/jsx-runtime",
+      ),
+      "react/jsx-dev-runtime": path.resolve(
+        __dirname,
+        "./node_modules/react/jsx-dev-runtime",
+      ),
     },
-    dedupe: ["react", "react-dom", "react/jsx-runtime", "react/jsx-dev-runtime"],
+    dedupe: [
+      "react",
+      "react-dom",
+      "react-dom/client",
+      "react/jsx-runtime",
+      "react/jsx-dev-runtime",
+    ],
   },
 }));
