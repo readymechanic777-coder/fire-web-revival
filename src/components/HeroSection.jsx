@@ -1,9 +1,66 @@
-import { motion } from "framer-motion";
-import { fadeIn, textVariant, zoomIn, staggerContainer } from "@/lib/motion";
-import EmberParticles from "./EmberParticles";
+import { motion, useMotionValue, useTransform } from "framer-motion";
+import { useMemo } from "react";
 import TypingEffect from "./TypingEffect";
 import MouseFollowParticles from "./MouseFollowParticles";
-import { Droplets, Users, ArrowDown, Trophy, Calendar, MapPin } from "lucide-react";
+import { Droplets, Users, Trophy, Calendar, MapPin } from "lucide-react";
+import WaterDroplet from "./icons/WaterDroplet";
+
+// Floating code snippets that drift behind the content
+const codeSnippets = [
+  { code: 'const innovate = () => {', x: '5%', y: '15%', size: 'text-xs', delay: 0 },
+  { code: '  return breakthrough;', x: '8%', y: '20%', size: 'text-xs', delay: 0.2 },
+  { code: '};', x: '5%', y: '25%', size: 'text-xs', delay: 0.4 },
+  { code: 'async function hack() {', x: '70%', y: '12%', size: 'text-xs', delay: 1 },
+  { code: '  await solve(problem);', x: '73%', y: '17%', size: 'text-xs', delay: 1.2 },
+  { code: '  deploy(solution);', x: '73%', y: '22%', size: 'text-xs', delay: 1.4 },
+  { code: '}', x: '70%', y: '27%', size: 'text-xs', delay: 1.6 },
+  { code: 'import { future } from "avishkaar"', x: '12%', y: '70%', size: 'text-[10px]', delay: 2 },
+  { code: '<Innovation season={4} />', x: '65%', y: '75%', size: 'text-[10px]', delay: 2.5 },
+  { code: 'git commit -m "built the future"', x: '15%', y: '85%', size: 'text-[10px]', delay: 3 },
+  { code: 'while(true) { create(); }', x: '60%', y: '60%', size: 'text-[10px]', delay: 1.8 },
+  { code: '// 48 hours of innovation', x: '3%', y: '50%', size: 'text-[11px]', delay: 0.8 },
+  { code: 'npm run hackathon', x: '75%', y: '45%', size: 'text-[10px]', delay: 2.2 },
+];
+
+const FloatingCodeSnippet = ({ snippet }) => (
+  <motion.div
+    className="absolute font-code pointer-events-none select-none whitespace-nowrap"
+    style={{ left: snippet.x, top: snippet.y }}
+    initial={{ opacity: 0 }}
+    animate={{
+      opacity: [0, 0.15, 0.25, 0.15, 0],
+      y: [0, -15, -30, -45, -60],
+    }}
+    transition={{
+      duration: 12,
+      repeat: Infinity,
+      delay: snippet.delay,
+      ease: "linear",
+    }}
+  >
+    <span className={`${snippet.size} text-primary/40`}>{snippet.code}</span>
+  </motion.div>
+);
+
+// Matrix-style binary rain column
+const BinaryColumn = ({ left, delay, speed }) => {
+  const chars = useMemo(() => 
+    Array.from({ length: 20 }, () => Math.random() > 0.5 ? '1' : '0').join('\n'),
+    []
+  );
+  
+  return (
+    <motion.div
+      className="absolute font-code text-[10px] leading-4 text-primary/10 pointer-events-none select-none whitespace-pre"
+      style={{ left }}
+      initial={{ y: '-100%', opacity: 0 }}
+      animate={{ y: '100vh', opacity: [0, 0.15, 0.15, 0] }}
+      transition={{ duration: speed, repeat: Infinity, delay, ease: "linear" }}
+    >
+      {chars}
+    </motion.div>
+  );
+};
 
 const HeroSection = () => {
   const scrollToAbout = () => {
@@ -11,165 +68,136 @@ const HeroSection = () => {
     if (element) element.scrollIntoView({ behavior: 'smooth' });
   };
 
+  const binaryColumns = useMemo(() => 
+    Array.from({ length: 12 }, (_, i) => ({
+      id: i,
+      left: `${5 + i * 8}%`,
+      delay: Math.random() * 5,
+      speed: 8 + Math.random() * 6,
+    })), []
+  );
+
   return (
     <section id="hero-section" className="relative min-h-screen flex items-center justify-center overflow-hidden">
       <MouseFollowParticles />
       
-      {/* Animated Liquid Gradient Background */}
-      <div className="absolute inset-0 z-0">
-        {/* Primary liquid gradient - bottom glow */}
-        <motion.div
-          className="absolute inset-0"
-          style={{
-            background: 'radial-gradient(ellipse 120% 80% at 50% 100%, hsl(220, 80%, 20%) 0%, hsl(210, 50%, 10%) 30%, transparent 70%)',
-          }}
-          animate={{ opacity: [0.8, 1, 0.8] }}
-          transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
-        />
-        
-        {/* Cyan pulse */}
-        <motion.div
-          className="absolute inset-0"
-          style={{
-            background: 'radial-gradient(ellipse 100% 60% at 50% 110%, hsl(190, 100%, 50% / 0.3) 0%, transparent 60%)',
-          }}
-          animate={{ opacity: [0.4, 0.7, 0.4], scale: [1, 1.1, 1] }}
-          transition={{ duration: 2.5, repeat: Infinity, ease: "easeInOut" }}
-        />
-        
-        {/* Teal accent pulse */}
-        <motion.div
-          className="absolute inset-0"
-          style={{
-            background: 'radial-gradient(ellipse 80% 40% at 50% 120%, hsl(175, 100%, 45% / 0.2) 0%, transparent 50%)',
-          }}
-          animate={{ opacity: [0.2, 0.5, 0.2], scale: [0.9, 1.15, 0.9] }}
-          transition={{ duration: 2, repeat: Infinity, ease: "easeInOut", delay: 0.5 }}
-        />
-        
-        {/* Liquid streaks */}
-        {[...Array(5)].map((_, i) => (
-          <motion.div
-            key={`streak-${i}`}
-            className="absolute bottom-0 w-32 h-[60vh]"
-            style={{
-              left: `${10 + i * 20}%`,
-              background: `linear-gradient(to top, hsl(${185 + i * 8}, 100%, ${50 - i * 5}% / 0.2), transparent 80%)`,
-              filter: 'blur(40px)',
-            }}
-            animate={{
-              opacity: [0.15, 0.35, 0.15],
-              scaleY: [0.8, 1.2, 0.8],
-              x: [0, (i % 2 === 0 ? 20 : -20), 0],
-            }}
-            transition={{ duration: 3 + i * 0.5, repeat: Infinity, ease: "easeInOut", delay: i * 0.3 }}
-          />
-        ))}
-        
-        {/* Shimmer overlay */}
-        <motion.div
-          className="absolute inset-0"
-          style={{
-            background: 'linear-gradient(to top, hsl(190, 100%, 40% / 0.1) 0%, transparent 40%)',
-          }}
-          animate={{ opacity: [0.3, 0.6, 0.3, 0.5, 0.3] }}
-          transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
-        />
-        
-        {/* Vignette overlay */}
-        <div className="absolute inset-0" style={{
-          background: 'radial-gradient(ellipse at center, transparent 30%, hsl(210, 40%, 4% / 0.7) 100%)',
-        }} />
-      </div>
+      {/* Deep liquid background */}
+      <div className="absolute inset-0 z-0" style={{
+        background: `
+          radial-gradient(ellipse 140% 80% at 50% 110%, hsl(220, 40%, 12%) 0%, transparent 60%),
+          radial-gradient(ellipse 80% 60% at 20% 80%, hsl(190, 80%, 15% / 0.4) 0%, transparent 50%),
+          radial-gradient(ellipse 80% 60% at 80% 20%, hsl(220, 60%, 15% / 0.3) 0%, transparent 50%),
+          hsl(220, 25%, 6%)
+        `,
+      }} />
 
-      {/* Animated gradient background layer */}
-      <div className="absolute inset-0 z-[1]">
-        <motion.div
-          className="absolute inset-0"
-          style={{
-            background: 'radial-gradient(ellipse at 50% 120%, hsl(190, 100%, 50% / 0.2) 0%, transparent 50%)',
-          }}
-          animate={{ opacity: [0.4, 0.7, 0.4], scale: [1, 1.1, 1] }}
-          transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-        />
-      </div>
-      
-      {/* Bottom glow */}
-      <motion.div 
-        className="absolute bottom-0 left-0 right-0 h-[500px]"
+      {/* Underwater caustic light patterns */}
+      <motion.div
+        className="absolute inset-0 z-[1]"
         style={{
-          background: 'linear-gradient(to top, hsl(190, 100%, 50% / 0.3), hsl(220, 80%, 45% / 0.15), transparent)',
+          background: `
+            radial-gradient(ellipse 50% 30% at 30% 70%, hsl(190, 100%, 50% / 0.08) 0%, transparent 60%),
+            radial-gradient(ellipse 40% 25% at 70% 40%, hsl(175, 100%, 50% / 0.06) 0%, transparent 50%)
+          `,
         }}
-        animate={{ opacity: [0.5, 0.8, 0.5] }}
-        transition={{ duration: 3, repeat: Infinity }}
-      />
-      
-      {/* Dynamic animated background orbs */}
-      <motion.div
-        className="absolute top-1/4 left-1/4 w-[500px] h-[500px] rounded-full blur-3xl will-animate"
-        style={{ background: 'radial-gradient(circle, hsl(190, 100%, 50% / 0.3), transparent 70%)' }}
-        animate={{ scale: [1, 1.4, 1], opacity: [0.2, 0.5, 0.2], x: [0, 80, 0], y: [0, -50, 0] }}
-        transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
-      />
-      <motion.div
-        className="absolute bottom-1/4 right-1/4 w-[400px] h-[400px] rounded-full blur-3xl will-animate"
-        style={{ background: 'radial-gradient(circle, hsl(220, 80%, 55% / 0.3), transparent 70%)' }}
-        animate={{ scale: [1.2, 0.8, 1.2], opacity: [0.3, 0.6, 0.3], x: [0, -60, 0], y: [0, 60, 0] }}
+        animate={{
+          opacity: [0.5, 0.8, 0.5],
+          scale: [1, 1.05, 1],
+        }}
         transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
       />
-      <motion.div
-        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] rounded-full blur-3xl will-animate"
-        style={{ background: 'radial-gradient(circle, hsl(175, 100%, 45% / 0.1), transparent 60%)' }}
-        animate={{ scale: [1, 1.3, 1], opacity: [0.15, 0.35, 0.15], rotate: [0, 180, 360] }}
-        transition={{ duration: 15, repeat: Infinity, ease: "linear" }}
-      />
-      
-      {/* Floating bubble particles */}
-      {[...Array(8)].map((_, i) => (
-        <motion.div
-          key={i}
-          className="absolute rounded-full"
-          style={{
-            left: `${15 + i * 10}%`,
-            bottom: '10%',
-            width: 6 + i * 1,
-            height: 6 + i * 1,
-            background: `radial-gradient(circle at 30% 30%, hsl(${185 + i * 5}, 100%, 80% / 0.5), hsl(${185 + i * 5}, 100%, 50% / 0.2))`,
-            border: `1px solid hsl(${185 + i * 5}, 100%, 70% / 0.3)`,
-          }}
-          animate={{
-            y: [0, -300 - i * 50, -500],
-            x: [0, (i % 2 === 0 ? 30 : -30), (i % 2 === 0 ? -20 : 20)],
-            opacity: [0, 0.6, 0],
-            scale: [0.5, 1.5, 0],
-          }}
-          transition={{ duration: 4 + i * 0.5, repeat: Infinity, delay: i * 0.4, ease: "easeOut" }}
-        />
-      ))}
 
-      <EmberParticles />
+      {/* Animated liquid orbs */}
+      <motion.div
+        className="absolute w-[600px] h-[600px] rounded-full blur-[100px] will-animate"
+        style={{
+          left: '15%', top: '20%',
+          background: 'radial-gradient(circle, hsl(190, 100%, 40% / 0.15), transparent 70%)',
+        }}
+        animate={{ x: [0, 60, 0], y: [0, -40, 0], scale: [1, 1.3, 1] }}
+        transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
+      />
+      <motion.div
+        className="absolute w-[500px] h-[500px] rounded-full blur-[80px] will-animate"
+        style={{
+          right: '10%', bottom: '15%',
+          background: 'radial-gradient(circle, hsl(220, 80%, 40% / 0.12), transparent 70%)',
+        }}
+        animate={{ x: [0, -50, 0], y: [0, 50, 0], scale: [1.2, 0.9, 1.2] }}
+        transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
+      />
+
+      {/* Binary rain columns */}
+      <div className="absolute inset-0 z-[2] overflow-hidden pointer-events-none">
+        {binaryColumns.map((col) => (
+          <BinaryColumn key={col.id} {...col} />
+        ))}
+      </div>
+
+      {/* Floating code snippets */}
+      <div className="absolute inset-0 z-[3] overflow-hidden pointer-events-none">
+        {codeSnippets.map((snippet, i) => (
+          <FloatingCodeSnippet key={i} snippet={snippet} />
+        ))}
+      </div>
+
+      {/* Floating glass bubbles */}
+      <div className="absolute inset-0 z-[4] overflow-hidden pointer-events-none">
+        {[...Array(6)].map((_, i) => (
+          <motion.div
+            key={i}
+            className="absolute rounded-full"
+            style={{
+              left: `${10 + i * 15}%`,
+              bottom: '-5%',
+              width: 10 + i * 4,
+              height: 10 + i * 4,
+              background: `radial-gradient(circle at 35% 30%, hsl(190, 100%, 90% / 0.2), hsl(190, 100%, 50% / 0.05))`,
+              border: `1px solid hsl(190, 100%, 70% / 0.15)`,
+              boxShadow: `inset 0 -2px 4px hsl(220, 60%, 4% / 0.3), 0 0 8px hsl(190, 100%, 50% / 0.1)`,
+            }}
+            animate={{
+              y: [0, -500 - i * 80],
+              x: [0, (i % 2 === 0 ? 40 : -40), (i % 2 === 0 ? -20 : 20)],
+              opacity: [0, 0.5, 0.3, 0],
+              scale: [0.6, 1.2, 0.8, 0],
+            }}
+            transition={{ duration: 6 + i, repeat: Infinity, delay: i * 0.8, ease: "easeOut" }}
+          />
+        ))}
+      </div>
+
+      {/* Vignette */}
+      <div className="absolute inset-0 z-[5]" style={{
+        background: 'radial-gradient(ellipse at center, transparent 40%, hsl(220, 25%, 6% / 0.8) 100%)',
+      }} />
 
       {/* Content */}
       <div className="relative z-10 container mx-auto px-4 text-center">
-        {/* Badge */}
+        {/* Terminal-style badge */}
         <motion.div
-          initial={{ opacity: 0, y: -30, scale: 0.8 }}
-          animate={{ opacity: 1, y: 0, scale: 1 }}
+          initial={{ opacity: 0, y: -30 }}
+          animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, type: "spring" }}
-          className="mb-8"
-        />
+          className="mb-6"
+        >
+          <div className="inline-flex items-center gap-2 glass-panel glass-highlight rounded-full px-5 py-2">
+            <span className="w-2 h-2 rounded-full bg-accent animate-pulse-glow" />
+            <span className="font-code text-xs text-primary/80 tracking-wider">48 Hours • National Hackathon • Live</span>
+          </div>
+        </motion.div>
 
         {/* Typing Effect */}
         <motion.div
           initial={{ opacity: 0, scale: 0.8 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 1, delay: 0.2, type: "spring" }}
-          className="mb-6 mt-14"
+          className="mb-6 mt-4"
         >
           <TypingEffect />
         </motion.div>
 
-        {/* Season 4 with animated underline */}
+        {/* Season 4 */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -179,7 +207,7 @@ const HeroSection = () => {
           <motion.h2 
             className="text-3xl md:text-5xl font-display font-black tracking-[0.4em] text-transparent bg-clip-text"
             style={{
-              background: 'linear-gradient(180deg, hsl(0, 0%, 100%) 0%, hsl(195, 100%, 85%) 100%)',
+              background: 'linear-gradient(180deg, hsl(0, 0%, 100%) 0%, hsl(195, 80%, 80%) 100%)',
               backgroundClip: 'text',
               WebkitBackgroundClip: 'text',
             }}
@@ -187,7 +215,7 @@ const HeroSection = () => {
             SEASON 4
           </motion.h2>
           <motion.div
-            className="absolute -bottom-2 left-0 right-0 h-1 rounded-full"
+            className="absolute -bottom-2 left-0 right-0 h-[2px] rounded-full"
             style={{
               background: 'linear-gradient(90deg, transparent, hsl(190, 100%, 50%), hsl(175, 100%, 55%), hsl(190, 100%, 50%), transparent)',
             }}
@@ -197,32 +225,20 @@ const HeroSection = () => {
           />
         </motion.div>
 
-        {/* Tagline */}
+        {/* Tagline in glass terminal */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.5 }}
           className="mb-6"
         >
-          <motion.p 
-            className="text-xl md:text-3xl font-display uppercase tracking-widest font-bold"
-            style={{
-              background: 'linear-gradient(135deg, hsl(175, 100%, 60%), hsl(190, 100%, 55%), hsl(220, 80%, 55%))',
-              backgroundClip: 'text',
-              WebkitBackgroundClip: 'text',
-              color: 'transparent',
-            }}
-            animate={{
-              textShadow: [
-                '0 0 20px hsl(190, 100%, 50% / 0.4)',
-                '0 0 40px hsl(190, 100%, 50% / 0.7)',
-                '0 0 20px hsl(190, 100%, 50% / 0.4)',
-              ]
-            }}
-            transition={{ duration: 2, repeat: Infinity }}
-          >
-            The Infinite Loop of Innovation
-          </motion.p>
+          <div className="inline-block glass-card glass-highlight rounded-xl px-6 py-3">
+            <motion.p 
+              className="text-lg md:text-2xl font-display uppercase tracking-widest font-bold text-gradient-liquid"
+            >
+              The Infinite Loop of Innovation
+            </motion.p>
+          </div>
         </motion.div>
 
         {/* Sub-tagline */}
@@ -232,12 +248,14 @@ const HeroSection = () => {
           transition={{ delay: 0.6 }}
           className="mb-8"
         >
-          <p className="text-lg md:text-xl text-muted-foreground font-display">
-            <motion.span className="text-primary font-bold" animate={{ opacity: [0.7, 1, 0.7] }} transition={{ duration: 1.5, repeat: Infinity }}>Dream</motion.span>
-            {" • "}
-            <motion.span className="text-accent font-bold" animate={{ opacity: [0.7, 1, 0.7] }} transition={{ duration: 1.5, repeat: Infinity, delay: 0.3 }}>Code</motion.span>
-            {" • "}
-            <motion.span className="text-secondary font-bold" animate={{ opacity: [0.7, 1, 0.7] }} transition={{ duration: 1.5, repeat: Infinity, delay: 0.6 }}>Disrupt</motion.span>
+          <p className="text-lg md:text-xl font-code text-muted-foreground">
+            <motion.span className="text-primary font-bold" animate={{ opacity: [0.7, 1, 0.7] }} transition={{ duration: 1.5, repeat: Infinity }}>{'{ '}</motion.span>
+            <motion.span className="text-accent" animate={{ opacity: [0.7, 1, 0.7] }} transition={{ duration: 1.5, repeat: Infinity }}>Dream</motion.span>
+            <span className="text-muted-foreground/60">{', '}</span>
+            <motion.span className="text-primary" animate={{ opacity: [0.7, 1, 0.7] }} transition={{ duration: 1.5, repeat: Infinity, delay: 0.3 }}>Code</motion.span>
+            <span className="text-muted-foreground/60">{', '}</span>
+            <motion.span className="text-secondary" animate={{ opacity: [0.7, 1, 0.7] }} transition={{ duration: 1.5, repeat: Infinity, delay: 0.6 }}>Disrupt</motion.span>
+            <motion.span className="text-primary font-bold" animate={{ opacity: [0.7, 1, 0.7] }} transition={{ duration: 1.5, repeat: Infinity }}>{' }'}</motion.span>
           </p>
         </motion.div>
 
@@ -252,31 +270,35 @@ const HeroSection = () => {
             href="https://unstop.com/o/3C4O1aP?lb=O4B2h3r"
             target="_blank"
             rel="noopener noreferrer"
-            className="relative inline-flex items-center gap-3 px-10 py-5 font-display font-bold text-lg md:text-xl rounded-full overflow-hidden group"
+            className="relative inline-flex items-center gap-3 px-10 py-5 font-display font-bold text-lg md:text-xl rounded-2xl overflow-hidden group"
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
           >
+            {/* Glass button background */}
+            <div className="absolute inset-0 glass-panel-strong rounded-2xl" />
             <motion.div
-              className="absolute inset-0 rounded-full"
+              className="absolute inset-0 rounded-2xl"
               style={{
-                background: 'linear-gradient(135deg, hsl(190, 100%, 50%), hsl(220, 80%, 55%), hsl(175, 100%, 45%), hsl(190, 100%, 50%))',
+                background: 'linear-gradient(135deg, hsl(190, 100%, 50% / 0.2), hsl(220, 80%, 55% / 0.15), hsl(175, 100%, 45% / 0.2))',
                 backgroundSize: '300% 300%',
               }}
               animate={{ backgroundPosition: ['0% 0%', '100% 100%', '0% 0%'] }}
-              transition={{ duration: 3, repeat: Infinity }}
+              transition={{ duration: 4, repeat: Infinity }}
             />
             <motion.div
-              className="absolute inset-0 rounded-full opacity-0 group-hover:opacity-100 transition-opacity"
-              style={{ boxShadow: '0 0 40px hsl(190, 100%, 50% / 0.5), 0 0 80px hsl(220, 80%, 55% / 0.3)' }}
+              className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+              style={{ boxShadow: '0 0 40px hsl(190, 100%, 50% / 0.3), inset 0 0 20px hsl(190, 100%, 50% / 0.1)' }}
             />
-            <span className="relative z-10 text-white">Register Now</span>
-            <motion.span className="relative z-10" animate={{ x: [0, 5, 0] }} transition={{ duration: 1, repeat: Infinity }}>
-              <Droplets className="w-6 h-6 text-white" />
+            {/* Top highlight */}
+            <div className="absolute top-0 left-[15%] right-[15%] h-px bg-gradient-to-r from-transparent via-primary/30 to-transparent" />
+            <span className="relative z-10 text-foreground">Register Now</span>
+            <motion.span className="relative z-10" animate={{ y: [0, -3, 0] }} transition={{ duration: 1.5, repeat: Infinity }}>
+              <WaterDroplet size={24} animate />
             </motion.span>
           </motion.a>
         </motion.div>
 
-        {/* Stats Cards */}
+        {/* Stats Cards - Glass skeuomorphic */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
@@ -284,10 +306,10 @@ const HeroSection = () => {
           className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-4xl mx-auto"
         >
           {[
-            { icon: Trophy, label: 'Prize Pool', value: '₹5L+', color: 'from-teal-400 to-cyan-500' },
-            { icon: Users, label: 'Innovators', value: '500+', color: 'from-cyan-500 to-blue-500' },
-            { icon: Calendar, label: 'Duration', value: '48 Hrs', color: 'from-blue-500 to-cyan-500' },
-            { icon: MapPin, label: 'Venue', value: 'AITAM', color: 'from-cyan-500 to-teal-400' },
+            { icon: Trophy, label: 'Prize Pool', value: '₹5L+' },
+            { icon: Users, label: 'Innovators', value: '500+' },
+            { icon: Calendar, label: 'Duration', value: '48 Hrs' },
+            { icon: MapPin, label: 'Venue', value: 'AITAM' },
           ].map((stat, index) => (
             <motion.div
               key={stat.label}
@@ -297,13 +319,13 @@ const HeroSection = () => {
               whileHover={{ scale: 1.05, y: -5 }}
               className="relative group"
             >
-              <div className="glass-panel rounded-xl p-4 text-center hover:border-primary/40 transition-all duration-300">
+              <div className="glass-card glass-highlight rounded-xl p-4 text-center transition-all duration-300 hover:border-primary/30">
                 <motion.div
-                  className="absolute inset-0 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity"
-                  style={{ background: 'radial-gradient(circle at center, hsl(190, 100%, 50% / 0.1), transparent 70%)' }}
+                  className="absolute inset-0 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+                  style={{ background: 'radial-gradient(circle at center, hsl(190, 100%, 50% / 0.08), transparent 70%)' }}
                 />
                 <stat.icon className="w-6 h-6 mx-auto mb-2 text-primary" />
-                <p className={`text-2xl md:text-3xl font-display font-black bg-gradient-to-r ${stat.color} bg-clip-text text-transparent`}>
+                <p className="text-2xl md:text-3xl font-display font-black text-gradient-liquid">
                   {stat.value}
                 </p>
                 <p className="text-xs md:text-sm text-muted-foreground font-display uppercase tracking-wider">
@@ -318,16 +340,16 @@ const HeroSection = () => {
       {/* Scroll indicator */}
       <motion.button
         onClick={scrollToAbout}
-        className="absolute bottom-8 left-1/2 -translate-x-1/2 cursor-pointer"
+        className="absolute bottom-8 left-1/2 -translate-x-1/2 cursor-pointer z-10"
         animate={{ y: [0, 10, 0] }}
         transition={{ duration: 2, repeat: Infinity }}
         whileHover={{ scale: 1.1 }}
       >
         <div className="flex flex-col items-center gap-2">
-          <span className="text-xs text-muted-foreground font-display uppercase tracking-widest">Scroll</span>
-          <motion.div className="w-8 h-12 border-2 border-primary/50 rounded-full flex justify-center pt-2 hover:border-primary transition-colors">
+          <span className="text-xs text-muted-foreground font-code uppercase tracking-widest">Scroll</span>
+          <motion.div className="w-8 h-12 border border-primary/30 rounded-full flex justify-center pt-2 glass-panel">
             <motion.div
-              className="w-2 h-2 bg-primary rounded-full"
+              className="w-1.5 h-1.5 bg-primary rounded-full"
               animate={{ y: [0, 16, 0], opacity: [1, 0.3, 1] }}
               transition={{ duration: 2, repeat: Infinity }}
             />
@@ -335,17 +357,17 @@ const HeroSection = () => {
         </div>
       </motion.button>
 
-      {/* Side decorative lines */}
+      {/* Side code decorations */}
       <motion.div
-        className="absolute left-8 top-1/4 bottom-1/4 w-px hidden lg:block"
-        style={{ background: 'linear-gradient(to bottom, transparent, hsl(190, 100%, 50% / 0.4), transparent)' }}
+        className="absolute left-6 top-1/3 bottom-1/3 w-px hidden lg:block z-[6]"
+        style={{ background: 'linear-gradient(to bottom, transparent, hsl(190, 100%, 50% / 0.2), transparent)' }}
         initial={{ scaleY: 0 }}
         animate={{ scaleY: 1 }}
         transition={{ delay: 1, duration: 1 }}
       />
       <motion.div
-        className="absolute right-8 top-1/4 bottom-1/4 w-px hidden lg:block"
-        style={{ background: 'linear-gradient(to bottom, transparent, hsl(190, 100%, 50% / 0.4), transparent)' }}
+        className="absolute right-6 top-1/3 bottom-1/3 w-px hidden lg:block z-[6]"
+        style={{ background: 'linear-gradient(to bottom, transparent, hsl(190, 100%, 50% / 0.2), transparent)' }}
         initial={{ scaleY: 0 }}
         animate={{ scaleY: 1 }}
         transition={{ delay: 1, duration: 1 }}
