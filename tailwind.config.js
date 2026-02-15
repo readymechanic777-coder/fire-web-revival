@@ -50,14 +50,24 @@ export default {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
-        fire: {
-          orange: "hsl(var(--fire-orange))",
-          red: "hsl(var(--fire-red))",
-          yellow: "hsl(var(--fire-yellow))",
+        liquid: {
+          cyan: "hsl(var(--liquid-cyan))",
+          blue: "hsl(var(--liquid-blue))",
+          teal: "hsl(var(--liquid-teal))",
         },
-        ember: "hsl(var(--ember))",
-        ash: "hsl(var(--ash))",
-        smoke: "hsl(var(--smoke))",
+        // Keep old fire aliases pointing to liquid colors
+        fire: {
+          orange: "hsl(var(--liquid-cyan))",
+          red: "hsl(var(--liquid-blue))",
+          yellow: "hsl(var(--liquid-teal))",
+        },
+        glass: "hsl(var(--glass))",
+        deep: "hsl(var(--deep))",
+        surface: "hsl(var(--surface))",
+        // Keep old aliases
+        ember: "hsl(var(--glass))",
+        ash: "hsl(var(--deep))",
+        smoke: "hsl(var(--surface))",
         sidebar: {
           DEFAULT: "hsl(var(--sidebar-background))",
           foreground: "hsl(var(--sidebar-foreground))",
@@ -97,4 +107,3 @@ export default {
   },
   plugins: [require("tailwindcss-animate")],
 };
-

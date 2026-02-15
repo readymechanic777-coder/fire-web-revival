@@ -6,53 +6,53 @@
 
 @layer base {
   :root {
-    --background: 0 0% 5%;
-    --foreground: 30 100% 95%;
+    --background: 210 40% 4%;
+    --foreground: 195 100% 95%;
 
-    --card: 0 0% 8%;
-    --card-foreground: 30 100% 95%;
+    --card: 210 35% 8%;
+    --card-foreground: 195 100% 95%;
 
-    --popover: 0 0% 8%;
-    --popover-foreground: 30 100% 95%;
+    --popover: 210 35% 8%;
+    --popover-foreground: 195 100% 95%;
 
-    --primary: 20 100% 50%;
-    --primary-foreground: 0 0% 100%;
+    --primary: 190 100% 50%;
+    --primary-foreground: 210 40% 4%;
 
-    --secondary: 0 85% 45%;
+    --secondary: 220 80% 55%;
     --secondary-foreground: 0 0% 100%;
 
-    --muted: 0 0% 15%;
-    --muted-foreground: 30 20% 60%;
+    --muted: 210 30% 14%;
+    --muted-foreground: 200 30% 55%;
 
-    --accent: 45 100% 50%;
-    --accent-foreground: 0 0% 5%;
+    --accent: 175 100% 45%;
+    --accent-foreground: 210 40% 4%;
 
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 210 40% 98%;
 
-    --border: 20 50% 20%;
-    --input: 20 50% 20%;
-    --ring: 20 100% 50%;
+    --border: 200 40% 18%;
+    --input: 200 40% 18%;
+    --ring: 190 100% 50%;
 
     --radius: 0.75rem;
 
-    /* Fire theme custom tokens */
-    --fire-orange: 20 100% 50%;
-    --fire-red: 0 85% 50%;
-    --fire-yellow: 45 100% 55%;
-    --ember: 15 100% 40%;
-    --ash: 0 0% 12%;
-    --smoke: 0 0% 20%;
+    /* Liquid glass theme tokens */
+    --liquid-cyan: 190 100% 50%;
+    --liquid-blue: 220 80% 55%;
+    --liquid-teal: 175 100% 45%;
+    --glass: 210 30% 12%;
+    --deep: 210 40% 6%;
+    --surface: 200 30% 18%;
     
     /* Gradients */
-    --gradient-fire: linear-gradient(135deg, hsl(0, 85%, 50%) 0%, hsl(20, 100%, 50%) 50%, hsl(45, 100%, 55%) 100%);
-    --gradient-ember: linear-gradient(180deg, hsl(20, 100%, 50%) 0%, hsl(0, 85%, 40%) 100%);
-    --gradient-heat: linear-gradient(135deg, hsl(0, 0%, 5%) 0%, hsl(0, 85%, 15%) 50%, hsl(0, 0%, 5%) 100%);
+    --gradient-liquid: linear-gradient(135deg, hsl(175, 100%, 45%) 0%, hsl(190, 100%, 50%) 50%, hsl(220, 80%, 55%) 100%);
+    --gradient-glass: linear-gradient(180deg, hsl(190, 100%, 50%) 0%, hsl(220, 80%, 45%) 100%);
+    --gradient-depth: linear-gradient(135deg, hsl(210, 40%, 4%) 0%, hsl(220, 50%, 12%) 50%, hsl(210, 40%, 4%) 100%);
     
     /* Shadows & Glows */
-    --glow-fire: 0 0 30px hsl(20, 100%, 50%, 0.6), 0 0 60px hsl(0, 85%, 50%, 0.4);
-    --glow-ember: 0 0 20px hsl(15, 100%, 40%, 0.5);
-    --shadow-fire: 0 10px 40px -10px hsl(20, 100%, 50%, 0.5);
+    --glow-liquid: 0 0 30px hsl(190, 100%, 50%, 0.5), 0 0 60px hsl(220, 80%, 55%, 0.3);
+    --glow-glass: 0 0 20px hsl(175, 100%, 45%, 0.4);
+    --shadow-liquid: 0 10px 40px -10px hsl(190, 100%, 50%, 0.4);
 
     --sidebar-background: 0 0% 98%;
     --sidebar-foreground: 240 5.3% 26.1%;
@@ -65,25 +65,25 @@
   }
 
   .dark {
-    --background: 0 0% 5%;
-    --foreground: 30 100% 95%;
-    --card: 0 0% 8%;
-    --card-foreground: 30 100% 95%;
-    --popover: 0 0% 8%;
-    --popover-foreground: 30 100% 95%;
-    --primary: 20 100% 50%;
-    --primary-foreground: 0 0% 100%;
-    --secondary: 0 85% 45%;
+    --background: 210 40% 4%;
+    --foreground: 195 100% 95%;
+    --card: 210 35% 8%;
+    --card-foreground: 195 100% 95%;
+    --popover: 210 35% 8%;
+    --popover-foreground: 195 100% 95%;
+    --primary: 190 100% 50%;
+    --primary-foreground: 210 40% 4%;
+    --secondary: 220 80% 55%;
     --secondary-foreground: 0 0% 100%;
-    --muted: 0 0% 15%;
-    --muted-foreground: 30 20% 60%;
-    --accent: 45 100% 50%;
-    --accent-foreground: 0 0% 5%;
+    --muted: 210 30% 14%;
+    --muted-foreground: 200 30% 55%;
+    --accent: 175 100% 45%;
+    --accent-foreground: 210 40% 4%;
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 210 40% 98%;
-    --border: 20 50% 20%;
-    --input: 20 50% 20%;
-    --ring: 20 100% 50%;
+    --border: 200 40% 18%;
+    --input: 200 40% 18%;
+    --ring: 190 100% 50%;
     --sidebar-background: 240 5.9% 10%;
     --sidebar-foreground: 240 4.8% 95.9%;
     --sidebar-primary: 224.3 76.3% 48%;
@@ -117,14 +117,12 @@
     @apply font-display;
   }
 
-  /* GPU acceleration for smoother animations */
   .gpu-accelerate {
     transform: translateZ(0);
     backface-visibility: hidden;
     perspective: 1000px;
   }
 
-  /* Optimize animations for mobile */
   @media (prefers-reduced-motion: reduce) {
     *,
     *::before,
@@ -136,34 +134,71 @@
     }
   }
 
-  /* Smooth scrolling for anchor links */
   [id] {
     scroll-margin-top: 80px;
   }
 }
 
 @layer utilities {
-  .text-gradient-fire {
-    background: linear-gradient(135deg, hsl(45, 100%, 55%) 0%, hsl(20, 100%, 50%) 50%, hsl(0, 85%, 50%) 100%);
+  .text-gradient-liquid {
+    background: linear-gradient(135deg, hsl(175, 100%, 55%) 0%, hsl(190, 100%, 50%) 50%, hsl(220, 80%, 55%) 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
   }
 
+  /* Keep old name as alias for compatibility */
+  .text-gradient-fire {
+    background: linear-gradient(135deg, hsl(175, 100%, 55%) 0%, hsl(190, 100%, 50%) 50%, hsl(220, 80%, 55%) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .bg-gradient-liquid {
+    background: linear-gradient(135deg, hsl(220, 80%, 55%) 0%, hsl(190, 100%, 50%) 50%, hsl(175, 100%, 55%) 100%);
+  }
+
   .bg-gradient-fire {
-    background: linear-gradient(135deg, hsl(0, 85%, 50%) 0%, hsl(20, 100%, 50%) 50%, hsl(45, 100%, 55%) 100%);
+    background: linear-gradient(135deg, hsl(220, 80%, 55%) 0%, hsl(190, 100%, 50%) 50%, hsl(175, 100%, 55%) 100%);
+  }
+
+  .bg-gradient-glass {
+    background: linear-gradient(180deg, hsl(190, 100%, 50%) 0%, hsl(220, 80%, 45%) 100%);
   }
 
   .bg-gradient-ember {
-    background: linear-gradient(180deg, hsl(20, 100%, 50%) 0%, hsl(0, 85%, 40%) 100%);
+    background: linear-gradient(180deg, hsl(190, 100%, 50%) 0%, hsl(220, 80%, 45%) 100%);
+  }
+
+  .glass-panel {
+    background: hsl(210, 35%, 8% / 0.6);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid hsl(190, 100%, 50% / 0.15);
+  }
+
+  .glass-panel-strong {
+    background: hsl(210, 35%, 8% / 0.8);
+    backdrop-filter: blur(30px);
+    -webkit-backdrop-filter: blur(30px);
+    border: 1px solid hsl(190, 100%, 50% / 0.25);
+  }
+
+  .glow-liquid {
+    box-shadow: 0 0 30px hsl(190, 100%, 50%, 0.5), 0 0 60px hsl(220, 80%, 55%, 0.3);
   }
 
   .glow-fire {
-    box-shadow: 0 0 30px hsl(20, 100%, 50%, 0.6), 0 0 60px hsl(0, 85%, 50%, 0.4);
+    box-shadow: 0 0 30px hsl(190, 100%, 50%, 0.5), 0 0 60px hsl(220, 80%, 55%, 0.3);
+  }
+
+  .glow-glass {
+    box-shadow: 0 0 20px hsl(175, 100%, 45%, 0.4);
   }
 
   .glow-ember {
-    box-shadow: 0 0 20px hsl(15, 100%, 40%, 0.5);
+    box-shadow: 0 0 20px hsl(175, 100%, 45%, 0.4);
   }
 
   .animate-flicker {
@@ -178,12 +213,15 @@
     animation: pulseGlow 2s ease-in-out infinite;
   }
 
+  .animate-bubble-rise {
+    animation: bubbleRise 4s ease-out infinite;
+  }
+
   .animate-ember-rise {
-    animation: emberRise 4s ease-out infinite;
+    animation: bubbleRise 4s ease-out infinite;
   }
 }
 
-/* Performance-optimized keyframes using transform and opacity only */
 @keyframes flicker {
   0%, 100% { opacity: 1; }
   50% { opacity: 0.8; }
@@ -197,14 +235,14 @@
 
 @keyframes pulseGlow {
   0%, 100% { 
-    box-shadow: 0 0 30px hsl(20, 100%, 50%, 0.6), 0 0 60px hsl(0, 85%, 50%, 0.4);
+    box-shadow: 0 0 30px hsl(190, 100%, 50%, 0.5), 0 0 60px hsl(220, 80%, 55%, 0.3);
   }
   50% { 
-    box-shadow: 0 0 50px hsl(20, 100%, 50%, 0.8), 0 0 100px hsl(0, 85%, 50%, 0.6);
+    box-shadow: 0 0 50px hsl(190, 100%, 50%, 0.7), 0 0 100px hsl(220, 80%, 55%, 0.5);
   }
 }
 
-@keyframes emberRise {
+@keyframes bubbleRise {
   0% {
     transform: translateY(0) scale(1) translateZ(0);
     opacity: 1;
@@ -215,22 +253,18 @@
   }
 }
 
-/* Smooth scroll container */
 .scroll-smooth {
   scroll-behavior: smooth;
 }
 
-/* Will-change for frequently animated elements */
 .will-animate {
   will-change: transform, opacity;
 }
 
-/* Contain paint for better performance */
 .contain-paint {
   contain: paint;
 }
 
-/* Touch optimization */
 @supports (touch-action: manipulation) {
   a, button {
     touch-action: manipulation;

@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { fadeIn, textVariant } from "@/lib/motion";
 
 const avishkaarLanguages = [
   { text: "AVISHKAAR", language: "English" },
@@ -35,16 +34,13 @@ const TypingEffect = () => {
   useEffect(() => {
     const handleTyping = () => {
       if (!isDeleting) {
-        // Typing
         if (displayText.length < currentWord.length) {
           setDisplayText(currentWord.slice(0, displayText.length + 1));
         } else {
-          // Wait before deleting
           setTimeout(() => setIsDeleting(true), 2000);
           return;
         }
       } else {
-        // Deleting
         if (displayText.length > 0) {
           setDisplayText(currentWord.slice(0, displayText.length - 1));
         } else {
@@ -63,27 +59,23 @@ const TypingEffect = () => {
       <div className="relative min-h-[100px] md:min-h-[140px] flex items-center justify-center">
         <motion.span
           key={currentIndex}
-          className="relative text-5xl md:text-7xl lg:text-9xl font-display font-black text-gradient-fire"
+          className="relative text-5xl md:text-7xl lg:text-9xl font-display font-black text-gradient-liquid"
           initial={{ opacity: 0, scale: 0.8 }}
           animate={{ 
             opacity: 1, 
             scale: 1,
             filter: [
-              "drop-shadow(0 0 20px hsl(25 100% 50% / 0.9)) drop-shadow(0 0 60px hsl(25 100% 50% / 0.5))",
-              "drop-shadow(0 0 40px hsl(15 100% 55% / 1)) drop-shadow(0 0 80px hsl(15 100% 55% / 0.7))",
-              "drop-shadow(0 0 25px hsl(35 100% 50% / 0.8)) drop-shadow(0 0 50px hsl(35 100% 50% / 0.4))",
-              "drop-shadow(0 0 35px hsl(20 100% 52% / 0.95)) drop-shadow(0 0 70px hsl(20 100% 52% / 0.6))",
-              "drop-shadow(0 0 20px hsl(25 100% 50% / 0.9)) drop-shadow(0 0 60px hsl(25 100% 50% / 0.5))",
+              "drop-shadow(0 0 20px hsl(190 100% 50% / 0.8)) drop-shadow(0 0 60px hsl(190 100% 50% / 0.4))",
+              "drop-shadow(0 0 40px hsl(175 100% 55% / 0.9)) drop-shadow(0 0 80px hsl(175 100% 55% / 0.5))",
+              "drop-shadow(0 0 25px hsl(220 80% 55% / 0.7)) drop-shadow(0 0 50px hsl(220 80% 55% / 0.3))",
+              "drop-shadow(0 0 35px hsl(190 100% 50% / 0.85)) drop-shadow(0 0 70px hsl(190 100% 50% / 0.45))",
+              "drop-shadow(0 0 20px hsl(190 100% 50% / 0.8)) drop-shadow(0 0 60px hsl(190 100% 50% / 0.4))",
             ]
           }}
           exit={{ opacity: 0, scale: 0.8 }}
           transition={{ 
             duration: 0.3,
-            filter: {
-              duration: 0.8,
-              repeat: Infinity,
-              ease: "easeInOut"
-            }
+            filter: { duration: 0.8, repeat: Infinity, ease: "easeInOut" }
           }}
         >
           {displayText}

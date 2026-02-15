@@ -29,24 +29,14 @@ const Footer = () => {
 
   return (
     <footer className="relative bg-gradient-to-b from-background to-card border-t border-primary/20">
-      {/* Main Footer Content */}
       <div className="container mx-auto px-4 py-12">
         <div className="grid md:grid-cols-3 gap-8">
-          {/* Quick Links */}
-          <motion.div
-            variants={fadeIn("up", "spring", 0, 0.5)}
-            initial="hidden"
-            whileInView="show"
-            viewport={{ once: true }}
-          >
-            <h3 className="text-xl font-display font-bold text-gradient-fire mb-6">Quick Links</h3>
+          <motion.div variants={fadeIn("up", "spring", 0, 0.5)} initial="hidden" whileInView="show" viewport={{ once: true }}>
+            <h3 className="text-xl font-display font-bold text-gradient-liquid mb-6">Quick Links</h3>
             <ul className="space-y-3">
               {quickLinks.map((link) => (
                 <li key={link.name}>
-                  <Link
-                    to={link.path}
-                    className="text-muted-foreground hover:text-primary transition-colors duration-300 hover:translate-x-1 inline-block"
-                  >
+                  <Link to={link.path} className="text-muted-foreground hover:text-primary transition-colors duration-300 hover:translate-x-1 inline-block">
                     {link.name}
                   </Link>
                 </li>
@@ -54,21 +44,12 @@ const Footer = () => {
             </ul>
           </motion.div>
 
-          {/* Contact Us */}
-          <motion.div
-            variants={fadeIn("up", "spring", 0.1, 0.5)}
-            initial="hidden"
-            whileInView="show"
-            viewport={{ once: true }}
-          >
-            <h3 className="text-xl font-display font-bold text-gradient-fire mb-6">Contact Us</h3>
+          <motion.div variants={fadeIn("up", "spring", 0.1, 0.5)} initial="hidden" whileInView="show" viewport={{ once: true }}>
+            <h3 className="text-xl font-display font-bold text-gradient-liquid mb-6">Contact Us</h3>
             <ul className="space-y-4">
               {contacts.map((contact, index) => (
                 <li key={index}>
-                  <a
-                    href={contact.href}
-                    className="flex items-start gap-3 text-muted-foreground hover:text-primary transition-colors duration-300 group"
-                  >
+                  <a href={contact.href} className="flex items-start gap-3 text-muted-foreground hover:text-primary transition-colors duration-300 group">
                     <contact.icon className="w-4 h-4 text-primary shrink-0 mt-1 group-hover:scale-110 transition-transform" />
                     <span className="text-sm">{contact.text}</span>
                   </a>
@@ -77,21 +58,15 @@ const Footer = () => {
             </ul>
           </motion.div>
 
-          {/* Follow Us */}
-          <motion.div
-            variants={fadeIn("up", "spring", 0.2, 0.5)}
-            initial="hidden"
-            whileInView="show"
-            viewport={{ once: true }}
-          >
-            <h3 className="text-xl font-display font-bold text-gradient-fire mb-6">Follow Us</h3>
+          <motion.div variants={fadeIn("up", "spring", 0.2, 0.5)} initial="hidden" whileInView="show" viewport={{ once: true }}>
+            <h3 className="text-xl font-display font-bold text-gradient-liquid mb-6">Follow Us</h3>
             <div className="flex gap-4">
               {socialLinks.map((social) => (
                 <a
                   key={social.label}
                   href={social.href}
                   aria-label={social.label}
-                  className="w-10 h-10 bg-muted rounded-lg flex items-center justify-center hover:bg-primary/20 hover:text-primary transition-all duration-300 hover:scale-110 hover:shadow-[0_0_15px_hsl(var(--primary)/0.5)]"
+                  className="w-10 h-10 bg-muted rounded-lg flex items-center justify-center hover:bg-primary/20 hover:text-primary transition-all duration-300 hover:scale-110 hover:shadow-[0_0_15px_hsl(var(--primary)/0.4)]"
                 >
                   <social.icon className="w-5 h-5" />
                 </a>
@@ -101,7 +76,6 @@ const Footer = () => {
         </div>
       </div>
 
-      {/* Copyright Bar */}
       <div className="border-t border-primary/10 bg-card/50">
         <div className="container mx-auto px-4 py-4">
           <p className="text-center text-sm text-muted-foreground">
