@@ -33,7 +33,7 @@ const schedule = [
 const ScheduleSection = () => {
   return (
     <section className="relative py-20 md:py-32 overflow-hidden" id="schedule">
-      <div className="absolute inset-0 bg-gradient-to-b from-background via-ash to-background" />
+      <div className="absolute inset-0 bg-gradient-to-b from-background via-card/30 to-background" />
       
       <div className="relative z-10 container mx-auto px-4">
         <motion.div
@@ -46,7 +46,7 @@ const ScheduleSection = () => {
             Event Timeline
           </span>
           <h2 className="text-3xl md:text-5xl font-display font-bold mb-6">
-            <span className="text-gradient-fire">48 HOURS OF FIRE</span>
+            <span className="text-gradient-liquid">48 HOURS OF INNOVATION</span>
           </h2>
           <p className="text-muted-foreground max-w-2xl mx-auto text-lg">
             Two days of intense coding, learning, and fun. Here's what to expect.
@@ -62,9 +62,10 @@ const ScheduleSection = () => {
               viewport={{ once: true }}
               transition={{ duration: 0.5 }}
             >
-              <div className="bg-card border border-border rounded-2xl p-6 md:p-8">
+              <div className="glass-panel-strong rounded-2xl p-6 md:p-8">
                 <div className="flex items-center gap-4 mb-6">
-                  <div className="w-16 h-16 bg-primary/20 rounded-xl flex items-center justify-center">
+                  <div className="w-16 h-16 rounded-xl flex items-center justify-center"
+                    style={{ background: 'linear-gradient(135deg, hsl(190, 100%, 50% / 0.2), hsl(220, 80%, 55% / 0.2))' }}>
                     <span className="text-2xl font-display font-bold text-primary">
                       {dayIndex + 1}
                     </span>
@@ -85,9 +86,10 @@ const ScheduleSection = () => {
                       whileInView={{ opacity: 1, x: 0 }}
                       viewport={{ once: true }}
                       transition={{ delay: eventIndex * 0.1 }}
-                      className="flex items-center gap-4 p-3 rounded-lg hover:bg-muted/50 transition-colors group"
+                      className="flex items-center gap-4 p-3 rounded-lg hover:bg-primary/5 transition-colors group"
                     >
-                      <div className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center group-hover:bg-primary/20 transition-colors">
+                      <div className="w-10 h-10 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform"
+                        style={{ background: 'hsl(190, 100%, 50% / 0.1)' }}>
                         <event.icon className="w-5 h-5 text-primary" />
                       </div>
                       <div className="flex-1">

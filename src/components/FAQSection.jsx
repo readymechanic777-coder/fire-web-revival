@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import WaterDroplet from "./icons/WaterDroplet";
 
 const faqData = {
   virtual: [
@@ -60,7 +61,7 @@ const FAQSection = () => {
 
       <div className="container mx-auto px-4 relative z-10">
         <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.8 }} className="text-center mb-16">
-          <h2 className="text-4xl md:text-5xl font-display font-black mb-4 text-gradient-liquid">💧 Frequently Asked Questions 💧</h2>
+          <h2 className="text-4xl md:text-5xl font-display font-black mb-4 text-gradient-liquid flex items-center justify-center gap-3"><WaterDroplet size={36} /> Frequently Asked Questions <WaterDroplet size={36} /></h2>
           <p className="text-muted-foreground max-w-2xl mx-auto">Got questions? We've got answers for both Virtual and Physical hackathon tracks.</p>
           <motion.div className="w-24 h-1 mx-auto rounded-full mt-6" style={{ background: 'linear-gradient(to right, hsl(175, 100%, 55%), hsl(190, 100%, 50%), hsl(220, 80%, 55%))' }} animate={{ opacity: [0.7, 1, 0.7] }} transition={{ duration: 2, repeat: Infinity }} />
         </motion.div>

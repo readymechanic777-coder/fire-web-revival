@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence, useMotionValue, useTransform, animate, useScroll, useSpring } from "framer-motion";
 import { Laptop, Users, Trophy, Medal, Award, Star, ArrowRight, Calendar, Clock } from "lucide-react";
+import WaterDroplet from "./icons/WaterDroplet";
 
 // Animated Number Component
 function AnimatedNumber({ value, delay = 0 }) {
@@ -80,11 +81,11 @@ const CountdownTimer = ({ targetDate, type }) => {
             transition={{ delay: index * 0.1 }}
             className="relative flex-1"
           >
-            <div className="bg-background/80 border border-primary/30 rounded-lg p-2 text-center overflow-hidden group hover:border-primary/60 transition-colors">
+            <div className="glass-panel rounded-lg p-2 text-center overflow-hidden group hover:border-primary/60 transition-colors">
               <motion.div
                 className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity"
                 style={{
-                  background: 'radial-gradient(circle at center, hsl(var(--primary) / 0.15), transparent 70%)',
+                  background: 'radial-gradient(circle at center, hsl(190, 100%, 50% / 0.15), transparent 70%)',
                 }}
               />
               
@@ -107,7 +108,7 @@ const CountdownTimer = ({ targetDate, type }) => {
   );
 };
 
-// Large Countdown Timer Component (for section display)
+// Large Countdown Timer Component
 const LargeCountdownTimer = ({ type }) => {
   const getTargetDate = () => {
     return type === 'virtual' 
@@ -155,7 +156,6 @@ const LargeCountdownTimer = ({ type }) => {
       viewport={{ once: true }}
       className="py-12"
     >
-      {/* Header */}
       <motion.div className="text-center mb-8">
         <div className="flex items-center justify-center gap-3 mb-4">
           <motion.div
@@ -164,7 +164,7 @@ const LargeCountdownTimer = ({ type }) => {
           >
             <Clock className="w-8 h-8 text-primary" />
           </motion.div>
-          <h3 className="text-2xl md:text-4xl font-display font-black text-gradient-fire">
+          <h3 className="text-2xl md:text-4xl font-display font-black text-gradient-liquid">
             {type === 'virtual' ? 'Virtual Hackathon' : 'Physical Hackathon'} Starts In
           </h3>
         </div>
@@ -173,7 +173,6 @@ const LargeCountdownTimer = ({ type }) => {
         </p>
       </motion.div>
 
-      {/* Large Timer Display */}
       <div className="flex justify-center gap-4 md:gap-8">
         {timeUnits.map((unit, index) => (
           <motion.div
@@ -184,18 +183,19 @@ const LargeCountdownTimer = ({ type }) => {
             transition={{ delay: index * 0.1, type: "spring", stiffness: 200 }}
             className="relative group"
           >
-            <div className="relative bg-card border-2 border-primary/40 rounded-2xl p-4 md:p-8 text-center overflow-hidden hover:border-primary transition-all duration-300 min-w-[80px] md:min-w-[140px]">
-              {/* Fire glow background */}
+            <div className="relative glass-panel-strong border-2 border-primary/30 rounded-2xl p-4 md:p-8 text-center overflow-hidden hover:border-primary/60 transition-all duration-300 min-w-[80px] md:min-w-[140px]">
+              {/* Liquid glow background */}
               <motion.div
                 className="absolute inset-0 opacity-30 group-hover:opacity-50 transition-opacity"
                 style={{
-                  background: 'radial-gradient(circle at center bottom, hsl(var(--primary) / 0.3), transparent 70%)',
+                  background: 'radial-gradient(circle at center bottom, hsl(190, 100%, 50% / 0.3), transparent 70%)',
                 }}
               />
               
-              {/* Animated fire particles */}
+              {/* Bubble particle */}
               <motion.div
-                className="absolute bottom-0 left-1/2 -translate-x-1/2 w-2 h-2 rounded-full bg-primary"
+                className="absolute bottom-0 left-1/2 -translate-x-1/2 w-2 h-2 rounded-full"
+                style={{ background: 'radial-gradient(circle at 30% 30%, hsl(190, 100%, 80% / 0.6), hsl(190, 100%, 50% / 0.3))' }}
                 animate={{
                   y: [-5, -20, -5],
                   opacity: [0.5, 1, 0.5],
@@ -204,14 +204,13 @@ const LargeCountdownTimer = ({ type }) => {
                 transition={{ duration: 1.5, repeat: Infinity, delay: index * 0.2 }}
               />
               
-              {/* Number */}
               <motion.span
                 key={unit.value}
                 initial={{ y: -20, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
                 className="relative block text-4xl md:text-7xl font-display font-black text-transparent bg-clip-text"
                 style={{
-                  background: 'linear-gradient(180deg, hsl(var(--primary)), hsl(25, 100%, 40%))',
+                  background: 'linear-gradient(180deg, hsl(175, 100%, 60%), hsl(190, 100%, 50%), hsl(220, 80%, 55%))',
                   backgroundClip: 'text',
                   WebkitBackgroundClip: 'text',
                 }}
@@ -219,16 +218,14 @@ const LargeCountdownTimer = ({ type }) => {
                 {String(unit.value).padStart(2, '0')}
               </motion.span>
               
-              {/* Label */}
               <span className="relative text-sm md:text-lg text-muted-foreground uppercase tracking-widest font-display mt-2 block">
                 {unit.label}
               </span>
 
-              {/* Bottom glow line */}
               <motion.div
                 className="absolute bottom-0 left-0 right-0 h-1"
                 style={{
-                  background: 'linear-gradient(to right, transparent, hsl(var(--primary)), transparent)',
+                  background: 'linear-gradient(to right, transparent, hsl(190, 100%, 50%), transparent)',
                 }}
                 animate={{ opacity: [0.3, 0.8, 0.3] }}
                 transition={{ duration: 2, repeat: Infinity, delay: index * 0.3 }}
@@ -241,19 +238,19 @@ const LargeCountdownTimer = ({ type }) => {
   );
 };
 
-// Fire Ember Particle for Timeline
-const TimelineEmber = ({ delay, side }) => (
+// Liquid Bubble Particle for Timeline
+const TimelineBubble = ({ delay, side }) => (
   <motion.div
-    className="absolute w-1 h-1 rounded-full"
+    className="absolute w-1.5 h-1.5 rounded-full"
     style={{
       left: side === 'left' ? '-20px' : 'auto',
       right: side === 'right' ? '-20px' : 'auto',
-      background: 'linear-gradient(to top, hsl(25, 100%, 50%), hsl(45, 100%, 60%))',
-      boxShadow: '0 0 6px hsl(25, 100%, 50%)',
+      background: 'radial-gradient(circle at 30% 30%, hsl(190, 100%, 80% / 0.6), hsl(190, 100%, 50% / 0.3))',
+      border: '1px solid hsl(190, 100%, 70% / 0.3)',
     }}
     initial={{ opacity: 0, y: 0 }}
     animate={{
-      opacity: [0, 1, 1, 0],
+      opacity: [0, 0.8, 0.6, 0],
       y: [-10, -40, -70, -100],
       x: side === 'left' ? [0, -10, -5, -15] : [0, 10, 5, 15],
       scale: [0.5, 1, 0.8, 0],
@@ -267,7 +264,7 @@ const TimelineEmber = ({ delay, side }) => (
   />
 );
 
-// Timeline Item Component with Fire Effects
+// Timeline Item Component with Liquid Glass Effects
 const TimelineItem = ({ phase, index, totalItems }) => {
   const cardRef = useRef(null);
   const { scrollYProgress } = useScroll({
@@ -278,18 +275,17 @@ const TimelineItem = ({ phase, index, totalItems }) => {
   const mouseX = useMotionValue(0);
   const mouseY = useMotionValue(0);
   
-  // Scroll-based animations
   const opacity = useTransform(scrollYProgress, [0, 0.3, 0.6], [0.3, 1, 1]);
   const scale = useTransform(scrollYProgress, [0, 0.3, 0.6], [0.85, 1, 1]);
   const x = useTransform(scrollYProgress, [0, 0.3], [index % 2 === 0 ? -30 : 30, 0]);
   const dotScale = useTransform(scrollYProgress, [0.2, 0.4, 0.6], [0.5, 1.8, 1.2]);
-  const fireGlow = useTransform(
+  const liquidGlow = useTransform(
     scrollYProgress,
     [0.2, 0.4, 0.6],
     [
-      '0 0 0px hsl(25, 100%, 50% / 0)',
-      '0 0 30px hsl(25, 100%, 50%), 0 0 60px hsl(15, 100%, 45% / 0.5)',
-      '0 0 15px hsl(25, 100%, 50% / 0.8)'
+      '0 0 0px hsl(190, 100%, 50% / 0)',
+      '0 0 30px hsl(190, 100%, 50%), 0 0 60px hsl(220, 80%, 55% / 0.5)',
+      '0 0 15px hsl(190, 100%, 50% / 0.8)'
     ]
   );
   const lineProgress = useSpring(useTransform(scrollYProgress, [0, 0.5], [0, 1]), { stiffness: 100, damping: 30 });
@@ -308,34 +304,34 @@ const TimelineItem = ({ phase, index, totalItems }) => {
       style={{ opacity, scale, x }}
       className="relative flex gap-8 pb-12 last:pb-0"
     >
-      {/* Timeline line and fire dot */}
+      {/* Timeline line and liquid dot */}
       <div className="relative flex flex-col items-center w-12">
-        {/* Fire embers around dot */}
+        {/* Bubbles around dot */}
         <div className="absolute top-0 left-1/2 -translate-x-1/2">
           {[0, 0.5, 1, 1.5, 2].map((delay, i) => (
-            <TimelineEmber key={i} delay={delay + index * 0.3} side={i % 2 === 0 ? 'left' : 'right'} />
+            <TimelineBubble key={i} delay={delay + index * 0.3} side={i % 2 === 0 ? 'left' : 'right'} />
           ))}
         </div>
 
-        {/* Fire dot with animated flames */}
+        {/* Liquid dot */}
         <motion.div
-          style={{ scale: dotScale, boxShadow: fireGlow }}
+          style={{ scale: dotScale, boxShadow: liquidGlow }}
           className="relative w-8 h-8 rounded-full z-10"
         >
-          {/* Outer flame ring */}
+          {/* Outer ring */}
           <motion.div
             className="absolute inset-0 rounded-full"
             style={{
-              background: 'conic-gradient(from 0deg, hsl(25, 100%, 50%), hsl(45, 100%, 55%), hsl(15, 100%, 45%), hsl(25, 100%, 50%))',
+              background: 'conic-gradient(from 0deg, hsl(175, 100%, 55%), hsl(190, 100%, 50%), hsl(220, 80%, 55%), hsl(175, 100%, 55%))',
             }}
             animate={{ rotate: 360 }}
             transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
           />
           
           {/* Inner core */}
-          <div className="absolute inset-1 rounded-full bg-gradient-to-br from-yellow-400 via-orange-500 to-red-600">
+          <div className="absolute inset-1 rounded-full bg-gradient-to-br from-accent via-primary to-secondary">
             <motion.div
-              className="absolute inset-0 rounded-full bg-gradient-to-t from-transparent to-yellow-300/50"
+              className="absolute inset-0 rounded-full bg-gradient-to-t from-transparent to-white/20"
               animate={{ opacity: [0.3, 0.8, 0.3] }}
               transition={{ duration: 0.5, repeat: Infinity }}
             />
@@ -343,19 +339,18 @@ const TimelineItem = ({ phase, index, totalItems }) => {
           
           {/* Center glow */}
           <motion.div
-            className="absolute inset-2 rounded-full bg-yellow-200"
+            className="absolute inset-2 rounded-full"
+            style={{ background: 'hsl(190, 100%, 80%)' }}
             animate={{ scale: [0.8, 1, 0.8], opacity: [0.6, 1, 0.6] }}
             transition={{ duration: 0.8, repeat: Infinity }}
           />
         </motion.div>
         
-        {/* Animated fire line */}
+        {/* Animated liquid line */}
         {!isLast && (
           <div className="relative w-1 h-full mt-2">
-            {/* Base line */}
             <div className="absolute inset-0 bg-gradient-to-b from-border via-border/50 to-border rounded-full" />
             
-            {/* Animated fire progress */}
             <motion.div 
               className="absolute top-0 left-0 w-full rounded-full origin-top overflow-hidden"
               style={{ scaleY: lineProgress, height: '100%' }}
@@ -363,7 +358,7 @@ const TimelineItem = ({ phase, index, totalItems }) => {
               <motion.div
                 className="w-full h-full"
                 style={{
-                  background: 'linear-gradient(to bottom, hsl(45, 100%, 55%), hsl(25, 100%, 50%), hsl(15, 100%, 45%), hsl(0, 100%, 40%))',
+                  background: 'linear-gradient(to bottom, hsl(175, 100%, 55%), hsl(190, 100%, 50%), hsl(220, 80%, 55%))',
                 }}
                 animate={{
                   backgroundPosition: ['0% 0%', '0% 100%', '0% 0%'],
@@ -372,11 +367,10 @@ const TimelineItem = ({ phase, index, totalItems }) => {
               />
             </motion.div>
             
-            {/* Fire glow effect */}
             <motion.div
               className="absolute inset-0 rounded-full"
               style={{
-                boxShadow: '0 0 10px hsl(25, 100%, 50% / 0.5)',
+                boxShadow: '0 0 10px hsl(190, 100%, 50% / 0.5)',
               }}
               animate={{
                 opacity: [0.3, 0.8, 0.3],
@@ -387,17 +381,17 @@ const TimelineItem = ({ phase, index, totalItems }) => {
         )}
       </div>
 
-      {/* Content card with fire border */}
+      {/* Content card with liquid glass border */}
       <motion.div
         onMouseMove={handleMouseMove}
         whileHover={{ scale: 1.02, y: -5 }}
         className="flex-1 relative rounded-2xl overflow-hidden group"
       >
-        {/* Animated fire border */}
+        {/* Animated liquid border */}
         <motion.div
           className="absolute inset-0 rounded-2xl p-[2px]"
           style={{
-            background: 'linear-gradient(135deg, hsl(25, 100%, 50%), hsl(45, 100%, 55%), hsl(15, 100%, 45%), hsl(25, 100%, 50%))',
+            background: 'linear-gradient(135deg, hsl(175, 100%, 55%), hsl(190, 100%, 50%), hsl(220, 80%, 55%), hsl(175, 100%, 55%))',
             backgroundSize: '300% 300%',
           }}
           animate={{
@@ -409,19 +403,19 @@ const TimelineItem = ({ phase, index, totalItems }) => {
         </motion.div>
 
         {/* Card content */}
-        <div className="relative bg-card/95 backdrop-blur-sm rounded-2xl p-6 m-[2px]">
-          {/* Fire spotlight effect on hover */}
+        <div className="relative glass-panel rounded-2xl p-6 m-[2px]">
+          {/* Spotlight effect on hover */}
           <motion.div
             className="pointer-events-none absolute -inset-px rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"
             style={{
               background: useTransform(
                 [mouseX, mouseY],
-                ([mx, my]) => `radial-gradient(400px at ${mx}px ${my}px, hsl(25, 100%, 50% / 0.15), hsl(45, 100%, 55% / 0.1), transparent 70%)`
+                ([mx, my]) => `radial-gradient(400px at ${mx}px ${my}px, hsl(190, 100%, 50% / 0.15), hsl(175, 100%, 55% / 0.1), transparent 70%)`
               ),
             }}
           />
 
-          {/* Phase number badge with fire effect */}
+          {/* Phase number badge */}
           <motion.div
             initial={{ scale: 0, rotate: -180 }}
             whileInView={{ scale: 1, rotate: 0 }}
@@ -429,8 +423,8 @@ const TimelineItem = ({ phase, index, totalItems }) => {
             transition={{ delay: index * 0.1, type: "spring", stiffness: 200 }}
             className="absolute -top-4 -left-4 w-10 h-10 rounded-full flex items-center justify-center shadow-lg"
             style={{
-              background: 'linear-gradient(135deg, hsl(45, 100%, 55%), hsl(25, 100%, 50%), hsl(15, 100%, 45%))',
-              boxShadow: '0 0 20px hsl(25, 100%, 50% / 0.5)',
+              background: 'linear-gradient(135deg, hsl(175, 100%, 55%), hsl(190, 100%, 50%), hsl(220, 80%, 55%))',
+              boxShadow: '0 0 20px hsl(190, 100%, 50% / 0.5)',
             }}
           >
             <motion.span
@@ -442,7 +436,7 @@ const TimelineItem = ({ phase, index, totalItems }) => {
             </motion.span>
           </motion.div>
           
-          <h4 className="text-xl font-display font-bold text-transparent bg-clip-text bg-gradient-to-r from-orange-400 via-yellow-500 to-red-500 mb-4 mt-3">
+          <h4 className="text-xl font-display font-bold text-gradient-liquid mb-4 mt-3">
             {phase.title}
           </h4>
           
@@ -456,26 +450,19 @@ const TimelineItem = ({ phase, index, totalItems }) => {
                 transition={{ delay: idx * 0.1 }}
                 className="text-sm text-muted-foreground flex items-start gap-3"
               >
-                <motion.span 
-                  className="mt-1 text-lg"
-                  animate={{ 
-                    color: ['hsl(25, 100%, 50%)', 'hsl(45, 100%, 55%)', 'hsl(25, 100%, 50%)'],
-                    textShadow: ['0 0 5px hsl(25, 100%, 50% / 0.5)', '0 0 10px hsl(45, 100%, 55% / 0.8)', '0 0 5px hsl(25, 100%, 50% / 0.5)']
-                  }}
-                  transition={{ duration: 2, repeat: Infinity, delay: idx * 0.3 }}
-                >
-                  🔥
-                </motion.span>
+                <span className="mt-0.5 shrink-0">
+                  <WaterDroplet size={14} />
+                </span>
                 {point}
               </motion.li>
             ))}
           </ul>
 
-          {/* Bottom fire line */}
+          {/* Bottom liquid line */}
           <motion.div
             className="absolute bottom-0 left-0 right-0 h-1"
             style={{
-              background: 'linear-gradient(to right, transparent, hsl(45, 100%, 55%), hsl(25, 100%, 50%), hsl(15, 100%, 45%), transparent)',
+              background: 'linear-gradient(to right, transparent, hsl(175, 100%, 55%), hsl(190, 100%, 50%), hsl(220, 80%, 55%), transparent)',
             }}
             initial={{ scaleX: 0, opacity: 0 }}
             whileInView={{ scaleX: 1, opacity: 1 }}
@@ -591,12 +578,13 @@ const Timeline = ({ type }) => {
 
   return (
     <div ref={timelineRef} className="py-12 relative">
-      {/* Background fire glow */}
+      {/* Background liquid glow */}
       <div className="absolute inset-0 pointer-events-none">
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-gradient-radial from-orange-500/10 via-transparent to-transparent rounded-full blur-3xl" />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full blur-3xl" 
+          style={{ background: 'radial-gradient(circle, hsl(190, 100%, 50% / 0.1), transparent)' }} />
       </div>
 
-      {/* Header with fire effect */}
+      {/* Header */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
@@ -604,32 +592,21 @@ const Timeline = ({ type }) => {
         className="text-center mb-12 relative"
       >
         <motion.h3 
-          className="text-3xl md:text-5xl font-display font-black italic"
+          className="text-3xl md:text-5xl font-display font-black italic flex items-center justify-center gap-4"
           style={{
-            background: 'linear-gradient(135deg, hsl(45, 100%, 55%), hsl(25, 100%, 50%), hsl(15, 100%, 45%), hsl(45, 100%, 55%))',
+            background: 'linear-gradient(135deg, hsl(175, 100%, 55%), hsl(190, 100%, 50%), hsl(220, 80%, 55%))',
             backgroundClip: 'text',
             WebkitBackgroundClip: 'text',
             color: 'transparent',
-            backgroundSize: '200% 200%',
           }}
-          animate={{
-            backgroundPosition: ['0% 0%', '100% 100%', '0% 0%'],
-            textShadow: [
-              '0 0 30px hsl(25, 100%, 50% / 0.3)',
-              '0 0 60px hsl(25, 100%, 50% / 0.5)',
-              '0 0 30px hsl(25, 100%, 50% / 0.3)',
-            ]
-          }}
-          transition={{ duration: 3, repeat: Infinity }}
         >
-          🔥 {type === 'virtual' ? 'Virtual' : 'Physical'} Timeline 🔥
+          <WaterDroplet size={36} animate /> {type === 'virtual' ? 'Virtual' : 'Physical'} Timeline <WaterDroplet size={36} animate />
         </motion.h3>
         
-        {/* Animated underline flames */}
         <motion.div
           className="w-48 h-1 mx-auto mt-4"
           style={{
-            background: 'linear-gradient(to right, transparent, hsl(45, 100%, 55%), hsl(25, 100%, 50%), hsl(15, 100%, 45%), transparent)',
+            background: 'linear-gradient(to right, transparent, hsl(175, 100%, 55%), hsl(190, 100%, 50%), hsl(220, 80%, 55%), transparent)',
           }}
           animate={{
             opacity: [0.5, 1, 0.5],
@@ -653,9 +630,9 @@ const PrizePoolDisplay = ({ type }) => {
   const virtualPrizes = {
     total: "₹75,000+",
     main: [
-      { place: "1st", amount: "₹30,000", icon: Trophy, color: "from-yellow-400 to-amber-500" },
-      { place: "2nd", amount: "₹20,000", icon: Medal, color: "from-gray-300 to-gray-400" },
-      { place: "3rd", amount: "₹10,000", icon: Award, color: "from-orange-400 to-orange-600" },
+      { place: "1st", amount: "₹30,000", icon: Trophy, color: "from-accent to-primary" },
+      { place: "2nd", amount: "₹20,000", icon: Medal, color: "from-muted-foreground to-foreground" },
+      { place: "3rd", amount: "₹10,000", icon: Award, color: "from-primary to-secondary" },
     ],
     additional: [
       { title: "Best Virtual Presentation", amount: "₹5,000" },
@@ -667,9 +644,9 @@ const PrizePoolDisplay = ({ type }) => {
   const physicalPrizes = {
     total: "₹2,00,000+",
     main: [
-      { place: "1st", amount: "₹1,00,000", icon: Trophy, color: "from-yellow-400 to-amber-500" },
-      { place: "2nd", amount: "₹60,000", icon: Medal, color: "from-gray-300 to-gray-400" },
-      { place: "3rd", amount: "₹40,000", icon: Award, color: "from-orange-400 to-orange-600" },
+      { place: "1st", amount: "₹1,00,000", icon: Trophy, color: "from-accent to-primary" },
+      { place: "2nd", amount: "₹60,000", icon: Medal, color: "from-muted-foreground to-foreground" },
+      { place: "3rd", amount: "₹40,000", icon: Award, color: "from-primary to-secondary" },
     ],
     additional: [
       { title: "Best UI/UX", amount: "₹10,000" },
@@ -686,9 +663,8 @@ const PrizePoolDisplay = ({ type }) => {
       initial={{ opacity: 0, y: 20 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
-      className="bg-card border border-border rounded-2xl p-8"
+      className="glass-panel-strong rounded-2xl p-8"
     >
-      {/* Header */}
       <div className="text-center mb-8">
         <div className="flex items-center justify-center gap-2 mb-2">
           <Star className="w-5 h-5 text-primary" />
@@ -696,12 +672,12 @@ const PrizePoolDisplay = ({ type }) => {
           <Star className="w-5 h-5 text-primary" />
         </div>
         <motion.h3
-          className="text-4xl md:text-5xl font-display font-black text-gradient-fire"
+          className="text-4xl md:text-5xl font-display font-black text-gradient-liquid"
           animate={{ 
             textShadow: [
-              "0 0 20px hsl(var(--primary) / 0.5)",
-              "0 0 40px hsl(var(--primary) / 0.8)",
-              "0 0 20px hsl(var(--primary) / 0.5)",
+              "0 0 20px hsl(190, 100%, 50% / 0.5)",
+              "0 0 40px hsl(190, 100%, 50% / 0.8)",
+              "0 0 20px hsl(190, 100%, 50% / 0.5)",
             ]
           }}
           transition={{ duration: 2, repeat: Infinity }}
@@ -738,7 +714,8 @@ const PrizePoolDisplay = ({ type }) => {
           <motion.div
             animate={{ y: [0, -5, 0] }}
             transition={{ duration: 2, repeat: Infinity }}
-            className={`w-20 h-20 rounded-full bg-gradient-to-br ${prizes.main[0].color} flex items-center justify-center mb-3 shadow-lg shadow-yellow-500/30`}
+            className={`w-20 h-20 rounded-full bg-gradient-to-br ${prizes.main[0].color} flex items-center justify-center mb-3 shadow-lg`}
+            style={{ boxShadow: '0 0 30px hsl(190, 100%, 50% / 0.4)' }}
           >
             <Trophy className="w-10 h-10 text-background" />
           </motion.div>
@@ -771,8 +748,8 @@ const PrizePoolDisplay = ({ type }) => {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ delay: 0.4 + index * 0.1 }}
-            whileHover={{ scale: 1.05, borderColor: "hsl(var(--primary) / 0.5)" }}
-            className="bg-background/50 border border-border rounded-xl p-4 text-center"
+            whileHover={{ scale: 1.05, borderColor: "hsl(190, 100%, 50% / 0.5)" }}
+            className="glass-panel rounded-xl p-4 text-center"
           >
             <p className="text-xs text-muted-foreground mb-1">{prize.title}</p>
             <p className="text-lg font-display font-bold text-primary">{prize.amount}</p>
@@ -783,7 +760,7 @@ const PrizePoolDisplay = ({ type }) => {
   );
 };
 
-// Important Dates Component - Grid Layout
+// Important Dates Component
 const ImportantDates = ({ type }) => {
   const virtualDates = [
     { event: 'Registrations Open', date: 'Oct 23, 2025' },
@@ -812,19 +789,17 @@ const ImportantDates = ({ type }) => {
 
   return (
     <div className="py-12">
-      {/* Header */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
         className="text-center mb-8"
       >
-        <h3 className="text-3xl md:text-4xl font-display font-black text-gradient-fire italic">
+        <h3 className="text-3xl md:text-4xl font-display font-black text-gradient-liquid italic">
           Important Dates
         </h3>
       </motion.div>
 
-      {/* Grid of date cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         {dates.map((item, index) => (
           <motion.div
@@ -841,29 +816,26 @@ const ImportantDates = ({ type }) => {
             whileHover={{ 
               scale: 1.05, 
               y: -5,
-              boxShadow: "0 20px 40px -20px hsl(var(--primary) / 0.4)"
+              boxShadow: "0 20px 40px -20px hsl(190, 100%, 50% / 0.4)"
             }}
             className="group relative"
           >
-            <div className="relative bg-card border border-border rounded-xl p-6 h-full overflow-hidden transition-all duration-300 hover:border-primary/50">
-              {/* Animated border glow */}
+            <div className="relative glass-panel rounded-xl p-6 h-full overflow-hidden transition-all duration-300 hover:border-primary/50">
               <motion.div
                 className="absolute inset-0 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"
                 style={{
-                  background: "linear-gradient(135deg, hsl(var(--primary) / 0.1), transparent, hsl(var(--primary) / 0.05))",
+                  background: "linear-gradient(135deg, hsl(190, 100%, 50% / 0.1), transparent, hsl(220, 80%, 55% / 0.05))",
                 }}
               />
               
-              {/* Top accent line */}
               <motion.div
-                className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-primary via-secondary to-primary"
+                className="absolute top-0 left-0 right-0 h-1 bg-gradient-liquid"
                 initial={{ scaleX: 0 }}
                 whileInView={{ scaleX: 1 }}
                 viewport={{ once: true }}
                 transition={{ delay: index * 0.1 + 0.3, duration: 0.5 }}
               />
 
-              {/* Content */}
               <div className="relative text-center">
                 <h4 className="text-base font-display font-bold text-foreground mb-3 leading-tight">
                   {item.event}
@@ -873,7 +845,6 @@ const ImportantDates = ({ type }) => {
                 </p>
               </div>
 
-              {/* Bottom glow effect */}
               <motion.div
                 className="absolute bottom-0 left-1/2 -translate-x-1/2 w-0 h-0.5 bg-primary group-hover:w-3/4 transition-all duration-500"
               />
@@ -889,7 +860,6 @@ const ImportantDates = ({ type }) => {
 const HackathonCard = ({ type }) => {
   const isVirtual = type === 'virtual';
   
-  // Target dates: Virtual - 20/12/2026, Physical - 26/12/2026
   const virtualDate = new Date('2026-12-20T00:00:00');
   const physicalDate = new Date('2026-12-26T00:00:00');
 
@@ -898,13 +868,12 @@ const HackathonCard = ({ type }) => {
       initial={{ opacity: 0, x: -20 }}
       whileInView={{ opacity: 1, x: 0 }}
       viewport={{ once: true }}
-      className="relative bg-card border border-border rounded-2xl p-8 overflow-hidden group"
+      className="relative glass-panel-strong rounded-2xl p-8 overflow-hidden group"
     >
-      {/* Animated border glow */}
       <motion.div
         className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"
         style={{
-          background: "linear-gradient(45deg, hsl(var(--primary) / 0.1), transparent, hsl(var(--secondary) / 0.1))",
+          background: "linear-gradient(45deg, hsl(190, 100%, 50% / 0.1), transparent, hsl(220, 80%, 55% / 0.1))",
         }}
       />
 
@@ -992,23 +961,26 @@ const HackathonSection = () => {
 
   return (
     <section className="relative py-20 md:py-32 overflow-hidden" id="hackathon">
-      {/* Background */}
       <div className="absolute inset-0 bg-gradient-to-b from-background via-card/50 to-background" />
 
-      {/* Animated background elements */}
+      {/* Floating bubbles */}
       <div className="absolute inset-0 overflow-hidden">
         {[...Array(15)].map((_, i) => (
           <motion.div
             key={i}
-            className="absolute w-2 h-2 bg-primary/20 rounded-full"
+            className="absolute rounded-full"
             style={{
               left: `${Math.random() * 100}%`,
               top: `${Math.random() * 100}%`,
+              width: 4 + Math.random() * 4,
+              height: 4 + Math.random() * 4,
+              background: `radial-gradient(circle at 30% 30%, hsl(${180 + Math.random() * 40}, 100%, 80% / 0.4), hsl(${180 + Math.random() * 40}, 100%, 50% / 0.2))`,
+              border: `1px solid hsl(${180 + Math.random() * 40}, 100%, 70% / 0.2)`,
             }}
             animate={{
               y: [0, -50, 0],
               opacity: [0.1, 0.5, 0.1],
-              scale: [1, 2, 1],
+              scale: [1, 1.5, 1],
             }}
             transition={{
               duration: 4 + Math.random() * 3,
@@ -1020,19 +992,17 @@ const HackathonSection = () => {
       </div>
 
       <div className="relative z-10 container mx-auto px-4">
-        {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           className="text-center mb-4"
         >
-          <h2 className="text-3xl md:text-5xl font-display font-black text-gradient-fire">
+          <h2 className="text-3xl md:text-5xl font-display font-black text-gradient-liquid">
             Choose Your Battleground
           </h2>
         </motion.div>
 
-        {/* Underline */}
         <motion.div
           initial={{ scaleX: 0 }}
           whileInView={{ scaleX: 1 }}
@@ -1053,7 +1023,7 @@ const HackathonSection = () => {
 
         {/* Tabs */}
         <div className="flex justify-center mb-12">
-          <div className="inline-flex bg-card border border-border rounded-full p-1">
+          <div className="inline-flex glass-panel rounded-full p-1">
             {tabs.map((tab) => (
               <motion.button
                 key={tab.id}
@@ -1080,7 +1050,6 @@ const HackathonSection = () => {
           </div>
         </div>
 
-        {/* Content */}
         <AnimatePresence mode="wait">
           <motion.div
             key={activeTab}
@@ -1089,19 +1058,13 @@ const HackathonSection = () => {
             exit={{ opacity: 0, y: -20 }}
             transition={{ duration: 0.3 }}
           >
-            {/* Grid layout */}
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12">
               <HackathonCard type={activeTab} />
               <PrizePoolDisplay type={activeTab} />
             </div>
 
-            {/* Large Countdown Timer - Above Important Dates */}
             <LargeCountdownTimer type={activeTab} />
-
-            {/* Important Dates - Full width grid */}
             <ImportantDates type={activeTab} />
-
-            {/* Timeline - Full width */}
             <Timeline type={activeTab} />
           </motion.div>
         </AnimatePresence>
