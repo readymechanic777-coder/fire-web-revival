@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
 import { useRef } from "react";
 import { useInView } from "framer-motion";
-import WaterDroplet from "./icons/WaterDroplet";
+import { Droplets } from "lucide-react";
 
 const allPartners = [
   { name: "GDG", initials: "GDG", type: "Outreach Partner" },
@@ -42,7 +42,7 @@ const PartnersSection = () => {
 
       <div className="container mx-auto px-4 relative z-10">
         <motion.div initial={{ opacity: 0, y: 30 }} animate={isInView ? { opacity: 1, y: 0 } : {}} transition={{ duration: 0.8 }} className="text-center mb-16">
-          <h2 className="text-4xl md:text-5xl font-display font-black mb-4 text-gradient-liquid flex items-center justify-center gap-3"><WaterDroplet size={36} /> OUR PARTNERS <WaterDroplet size={36} /></h2>
+          <h2 className="text-4xl md:text-5xl font-display font-black mb-4 text-gradient-liquid flex items-center justify-center gap-3"><Droplets className="w-8 h-8 text-primary" /> OUR PARTNERS <Droplets className="w-8 h-8 text-primary" /></h2>
           <p className="text-muted-foreground max-w-2xl mx-auto">Collaborating with the best to bring you an unforgettable experience</p>
           <motion.div className="w-24 h-1 mx-auto rounded-full mt-6" style={{ background: 'linear-gradient(to right, hsl(175, 100%, 55%), hsl(190, 100%, 50%), hsl(220, 80%, 55%))' }} animate={{ opacity: [0.7, 1, 0.7] }} transition={{ duration: 2, repeat: Infinity }} />
         </motion.div>

@@ -1,9 +1,8 @@
-import { motion, useMotionValue, useTransform } from "framer-motion";
+import { motion } from "framer-motion";
 import { useMemo } from "react";
 import TypingEffect from "./TypingEffect";
-import MouseFollowParticles from "./MouseFollowParticles";
-import { Droplets, Users, Trophy, Calendar, MapPin } from "lucide-react";
-import WaterDroplet from "./icons/WaterDroplet";
+import CursorRipple from "./CursorRipple";
+import { Droplets, Users, Trophy, Calendar, MapPin, Terminal } from "lucide-react";
 
 // Floating code snippets that drift behind the content
 const codeSnippets = [
@@ -20,6 +19,8 @@ const codeSnippets = [
   { code: 'while(true) { create(); }', x: '60%', y: '60%', size: 'text-[10px]', delay: 1.8 },
   { code: '// 48 hours of innovation', x: '3%', y: '50%', size: 'text-[11px]', delay: 0.8 },
   { code: 'npm run hackathon', x: '75%', y: '45%', size: 'text-[10px]', delay: 2.2 },
+  { code: 'const [ideas, setIdeas] = useState([])', x: '8%', y: '40%', size: 'text-[10px]', delay: 3.2 },
+  { code: 'export default Solution;', x: '68%', y: '88%', size: 'text-[10px]', delay: 3.8 },
 ];
 
 const FloatingCodeSnippet = ({ snippet }) => (
@@ -28,33 +29,35 @@ const FloatingCodeSnippet = ({ snippet }) => (
     style={{ left: snippet.x, top: snippet.y }}
     initial={{ opacity: 0 }}
     animate={{
-      opacity: [0, 0.15, 0.25, 0.15, 0],
+      opacity: [0, 0.12, 0.2, 0.12, 0],
       y: [0, -15, -30, -45, -60],
     }}
     transition={{
-      duration: 12,
+      duration: 14,
       repeat: Infinity,
       delay: snippet.delay,
       ease: "linear",
     }}
   >
-    <span className={`${snippet.size} text-primary/40`}>{snippet.code}</span>
+    <span className={`${snippet.size} text-primary/30`}>{snippet.code}</span>
   </motion.div>
 );
 
-// Matrix-style binary rain column
-const BinaryColumn = ({ left, delay, speed }) => {
-  const chars = useMemo(() => 
-    Array.from({ length: 20 }, () => Math.random() > 0.5 ? '1' : '0').join('\n'),
-    []
-  );
+// Matrix-style code rain column with mixed characters
+const CodeRainColumn = ({ left, delay, speed }) => {
+  const chars = useMemo(() => {
+    const codeChars = '{}[]();=></:._$#@!&|~+-*%^01';
+    return Array.from({ length: 25 }, () => 
+      codeChars[Math.floor(Math.random() * codeChars.length)]
+    ).join('\n');
+  }, []);
   
   return (
     <motion.div
-      className="absolute font-code text-[10px] leading-4 text-primary/10 pointer-events-none select-none whitespace-pre"
-      style={{ left }}
+      className="absolute font-code text-[10px] leading-4 pointer-events-none select-none whitespace-pre"
+      style={{ left, color: `hsl(190, 100%, ${40 + Math.random() * 20}% / ${0.06 + Math.random() * 0.06})` }}
       initial={{ y: '-100%', opacity: 0 }}
-      animate={{ y: '100vh', opacity: [0, 0.15, 0.15, 0] }}
+      animate={{ y: '100vh', opacity: [0, 0.12, 0.12, 0] }}
       transition={{ duration: speed, repeat: Infinity, delay, ease: "linear" }}
     >
       {chars}
@@ -68,18 +71,19 @@ const HeroSection = () => {
     if (element) element.scrollIntoView({ behavior: 'smooth' });
   };
 
-  const binaryColumns = useMemo(() => 
-    Array.from({ length: 12 }, (_, i) => ({
+  const codeRainColumns = useMemo(() => 
+    Array.from({ length: 18 }, (_, i) => ({
       id: i,
-      left: `${5 + i * 8}%`,
-      delay: Math.random() * 5,
-      speed: 8 + Math.random() * 6,
+      left: `${2 + i * 5.5}%`,
+      delay: Math.random() * 6,
+      speed: 10 + Math.random() * 8,
     })), []
   );
 
   return (
     <section id="hero-section" className="relative min-h-screen flex items-center justify-center overflow-hidden">
-      <MouseFollowParticles />
+      {/* Cursor ripple effect */}
+      <CursorRipple />
       
       {/* Deep liquid background */}
       <div className="absolute inset-0 z-0" style={{
@@ -100,37 +104,28 @@ const HeroSection = () => {
             radial-gradient(ellipse 40% 25% at 70% 40%, hsl(175, 100%, 50% / 0.06) 0%, transparent 50%)
           `,
         }}
-        animate={{
-          opacity: [0.5, 0.8, 0.5],
-          scale: [1, 1.05, 1],
-        }}
+        animate={{ opacity: [0.5, 0.8, 0.5], scale: [1, 1.05, 1] }}
         transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
       />
 
       {/* Animated liquid orbs */}
       <motion.div
         className="absolute w-[600px] h-[600px] rounded-full blur-[100px] will-animate"
-        style={{
-          left: '15%', top: '20%',
-          background: 'radial-gradient(circle, hsl(190, 100%, 40% / 0.15), transparent 70%)',
-        }}
+        style={{ left: '15%', top: '20%', background: 'radial-gradient(circle, hsl(190, 100%, 40% / 0.15), transparent 70%)' }}
         animate={{ x: [0, 60, 0], y: [0, -40, 0], scale: [1, 1.3, 1] }}
         transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
       />
       <motion.div
         className="absolute w-[500px] h-[500px] rounded-full blur-[80px] will-animate"
-        style={{
-          right: '10%', bottom: '15%',
-          background: 'radial-gradient(circle, hsl(220, 80%, 40% / 0.12), transparent 70%)',
-        }}
+        style={{ right: '10%', bottom: '15%', background: 'radial-gradient(circle, hsl(220, 80%, 40% / 0.12), transparent 70%)' }}
         animate={{ x: [0, -50, 0], y: [0, 50, 0], scale: [1.2, 0.9, 1.2] }}
         transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
       />
 
-      {/* Binary rain columns */}
+      {/* Code rain columns */}
       <div className="absolute inset-0 z-[2] overflow-hidden pointer-events-none">
-        {binaryColumns.map((col) => (
-          <BinaryColumn key={col.id} {...col} />
+        {codeRainColumns.map((col) => (
+          <CodeRainColumn key={col.id} {...col} />
         ))}
       </div>
 
@@ -141,34 +136,8 @@ const HeroSection = () => {
         ))}
       </div>
 
-      {/* Floating glass bubbles */}
-      <div className="absolute inset-0 z-[4] overflow-hidden pointer-events-none">
-        {[...Array(6)].map((_, i) => (
-          <motion.div
-            key={i}
-            className="absolute rounded-full"
-            style={{
-              left: `${10 + i * 15}%`,
-              bottom: '-5%',
-              width: 10 + i * 4,
-              height: 10 + i * 4,
-              background: `radial-gradient(circle at 35% 30%, hsl(190, 100%, 90% / 0.2), hsl(190, 100%, 50% / 0.05))`,
-              border: `1px solid hsl(190, 100%, 70% / 0.15)`,
-              boxShadow: `inset 0 -2px 4px hsl(220, 60%, 4% / 0.3), 0 0 8px hsl(190, 100%, 50% / 0.1)`,
-            }}
-            animate={{
-              y: [0, -500 - i * 80],
-              x: [0, (i % 2 === 0 ? 40 : -40), (i % 2 === 0 ? -20 : 20)],
-              opacity: [0, 0.5, 0.3, 0],
-              scale: [0.6, 1.2, 0.8, 0],
-            }}
-            transition={{ duration: 6 + i, repeat: Infinity, delay: i * 0.8, ease: "easeOut" }}
-          />
-        ))}
-      </div>
-
       {/* Vignette */}
-      <div className="absolute inset-0 z-[5]" style={{
+      <div className="absolute inset-0 z-[4]" style={{
         background: 'radial-gradient(ellipse at center, transparent 40%, hsl(220, 25%, 6% / 0.8) 100%)',
       }} />
 
@@ -182,8 +151,15 @@ const HeroSection = () => {
           className="mb-6"
         >
           <div className="inline-flex items-center gap-2 glass-panel glass-highlight rounded-full px-5 py-2">
-            <span className="w-2 h-2 rounded-full bg-accent animate-pulse-glow" />
-            <span className="font-code text-xs text-primary/80 tracking-wider">48 Hours • National Hackathon • Live</span>
+            <Terminal className="w-3.5 h-3.5 text-accent" />
+            <span className="font-code text-xs text-primary/80 tracking-wider">
+              <span className="text-accent">$</span> run hackathon --hours=48 --mode=national --status=
+              <motion.span 
+                className="text-accent"
+                animate={{ opacity: [1, 0, 1] }}
+                transition={{ duration: 1, repeat: Infinity }}
+              >live</motion.span>
+            </span>
           </div>
         </motion.div>
 
@@ -216,9 +192,7 @@ const HeroSection = () => {
           </motion.h2>
           <motion.div
             className="absolute -bottom-2 left-0 right-0 h-[2px] rounded-full"
-            style={{
-              background: 'linear-gradient(90deg, transparent, hsl(190, 100%, 50%), hsl(175, 100%, 55%), hsl(190, 100%, 50%), transparent)',
-            }}
+            style={{ background: 'linear-gradient(90deg, transparent, hsl(190, 100%, 50%), hsl(175, 100%, 55%), hsl(190, 100%, 50%), transparent)' }}
             initial={{ scaleX: 0 }}
             animate={{ scaleX: 1 }}
             transition={{ delay: 0.6, duration: 0.8 }}
@@ -233,15 +207,13 @@ const HeroSection = () => {
           className="mb-6"
         >
           <div className="inline-block glass-card glass-highlight rounded-xl px-6 py-3">
-            <motion.p 
-              className="text-lg md:text-2xl font-display uppercase tracking-widest font-bold text-gradient-liquid"
-            >
+            <motion.p className="text-lg md:text-2xl font-display uppercase tracking-widest font-bold text-gradient-liquid">
               The Infinite Loop of Innovation
             </motion.p>
           </div>
         </motion.div>
 
-        {/* Sub-tagline */}
+        {/* Sub-tagline - code style */}
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
@@ -274,7 +246,6 @@ const HeroSection = () => {
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
           >
-            {/* Glass button background */}
             <div className="absolute inset-0 glass-panel-strong rounded-2xl" />
             <motion.div
               className="absolute inset-0 rounded-2xl"
@@ -289,16 +260,15 @@ const HeroSection = () => {
               className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"
               style={{ boxShadow: '0 0 40px hsl(190, 100%, 50% / 0.3), inset 0 0 20px hsl(190, 100%, 50% / 0.1)' }}
             />
-            {/* Top highlight */}
             <div className="absolute top-0 left-[15%] right-[15%] h-px bg-gradient-to-r from-transparent via-primary/30 to-transparent" />
             <span className="relative z-10 text-foreground">Register Now</span>
             <motion.span className="relative z-10" animate={{ y: [0, -3, 0] }} transition={{ duration: 1.5, repeat: Infinity }}>
-              <WaterDroplet size={24} animate />
+              <Droplets className="w-5 h-5 text-primary" />
             </motion.span>
           </motion.a>
         </motion.div>
 
-        {/* Stats Cards - Glass skeuomorphic */}
+        {/* Stats Cards */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
@@ -325,12 +295,8 @@ const HeroSection = () => {
                   style={{ background: 'radial-gradient(circle at center, hsl(190, 100%, 50% / 0.08), transparent 70%)' }}
                 />
                 <stat.icon className="w-6 h-6 mx-auto mb-2 text-primary" />
-                <p className="text-2xl md:text-3xl font-display font-black text-gradient-liquid">
-                  {stat.value}
-                </p>
-                <p className="text-xs md:text-sm text-muted-foreground font-display uppercase tracking-wider">
-                  {stat.label}
-                </p>
+                <p className="text-2xl md:text-3xl font-display font-black text-gradient-liquid">{stat.value}</p>
+                <p className="text-xs md:text-sm text-muted-foreground font-display uppercase tracking-wider">{stat.label}</p>
               </div>
             </motion.div>
           ))}
@@ -346,7 +312,7 @@ const HeroSection = () => {
         whileHover={{ scale: 1.1 }}
       >
         <div className="flex flex-col items-center gap-2">
-          <span className="text-xs text-muted-foreground font-code uppercase tracking-widest">Scroll</span>
+          <span className="text-xs text-muted-foreground font-code uppercase tracking-widest">scroll</span>
           <motion.div className="w-8 h-12 border border-primary/30 rounded-full flex justify-center pt-2 glass-panel">
             <motion.div
               className="w-1.5 h-1.5 bg-primary rounded-full"
@@ -357,17 +323,17 @@ const HeroSection = () => {
         </div>
       </motion.button>
 
-      {/* Side code decorations */}
+      {/* Side decorative lines */}
       <motion.div
         className="absolute left-6 top-1/3 bottom-1/3 w-px hidden lg:block z-[6]"
-        style={{ background: 'linear-gradient(to bottom, transparent, hsl(190, 100%, 50% / 0.2), transparent)' }}
+        style={{ background: 'linear-gradient(to bottom, transparent, hsl(190, 100%, 50% / 0.15), transparent)' }}
         initial={{ scaleY: 0 }}
         animate={{ scaleY: 1 }}
         transition={{ delay: 1, duration: 1 }}
       />
       <motion.div
         className="absolute right-6 top-1/3 bottom-1/3 w-px hidden lg:block z-[6]"
-        style={{ background: 'linear-gradient(to bottom, transparent, hsl(190, 100%, 50% / 0.2), transparent)' }}
+        style={{ background: 'linear-gradient(to bottom, transparent, hsl(190, 100%, 50% / 0.15), transparent)' }}
         initial={{ scaleY: 0 }}
         animate={{ scaleY: 1 }}
         transition={{ delay: 1, duration: 1 }}

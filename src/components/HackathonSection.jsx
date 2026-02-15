@@ -1,7 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence, useMotionValue, useTransform, animate, useScroll, useSpring } from "framer-motion";
-import { Laptop, Users, Trophy, Medal, Award, Star, ArrowRight, Calendar, Clock } from "lucide-react";
-import WaterDroplet from "./icons/WaterDroplet";
+import { Laptop, Users, Trophy, Medal, Award, Star, ArrowRight, Calendar, Clock, Droplets } from "lucide-react";
 
 // Animated Number Component
 function AnimatedNumber({ value, delay = 0 }) {
@@ -451,7 +450,7 @@ const TimelineItem = ({ phase, index, totalItems }) => {
                 className="text-sm text-muted-foreground flex items-start gap-3"
               >
                 <span className="mt-0.5 shrink-0">
-                  <WaterDroplet size={14} />
+                  <Droplets className="w-3.5 h-3.5 text-primary" />
                 </span>
                 {point}
               </motion.li>
@@ -600,7 +599,7 @@ const Timeline = ({ type }) => {
             color: 'transparent',
           }}
         >
-          <WaterDroplet size={36} animate /> {type === 'virtual' ? 'Virtual' : 'Physical'} Timeline <WaterDroplet size={36} animate />
+          <Droplets className="w-8 h-8 text-primary" /> {type === 'virtual' ? 'Virtual' : 'Physical'} Timeline <Droplets className="w-8 h-8 text-primary" />
         </motion.h3>
         
         <motion.div
