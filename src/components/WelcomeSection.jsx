@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
 import { fadeIn, textVariant, zoomIn } from "@/lib/motion";
 import TypingEffect from "./TypingEffect";
-import WaterDroplet from "./icons/WaterDroplet";
+import { Droplets } from "lucide-react";
 
 const WelcomeSection = () => {
   return (
@@ -105,7 +105,7 @@ const WelcomeSection = () => {
             <span className="relative z-10 flex items-center gap-3">
               JOIN THE INNOVATION
               <motion.span animate={{ scale: [1, 1.2, 1] }} transition={{ duration: 1.5, repeat: Infinity }}>
-                <WaterDroplet size={24} />
+                <Droplets className="w-5 h-5 text-primary" />
               </motion.span>
             </span>
           </motion.button>

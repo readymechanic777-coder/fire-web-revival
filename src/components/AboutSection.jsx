@@ -1,7 +1,6 @@
 import { motion } from "framer-motion";
 import { fadeIn, textVariant, zoomIn } from "@/lib/motion";
-import { Code, Lightbulb, Trophy, Users } from "lucide-react";
-import WaterDroplet from "./icons/WaterDroplet";
+import { Code, Lightbulb, Trophy, Users, Droplets } from "lucide-react";
 
 const features = [
   { icon: Code, title: "48-Hour Coding Sprint", description: "Non-stop innovation and development" },
@@ -31,8 +30,8 @@ const AboutSection = () => {
               <span className="ml-2 font-mono text-sm text-muted-foreground">readme.md</span>
             </div>
             <div className="p-6 space-y-6 font-mono text-sm leading-relaxed">
-              <p className="flex items-start gap-2"><span className="mt-1 shrink-0"><WaterDroplet size={16} /></span> <span><span className="text-primary font-bold">Avishkaar</span> is a National Level 48-hour hackathon organized by <span className="text-secondary font-bold">Aditya Engineering College</span>, designed to bring together the brightest minds in technology and innovation.</span></p>
-              <p className="flex items-start gap-2"><span className="mt-1 shrink-0"><WaterDroplet size={16} /></span> <span>Season 4 introduces <span className="text-primary">"The Infinite Loop of Innovation"</span> – a theme that celebrates continuous learning, iterative development, and breakthrough solutions.</span></p>
+              <p className="flex items-start gap-2"><span className="mt-1 shrink-0"><Droplets className="w-4 h-4 text-primary" /></span> <span><span className="text-primary font-bold">Avishkaar</span> is a National Level 48-hour hackathon organized by <span className="text-secondary font-bold">Aditya Engineering College</span>, designed to bring together the brightest minds in technology and innovation.</span></p>
+              <p className="flex items-start gap-2"><span className="mt-1 shrink-0"><Droplets className="w-4 h-4 text-accent" /></span> <span>Season 4 introduces <span className="text-primary">"The Infinite Loop of Innovation"</span> – a theme that celebrates continuous learning, iterative development, and breakthrough solutions.</span></p>
               <p className="text-muted-foreground"><span className="text-primary">{">"}</span> Join us for 48 hours of intense coding, networking, workshops, and the chance to win amazing prizes while solving real-world problems.</p>
             </div>
           </motion.div>

@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
 import { useRef } from "react";
 import { useInView } from "framer-motion";
-import WaterDroplet from "./icons/WaterDroplet";
+import { Droplets } from "lucide-react";
 
 const sponsors = [
   { name: "GeeksForGeeks", initials: "GFG" }, { name: "CCC", initials: "CCC" },
@@ -31,7 +31,7 @@ const SponsorsSection = () => {
 
       <div className="container mx-auto px-4 relative z-10">
         <motion.div initial={{ opacity: 0, y: 30 }} animate={isInView ? { opacity: 1, y: 0 } : {}} transition={{ duration: 0.8 }} className="text-center mb-16">
-          <h2 className="text-4xl md:text-5xl font-display font-black mb-4 text-gradient-liquid flex items-center justify-center gap-3"><WaterDroplet size={36} /> OUR SPONSORS <WaterDroplet size={36} /></h2>
+          <h2 className="text-4xl md:text-5xl font-display font-black mb-4 text-gradient-liquid flex items-center justify-center gap-3"><Droplets className="w-8 h-8 text-primary" /> OUR SPONSORS <Droplets className="w-8 h-8 text-primary" /></h2>
           <p className="text-muted-foreground max-w-2xl mx-auto">Backed by industry leaders who believe in innovation</p>
           <motion.div className="w-24 h-1 mx-auto rounded-full mt-6" style={{ background: 'linear-gradient(to right, hsl(175, 100%, 55%), hsl(190, 100%, 50%), hsl(220, 80%, 55%))' }} animate={{ opacity: [0.7, 1, 0.7] }} transition={{ duration: 2, repeat: Infinity }} />
         </motion.div>
@@ -101,7 +101,7 @@ const SponsorsSection = () => {
               animate={{ backgroundPosition: ['0% 0%', '100% 100%', '0% 0%'] }} transition={{ duration: 3, repeat: Infinity }}>
               <div className="w-full h-full bg-card rounded-full" />
             </motion.div>
-            <span className="relative z-10 flex items-center gap-2">BECOME A SPONSOR <motion.span animate={{ scale: [1, 1.2, 1] }} transition={{ duration: 1, repeat: Infinity }}><WaterDroplet size={20} /></motion.span></span>
+            <span className="relative z-10 flex items-center gap-2">BECOME A SPONSOR <motion.span animate={{ scale: [1, 1.2, 1] }} transition={{ duration: 1, repeat: Infinity }}><Droplets className="w-5 h-5" /></motion.span></span>
           </motion.button>
         </motion.div>
       </div>
