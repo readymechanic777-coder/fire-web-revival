@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
 import { fadeIn, textVariant, zoomIn } from "@/lib/motion";
 import TypingEffect from "./TypingEffect";
+import WaterDroplet from "./icons/WaterDroplet";
 
 const WelcomeSection = () => {
   return (
@@ -103,8 +104,8 @@ const WelcomeSection = () => {
 
             <span className="relative z-10 flex items-center gap-3">
               JOIN THE INNOVATION
-              <motion.span animate={{ rotate: [0, 10, -10, 0], scale: [1, 1.2, 1] }} transition={{ duration: 1.5, repeat: Infinity }}>
-                💧
+              <motion.span animate={{ scale: [1, 1.2, 1] }} transition={{ duration: 1.5, repeat: Infinity }}>
+                <WaterDroplet size={24} />
               </motion.span>
             </span>
           </motion.button>

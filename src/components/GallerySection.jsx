@@ -3,6 +3,7 @@ import { useRef } from "react";
 import { useInView } from "framer-motion";
 import { fadeIn, textVariant, zoomIn } from "@/lib/motion";
 import { Camera } from "lucide-react";
+import WaterDroplet from "./icons/WaterDroplet";
 
 const galleryImages = [
   { id: 1, title: "Hackathon Kickoff", size: "large" },
@@ -35,7 +36,7 @@ const GallerySection = () => {
           <motion.h2 
             className="font-display text-3xl md:text-5xl font-black mb-4 text-gradient-liquid"
           >
-            💧 TECH FEST GALLERY 💧
+            <span className="flex items-center justify-center gap-3"><WaterDroplet size={36} /> TECH FEST GALLERY <WaterDroplet size={36} /></span>
           </motion.h2>
           <p className="text-muted-foreground max-w-2xl mx-auto">Glimpses from our previous seasons</p>
           <motion.div 
@@ -140,7 +141,7 @@ const GallerySection = () => {
             </motion.div>
             <span className="relative z-10 flex items-center gap-2">
               VIEW ALL PHOTOS
-              <motion.span animate={{ x: [0, 5, 0] }} transition={{ duration: 1.5, repeat: Infinity }}>💧</motion.span>
+              <motion.span animate={{ x: [0, 5, 0] }} transition={{ duration: 1.5, repeat: Infinity }}><WaterDroplet size={20} /></motion.span>
             </span>
           </motion.button>
         </motion.div>
