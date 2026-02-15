@@ -4,6 +4,8 @@ import TypingEffect from "./TypingEffect";
 import CursorRipple from "./CursorRipple";
 import WaterDistortionFilter from "./WaterDistortionFilter";
 import WaterSurface from "./WaterSurface";
+import GlassWaterDroplets from "./GlassWaterDroplets";
+import GlassTerminal from "./GlassTerminal";
 import { Droplets, Users, Trophy, Calendar, MapPin, Terminal } from "lucide-react";
 
 // Floating code snippets that drift behind the content
@@ -138,6 +140,9 @@ const HeroSection = () => {
         ))}
       </div>
 
+      {/* Water droplets sliding down the hero glass */}
+      <GlassWaterDroplets />
+
       {/* Vignette */}
       <div className="absolute inset-0 z-[4]" style={{
         background: 'radial-gradient(ellipse at center, transparent 40%, hsl(220, 25%, 6% / 0.8) 100%)',
@@ -232,6 +237,9 @@ const HeroSection = () => {
             <motion.span className="text-primary font-bold" animate={{ opacity: [0.7, 1, 0.7] }} transition={{ duration: 1.5, repeat: Infinity }}>{' }'}</motion.span>
           </p>
         </motion.div>
+
+        {/* Frosted Glass Terminal */}
+        <GlassTerminal />
 
         {/* CTA Button */}
         <motion.div
