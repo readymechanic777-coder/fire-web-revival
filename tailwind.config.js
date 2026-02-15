@@ -15,6 +15,7 @@ export default {
       fontFamily: {
         display: ["Orbitron", "sans-serif"],
         body: ["Exo 2", "sans-serif"],
+        code: ["JetBrains Mono", "Fira Code", "monospace"],
       },
       colors: {
         border: "hsl(var(--border))",
@@ -55,7 +56,6 @@ export default {
           blue: "hsl(var(--liquid-blue))",
           teal: "hsl(var(--liquid-teal))",
         },
-        // Keep old fire aliases pointing to liquid colors
         fire: {
           orange: "hsl(var(--liquid-cyan))",
           red: "hsl(var(--liquid-blue))",
@@ -64,7 +64,6 @@ export default {
         glass: "hsl(var(--glass))",
         deep: "hsl(var(--deep))",
         surface: "hsl(var(--surface))",
-        // Keep old aliases
         ember: "hsl(var(--glass))",
         ash: "hsl(var(--deep))",
         smoke: "hsl(var(--surface))",

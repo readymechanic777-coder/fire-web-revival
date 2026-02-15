@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Exo+2:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Exo+2:wght@300;400;500;600;700&family=JetBrains+Mono:wght@300;400;500;600;700&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -6,48 +6,54 @@
 
 @layer base {
   :root {
-    --background: 210 40% 4%;
+    --background: 220 25% 6%;
     --foreground: 195 100% 95%;
 
-    --card: 210 35% 8%;
+    --card: 220 20% 10%;
     --card-foreground: 195 100% 95%;
 
-    --popover: 210 35% 8%;
+    --popover: 220 20% 10%;
     --popover-foreground: 195 100% 95%;
 
     --primary: 190 100% 50%;
-    --primary-foreground: 210 40% 4%;
+    --primary-foreground: 220 25% 6%;
 
     --secondary: 220 80% 55%;
     --secondary-foreground: 0 0% 100%;
 
-    --muted: 210 30% 14%;
-    --muted-foreground: 200 30% 55%;
+    --muted: 220 20% 14%;
+    --muted-foreground: 200 25% 50%;
 
     --accent: 175 100% 45%;
-    --accent-foreground: 210 40% 4%;
+    --accent-foreground: 220 25% 6%;
 
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 210 40% 98%;
 
-    --border: 200 40% 18%;
-    --input: 200 40% 18%;
+    --border: 210 30% 16%;
+    --input: 210 30% 16%;
     --ring: 190 100% 50%;
 
     --radius: 0.75rem;
 
-    /* Liquid glass theme tokens */
+    /* Liquid glass tokens */
     --liquid-cyan: 190 100% 50%;
     --liquid-blue: 220 80% 55%;
     --liquid-teal: 175 100% 45%;
-    --glass: 210 30% 12%;
-    --deep: 210 40% 6%;
-    --surface: 200 30% 18%;
+    --glass: 220 20% 12%;
+    --deep: 220 25% 6%;
+    --surface: 210 25% 18%;
+    
+    /* Glass-specific */
+    --glass-bg: 220 20% 12% / 0.4;
+    --glass-border: 190 100% 60% / 0.12;
+    --glass-highlight: 190 100% 90% / 0.08;
+    --glass-shadow: 220 60% 4% / 0.6;
     
     /* Gradients */
     --gradient-liquid: linear-gradient(135deg, hsl(175, 100%, 45%) 0%, hsl(190, 100%, 50%) 50%, hsl(220, 80%, 55%) 100%);
     --gradient-glass: linear-gradient(180deg, hsl(190, 100%, 50%) 0%, hsl(220, 80%, 45%) 100%);
-    --gradient-depth: linear-gradient(135deg, hsl(210, 40%, 4%) 0%, hsl(220, 50%, 12%) 50%, hsl(210, 40%, 4%) 100%);
+    --gradient-depth: linear-gradient(135deg, hsl(220, 25%, 6%) 0%, hsl(220, 30%, 14%) 50%, hsl(220, 25%, 6%) 100%);
     
     /* Shadows & Glows */
     --glow-liquid: 0 0 30px hsl(190, 100%, 50%, 0.5), 0 0 60px hsl(220, 80%, 55%, 0.3);
@@ -65,24 +71,24 @@
   }
 
   .dark {
-    --background: 210 40% 4%;
+    --background: 220 25% 6%;
     --foreground: 195 100% 95%;
-    --card: 210 35% 8%;
+    --card: 220 20% 10%;
     --card-foreground: 195 100% 95%;
-    --popover: 210 35% 8%;
+    --popover: 220 20% 10%;
     --popover-foreground: 195 100% 95%;
     --primary: 190 100% 50%;
-    --primary-foreground: 210 40% 4%;
+    --primary-foreground: 220 25% 6%;
     --secondary: 220 80% 55%;
     --secondary-foreground: 0 0% 100%;
-    --muted: 210 30% 14%;
-    --muted-foreground: 200 30% 55%;
+    --muted: 220 20% 14%;
+    --muted-foreground: 200 25% 50%;
     --accent: 175 100% 45%;
-    --accent-foreground: 210 40% 4%;
+    --accent-foreground: 220 25% 6%;
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 210 40% 98%;
-    --border: 200 40% 18%;
-    --input: 200 40% 18%;
+    --border: 210 30% 16%;
+    --input: 210 30% 16%;
     --ring: 190 100% 50%;
     --sidebar-background: 240 5.9% 10%;
     --sidebar-foreground: 240 4.8% 95.9%;
@@ -147,7 +153,6 @@
     background-clip: text;
   }
 
-  /* Keep old name as alias for compatibility */
   .text-gradient-fire {
     background: linear-gradient(135deg, hsl(175, 100%, 55%) 0%, hsl(190, 100%, 50%) 50%, hsl(220, 80%, 55%) 100%);
     -webkit-background-clip: text;
@@ -171,18 +176,63 @@
     background: linear-gradient(180deg, hsl(190, 100%, 50%) 0%, hsl(220, 80%, 45%) 100%);
   }
 
+  /* === SKEUOMORPHIC LIQUID GLASS PANELS === */
   .glass-panel {
-    background: hsl(210, 35%, 8% / 0.6);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    border: 1px solid hsl(190, 100%, 50% / 0.15);
+    background: hsl(220, 20%, 12% / 0.45);
+    backdrop-filter: blur(24px) saturate(1.4);
+    -webkit-backdrop-filter: blur(24px) saturate(1.4);
+    border: 1px solid hsl(190, 100%, 60% / 0.12);
+    box-shadow:
+      inset 0 1px 0 0 hsl(190, 100%, 90% / 0.06),
+      inset 0 -1px 0 0 hsl(220, 60%, 4% / 0.3),
+      0 8px 32px -8px hsl(220, 60%, 4% / 0.5),
+      0 2px 8px -2px hsl(190, 100%, 50% / 0.08);
   }
 
   .glass-panel-strong {
-    background: hsl(210, 35%, 8% / 0.8);
-    backdrop-filter: blur(30px);
-    -webkit-backdrop-filter: blur(30px);
-    border: 1px solid hsl(190, 100%, 50% / 0.25);
+    background: hsl(220, 20%, 10% / 0.6);
+    backdrop-filter: blur(40px) saturate(1.6);
+    -webkit-backdrop-filter: blur(40px) saturate(1.6);
+    border: 1px solid hsl(190, 100%, 60% / 0.18);
+    box-shadow:
+      inset 0 1px 0 0 hsl(190, 100%, 90% / 0.08),
+      inset 0 -1px 0 0 hsl(220, 60%, 4% / 0.4),
+      0 12px 48px -12px hsl(220, 60%, 4% / 0.6),
+      0 4px 16px -4px hsl(190, 100%, 50% / 0.1);
+  }
+
+  /* Deep skeuomorphic card with inset + raised feel */
+  .glass-card {
+    background: linear-gradient(
+      165deg,
+      hsl(220, 20%, 14% / 0.6) 0%,
+      hsl(220, 20%, 10% / 0.5) 50%,
+      hsl(220, 25%, 8% / 0.7) 100%
+    );
+    backdrop-filter: blur(32px) saturate(1.5);
+    -webkit-backdrop-filter: blur(32px) saturate(1.5);
+    border: 1px solid hsl(190, 100%, 60% / 0.1);
+    box-shadow:
+      inset 0 1px 0 0 hsl(190, 100%, 90% / 0.05),
+      inset 0 0 20px 0 hsl(190, 100%, 50% / 0.03),
+      0 16px 64px -16px hsl(220, 60%, 4% / 0.7),
+      0 4px 24px -8px hsl(190, 100%, 50% / 0.06);
+  }
+
+  /* Inner highlight stripe for top edge realism */
+  .glass-highlight {
+    position: relative;
+  }
+  .glass-highlight::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 10%;
+    right: 10%;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, hsl(190, 100%, 80% / 0.2), transparent);
+    border-radius: 1px;
+    pointer-events: none;
   }
 
   .glow-liquid {
@@ -220,6 +270,11 @@
   .animate-ember-rise {
     animation: bubbleRise 4s ease-out infinite;
   }
+
+  /* Code font utility */
+  .font-code {
+    font-family: 'JetBrains Mono', 'Fira Code', monospace;
+  }
 }
 
 @keyframes flicker {
@@ -251,6 +306,11 @@
     transform: translateY(-100px) scale(0) translateZ(0);
     opacity: 0;
   }
+}
+
+@keyframes codeScroll {
+  0% { transform: translateY(0); }
+  100% { transform: translateY(-50%); }
 }
 
 .scroll-smooth {
