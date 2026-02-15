@@ -2,6 +2,8 @@ import { motion } from "framer-motion";
 import { useMemo } from "react";
 import TypingEffect from "./TypingEffect";
 import CursorRipple from "./CursorRipple";
+import WaterDistortionFilter from "./WaterDistortionFilter";
+import WaterSurface from "./WaterSurface";
 import { Droplets, Users, Trophy, Calendar, MapPin, Terminal } from "lucide-react";
 
 // Floating code snippets that drift behind the content
@@ -82,44 +84,44 @@ const HeroSection = () => {
 
   return (
     <section id="hero-section" className="relative min-h-screen flex items-center justify-center overflow-hidden">
+      {/* SVG Filters for realistic water */}
+      <WaterDistortionFilter />
+      
       {/* Cursor ripple effect */}
       <CursorRipple />
       
-      {/* Deep liquid background */}
+      {/* Deep underwater background with distortion */}
       <div className="absolute inset-0 z-0" style={{
         background: `
           radial-gradient(ellipse 140% 80% at 50% 110%, hsl(220, 40%, 12%) 0%, transparent 60%),
-          radial-gradient(ellipse 80% 60% at 20% 80%, hsl(190, 80%, 15% / 0.4) 0%, transparent 50%),
-          radial-gradient(ellipse 80% 60% at 80% 20%, hsl(220, 60%, 15% / 0.3) 0%, transparent 50%),
+          radial-gradient(ellipse 80% 60% at 20% 80%, hsl(190, 80%, 15% / 0.5) 0%, transparent 50%),
+          radial-gradient(ellipse 80% 60% at 80% 20%, hsl(220, 60%, 15% / 0.4) 0%, transparent 50%),
+          radial-gradient(ellipse 60% 40% at 50% 50%, hsl(195, 50%, 10% / 0.6) 0%, transparent 60%),
           hsl(220, 25%, 6%)
         `,
       }} />
 
-      {/* Underwater caustic light patterns */}
-      <motion.div
-        className="absolute inset-0 z-[1]"
-        style={{
-          background: `
-            radial-gradient(ellipse 50% 30% at 30% 70%, hsl(190, 100%, 50% / 0.08) 0%, transparent 60%),
-            radial-gradient(ellipse 40% 25% at 70% 40%, hsl(175, 100%, 50% / 0.06) 0%, transparent 50%)
-          `,
-        }}
-        animate={{ opacity: [0.5, 0.8, 0.5], scale: [1, 1.05, 1] }}
-        transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
-      />
+      {/* Realistic animated water surface with caustics */}
+      <WaterSurface />
 
-      {/* Animated liquid orbs */}
+      {/* Animated liquid orbs with water distortion */}
       <motion.div
         className="absolute w-[600px] h-[600px] rounded-full blur-[100px] will-animate"
-        style={{ left: '15%', top: '20%', background: 'radial-gradient(circle, hsl(190, 100%, 40% / 0.15), transparent 70%)' }}
+        style={{ left: '15%', top: '20%', background: 'radial-gradient(circle, hsl(190, 100%, 40% / 0.18), transparent 70%)', filter: 'url(#water-distortion)' }}
         animate={{ x: [0, 60, 0], y: [0, -40, 0], scale: [1, 1.3, 1] }}
         transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
       />
       <motion.div
         className="absolute w-[500px] h-[500px] rounded-full blur-[80px] will-animate"
-        style={{ right: '10%', bottom: '15%', background: 'radial-gradient(circle, hsl(220, 80%, 40% / 0.12), transparent 70%)' }}
+        style={{ right: '10%', bottom: '15%', background: 'radial-gradient(circle, hsl(220, 80%, 40% / 0.15), transparent 70%)', filter: 'url(#water-distortion)' }}
         animate={{ x: [0, -50, 0], y: [0, 50, 0], scale: [1.2, 0.9, 1.2] }}
         transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
+      />
+      <motion.div
+        className="absolute w-[400px] h-[400px] rounded-full blur-[90px] will-animate"
+        style={{ left: '50%', top: '40%', transform: 'translate(-50%, -50%)', background: 'radial-gradient(circle, hsl(195, 90%, 45% / 0.1), transparent 65%)', filter: 'url(#water-distortion)' }}
+        animate={{ scale: [0.8, 1.2, 0.8], opacity: [0.4, 0.8, 0.4] }}
+        transition={{ duration: 12, repeat: Infinity, ease: "easeInOut" }}
       />
 
       {/* Code rain columns */}
@@ -289,10 +291,10 @@ const HeroSection = () => {
               whileHover={{ scale: 1.05, y: -5 }}
               className="relative group"
             >
-              <div className="glass-card glass-highlight rounded-xl p-4 text-center transition-all duration-300 hover:border-primary/30">
+              <div className="glass-card glass-highlight glass-condensation rounded-xl p-4 text-center transition-all duration-300 hover:border-primary/30">
                 <motion.div
                   className="absolute inset-0 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"
-                  style={{ background: 'radial-gradient(circle at center, hsl(190, 100%, 50% / 0.08), transparent 70%)' }}
+                  style={{ background: 'radial-gradient(circle at center, hsl(190, 100%, 50% / 0.1), transparent 70%)' }}
                 />
                 <stat.icon className="w-6 h-6 mx-auto mb-2 text-primary" />
                 <p className="text-2xl md:text-3xl font-display font-black text-gradient-liquid">{stat.value}</p>
