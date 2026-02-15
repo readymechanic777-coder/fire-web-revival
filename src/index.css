@@ -176,50 +176,90 @@
     background: linear-gradient(180deg, hsl(190, 100%, 50%) 0%, hsl(220, 80%, 45%) 100%);
   }
 
-  /* === SKEUOMORPHIC LIQUID GLASS PANELS === */
+  /* === REALISTIC LIQUID GLASS PANELS === */
   .glass-panel {
-    background: hsl(220, 20%, 12% / 0.45);
-    backdrop-filter: blur(24px) saturate(1.4);
-    -webkit-backdrop-filter: blur(24px) saturate(1.4);
-    border: 1px solid hsl(190, 100%, 60% / 0.12);
+    background: linear-gradient(
+      145deg,
+      hsl(200, 30%, 18% / 0.35) 0%,
+      hsl(220, 20%, 12% / 0.45) 40%,
+      hsl(210, 25%, 10% / 0.5) 100%
+    );
+    backdrop-filter: blur(40px) saturate(1.8) brightness(1.1);
+    -webkit-backdrop-filter: blur(40px) saturate(1.8) brightness(1.1);
+    border: 1px solid hsl(190, 100%, 70% / 0.15);
     box-shadow:
-      inset 0 1px 0 0 hsl(190, 100%, 90% / 0.06),
-      inset 0 -1px 0 0 hsl(220, 60%, 4% / 0.3),
-      0 8px 32px -8px hsl(220, 60%, 4% / 0.5),
-      0 2px 8px -2px hsl(190, 100%, 50% / 0.08);
+      inset 0 1px 0 0 hsl(190, 100%, 90% / 0.12),
+      inset 0 -1px 0 0 hsl(220, 60%, 4% / 0.4),
+      inset 1px 0 0 0 hsl(190, 100%, 80% / 0.05),
+      inset -1px 0 0 0 hsl(220, 60%, 30% / 0.05),
+      0 8px 32px -8px hsl(220, 60%, 4% / 0.6),
+      0 2px 8px -2px hsl(190, 100%, 50% / 0.1),
+      0 0 0 0.5px hsl(190, 100%, 60% / 0.08);
   }
 
   .glass-panel-strong {
-    background: hsl(220, 20%, 10% / 0.6);
-    backdrop-filter: blur(40px) saturate(1.6);
-    -webkit-backdrop-filter: blur(40px) saturate(1.6);
-    border: 1px solid hsl(190, 100%, 60% / 0.18);
+    background: linear-gradient(
+      150deg,
+      hsl(195, 40%, 20% / 0.45) 0%,
+      hsl(220, 20%, 10% / 0.6) 50%,
+      hsl(215, 30%, 8% / 0.65) 100%
+    );
+    backdrop-filter: blur(60px) saturate(2) brightness(1.15);
+    -webkit-backdrop-filter: blur(60px) saturate(2) brightness(1.15);
+    border: 1px solid hsl(190, 100%, 60% / 0.22);
     box-shadow:
-      inset 0 1px 0 0 hsl(190, 100%, 90% / 0.08),
-      inset 0 -1px 0 0 hsl(220, 60%, 4% / 0.4),
-      0 12px 48px -12px hsl(220, 60%, 4% / 0.6),
-      0 4px 16px -4px hsl(190, 100%, 50% / 0.1);
+      inset 0 2px 0 0 hsl(190, 100%, 90% / 0.15),
+      inset 0 -1px 0 0 hsl(220, 60%, 4% / 0.5),
+      inset 2px 0 0 0 hsl(190, 100%, 80% / 0.06),
+      inset -2px 0 0 0 hsl(220, 60%, 30% / 0.06),
+      0 16px 64px -16px hsl(220, 60%, 4% / 0.7),
+      0 4px 16px -4px hsl(190, 100%, 50% / 0.12),
+      0 0 80px -20px hsl(190, 100%, 50% / 0.08);
   }
 
-  /* Deep skeuomorphic card with inset + raised feel */
+  /* Deep skeuomorphic card with refraction-like depth */
   .glass-card {
     background: linear-gradient(
       165deg,
-      hsl(220, 20%, 14% / 0.6) 0%,
-      hsl(220, 20%, 10% / 0.5) 50%,
-      hsl(220, 25%, 8% / 0.7) 100%
+      hsl(200, 25%, 18% / 0.5) 0%,
+      hsl(220, 20%, 12% / 0.55) 30%,
+      hsl(215, 25%, 10% / 0.6) 60%,
+      hsl(220, 30%, 8% / 0.65) 100%
     );
-    backdrop-filter: blur(32px) saturate(1.5);
-    -webkit-backdrop-filter: blur(32px) saturate(1.5);
-    border: 1px solid hsl(190, 100%, 60% / 0.1);
+    backdrop-filter: blur(48px) saturate(1.8) brightness(1.08);
+    -webkit-backdrop-filter: blur(48px) saturate(1.8) brightness(1.08);
+    border: 1px solid hsl(190, 100%, 60% / 0.14);
     box-shadow:
-      inset 0 1px 0 0 hsl(190, 100%, 90% / 0.05),
-      inset 0 0 20px 0 hsl(190, 100%, 50% / 0.03),
-      0 16px 64px -16px hsl(220, 60%, 4% / 0.7),
-      0 4px 24px -8px hsl(190, 100%, 50% / 0.06);
+      inset 0 1px 0 0 hsl(190, 100%, 90% / 0.1),
+      inset 0 0 30px 0 hsl(190, 100%, 50% / 0.04),
+      inset 0 -20px 40px -20px hsl(220, 60%, 4% / 0.3),
+      0 20px 80px -20px hsl(220, 60%, 4% / 0.7),
+      0 4px 24px -8px hsl(190, 100%, 50% / 0.08),
+      0 0 0 0.5px hsl(190, 100%, 60% / 0.06);
+    position: relative;
+    overflow: hidden;
   }
 
-  /* Inner highlight stripe for top edge realism */
+  /* Realistic glass surface reflection */
+  .glass-card::after {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: linear-gradient(
+      135deg,
+      transparent 40%,
+      hsl(190, 100%, 90% / 0.04) 45%,
+      hsl(190, 100%, 80% / 0.06) 48%,
+      transparent 52%
+    );
+    pointer-events: none;
+    transform: rotate(-15deg);
+  }
+
+  /* Glass highlight with condensation effect */
   .glass-highlight {
     position: relative;
   }
@@ -227,12 +267,41 @@
     content: '';
     position: absolute;
     top: 0;
-    left: 10%;
-    right: 10%;
+    left: 5%;
+    right: 5%;
     height: 1px;
-    background: linear-gradient(90deg, transparent, hsl(190, 100%, 80% / 0.2), transparent);
+    background: linear-gradient(
+      90deg, 
+      transparent 0%, 
+      hsl(190, 100%, 85% / 0.08) 15%,
+      hsl(190, 100%, 90% / 0.25) 30%,
+      hsl(190, 100%, 95% / 0.35) 50%,
+      hsl(190, 100%, 90% / 0.25) 70%,
+      hsl(190, 100%, 85% / 0.08) 85%,
+      transparent 100%
+    );
     border-radius: 1px;
     pointer-events: none;
+    z-index: 1;
+  }
+
+  /* Water condensation droplets on glass */
+  .glass-condensation {
+    position: relative;
+  }
+  .glass-condensation::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: 
+      radial-gradient(circle 2px at 15% 20%, hsl(190, 100%, 80% / 0.15) 0%, transparent 100%),
+      radial-gradient(circle 1.5px at 35% 45%, hsl(190, 100%, 80% / 0.1) 0%, transparent 100%),
+      radial-gradient(circle 3px at 72% 30%, hsl(190, 100%, 80% / 0.12) 0%, transparent 100%),
+      radial-gradient(circle 1px at 88% 65%, hsl(190, 100%, 80% / 0.08) 0%, transparent 100%),
+      radial-gradient(circle 2.5px at 50% 80%, hsl(190, 100%, 80% / 0.1) 0%, transparent 100%),
+      radial-gradient(circle 1.5px at 25% 70%, hsl(190, 100%, 80% / 0.1) 0%, transparent 100%);
+    pointer-events: none;
+    z-index: 1;
   }
 
   .glow-liquid {
