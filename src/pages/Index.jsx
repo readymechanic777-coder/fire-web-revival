@@ -1,3 +1,4 @@
+import { useState, useEffect } from "react";
 import Navbar from "@/components/Navbar";
 import HeroSection from "@/components/HeroSection";
 import AboutSection from "@/components/AboutSection";
@@ -10,12 +11,30 @@ import ScheduleSection from "@/components/ScheduleSection";
 import FAQSection from "@/components/FAQSection";
 import WelcomeSection from "@/components/WelcomeSection";
 import Footer from "@/components/Footer";
+import OceanScene from "@/components/ocean/OceanScene";
+import OceanDepthOverlay from "@/components/ocean/OceanDepthOverlay";
 
 const Index = () => {
+  const [scrollProgress, setScrollProgress] = useState(0);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const scrollTop = window.scrollY;
+      const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+      setScrollProgress(docHeight > 0 ? scrollTop / docHeight : 0);
+    };
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
   return (
-    <div className="min-h-screen bg-background scroll-smooth overflow-x-hidden">
+    <div className="min-h-screen scroll-smooth overflow-x-hidden relative">
+      {/* Ocean background layers */}
+      <OceanDepthOverlay scrollProgress={scrollProgress} />
+      <OceanScene scrollProgress={scrollProgress} />
+      
       <Navbar />
-      <main className="contain-paint">
+      <main className="contain-paint relative z-[5]">
         <HeroSection />
         <AboutSection />
         <ThemesSection />
