@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
 import { useMemo } from "react";
 import TypingEffect from "./TypingEffect";
-import CursorRipple from "./CursorRipple";
+// CursorRipple moved to global level in Index.jsx
 import WaterDistortionFilter from "./WaterDistortionFilter";
 import WaterSurface from "./WaterSurface";
 import GlassWaterDroplets from "./GlassWaterDroplets";
@@ -89,8 +89,7 @@ const HeroSection = () => {
       {/* SVG Filters for realistic water */}
       <WaterDistortionFilter />
       
-      {/* Cursor ripple effect */}
-      <CursorRipple />
+      {/* Cursor ripple is now global */}
       
       {/* Deep underwater background with distortion */}
       <div className="absolute inset-0 z-0" style={{

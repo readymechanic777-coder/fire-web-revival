@@ -13,6 +13,7 @@ import WelcomeSection from "@/components/WelcomeSection";
 import Footer from "@/components/Footer";
 import OceanScene from "@/components/ocean/OceanScene";
 import OceanDepthOverlay from "@/components/ocean/OceanDepthOverlay";
+import CursorRipple from "@/components/CursorRipple";
 
 const Index = () => {
   const [scrollProgress, setScrollProgress] = useState(0);
@@ -29,6 +30,9 @@ const Index = () => {
 
   return (
     <div className="min-h-screen scroll-smooth overflow-x-hidden relative">
+      {/* Global cursor water ripple effect */}
+      <CursorRipple />
+      
       {/* Ocean background layers */}
       <OceanDepthOverlay scrollProgress={scrollProgress} />
       <OceanScene scrollProgress={scrollProgress} />
