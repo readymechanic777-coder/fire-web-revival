@@ -1,6 +1,32 @@
 import { motion } from "framer-motion";
 import { fadeIn, textVariant, zoomIn } from "@/lib/motion";
 import { Code, Lightbulb, Trophy, Users, Droplets } from "lucide-react";
+import { useMemo } from "react";
+
+const fishSVG = (color, flip = false) => (
+  <svg viewBox="0 0 64 32" fill="none" className="w-full h-full" style={{ transform: flip ? 'scaleX(-1)' : 'none' }}>
+    <ellipse cx="28" cy="16" rx="18" ry="10" fill={color} opacity="0.85" />
+    <polygon points={flip ? "10,16 0,6 0,26" : "46,16 58,6 58,26"} fill={color} opacity="0.7" />
+    <circle cx={flip ? "36" : "20"} cy="13" r="2.5" fill="white" opacity="0.9" />
+    <circle cx={flip ? "36" : "20"} cy="13" r="1.2" fill="#0a1628" />
+    <polygon points={flip ? "22,6 18,2 16,8" : "30,6 34,2 36,8"} fill={color} opacity="0.6" />
+  </svg>
+);
+
+const SwimmingFish = ({ delay, duration, y, size, color, direction }) => {
+  const flip = direction === "right";
+  return (
+    <motion.div
+      className="absolute pointer-events-none"
+      style={{ top: y, width: size, height: size * 0.5 }}
+      initial={{ x: flip ? "calc(100vw + 80px)" : "-120px", opacity: 0 }}
+      animate={{ x: flip ? "-120px" : "calc(100vw + 80px)", opacity: [0, 1, 1, 1, 0] }}
+      transition={{ duration, delay, repeat: Infinity, ease: "linear" }}
+    >
+      {fishSVG(color, flip)}
+    </motion.div>
+  );
+};
 
 const features = [
   { icon: Code, title: "48-Hour Coding Sprint", description: "Non-stop innovation and development" },
@@ -9,9 +35,24 @@ const features = [
   { icon: Trophy, title: "Exciting Prizes", description: "Recognition and rewards for winners" },
 ];
 
+const fishConfigs = [
+  { delay: 0, duration: 12, y: "10%", size: 48, color: "hsl(190, 100%, 50%)", direction: "left" },
+  { delay: 2, duration: 15, y: "30%", size: 36, color: "hsl(175, 100%, 45%)", direction: "right" },
+  { delay: 4, duration: 10, y: "55%", size: 56, color: "hsl(220, 80%, 55%)", direction: "left" },
+  { delay: 1, duration: 18, y: "75%", size: 32, color: "hsl(190, 80%, 60%)", direction: "right" },
+  { delay: 6, duration: 14, y: "20%", size: 40, color: "hsl(175, 80%, 55%)", direction: "left" },
+  { delay: 3, duration: 11, y: "85%", size: 44, color: "hsl(200, 90%, 50%)", direction: "right" },
+  { delay: 8, duration: 16, y: "45%", size: 28, color: "hsl(190, 100%, 65%)", direction: "left" },
+  { delay: 5, duration: 13, y: "65%", size: 52, color: "hsl(210, 70%, 50%)", direction: "right" },
+];
+
 const AboutSection = () => {
   return (
     <section className="relative py-20 md:py-32 overflow-hidden" id="about">
+      {/* Swimming fish from left and right */}
+      {fishConfigs.map((fish, i) => (
+        <SwimmingFish key={i} {...fish} />
+      ))}
       <div className="absolute inset-0 bg-gradient-to-b from-background via-deep to-background" />
       
       <div className="relative z-10 container mx-auto px-4">
