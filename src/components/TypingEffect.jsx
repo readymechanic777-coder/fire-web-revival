@@ -1,105 +1,102 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-
+import ParticleAvishkaar from "./ParticleAvishkaar";
+import ReadableParticleLoader from "./ReadableParticleLoader";
 const avishkaarLanguages = [
-  { text: "AVISHKAAR", language: "English" },
-  { text: "आविष्कार", language: "Hindi" },
-  { text: "ஆவிஷ்கார்", language: "Tamil" },
-  { text: "ఆవిష్కార్", language: "Telugu" },
-  { text: "আবিষ্কার", language: "Bengali" },
-  { text: "ಆವಿಷ್ಕಾರ್", language: "Kannada" },
-  { text: "ആവിഷ്കാർ", language: "Malayalam" },
-  { text: "આવિષ્કાર", language: "Gujarati" },
-  { text: "ਆਵਿਸ਼ਕਾਰ", language: "Punjabi" },
-  { text: "ଆଭିଷ୍କାର", language: "Odia" },
-  { text: "आविष्कार", language: "Marathi" },
+    { text: "AVISHKAAR", language: "English" },
+    { text: "आविष्कार", language: "Hindi" },
+    { text: "ஆவிஷ்கார்", language: "Tamil" },
+    { text: "ఆవిష్కార్", language: "Telugu" },
+    { text: "আবিষ্কার", language: "Bengali" },
+    { text: "ಆವಿಷ್ಕಾರ್", language: "Kannada" },
+    { text: "ആവിഷ്കാർ", language: "Malayalam" },
+    { text: "આવિષ્કાર", language: "Gujarati" },
+    { text: "ਆਵਿਸ਼ਕਾਰ", language: "Punjabi" },
+    { text: "ଆଭିଷ୍କାର", language: "Odia" },
+    { text: "आविष्कार", language: "Marathi" },
 ];
-
 const TypingEffect = () => {
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const [displayText, setDisplayText] = useState("");
-  const [isDeleting, setIsDeleting] = useState(false);
-  const [showCursor, setShowCursor] = useState(true);
+    const [currentIndex, setCurrentIndex] = useState(0);
+    const [displayText, setDisplayText] = useState("");
+    const [isDeleting, setIsDeleting] = useState(false);
+    const currentWord = avishkaarLanguages[currentIndex].text;
+    useEffect(() => {
+        const handleTyping = () => {
+            if (!isDeleting) {
+                if (displayText.length < currentWord.length) {
+                    setDisplayText(currentWord.slice(0, displayText.length + 1));
+                }
+                else {
+                    // CHANGE HERE: Time the text stays on the display
+                    setTimeout(() => setIsDeleting(true), 4000);
+                    return;
+                }
+            }
+            else {
+                if (displayText.length > 0) {
+                    setDisplayText(currentWord.slice(0, displayText.length - 1));
+                }
+                else {
+                    setIsDeleting(false);
+                    setCurrentIndex((prev) => (prev + 1) % avishkaarLanguages.length);
+                }
+            }
+        };
+        // CHANGE HERE: Time between text transforms (Speed of typing/deleting, lower = faster)
+        const baseSpeed = isDeleting ? 10 : 10;
+        const jitter = Math.random() * 20 - 10;
+        const timer = setTimeout(handleTyping, baseSpeed + jitter);
+        return () => clearTimeout(timer);
+    }, [displayText, isDeleting, currentWord]);
+    return (
+        <div className="relative w-full h-[150px] md:h-[250px] flex items-center justify-center">
 
-  const currentWord = avishkaarLanguages[currentIndex].text;
-  const typingSpeed = isDeleting ? 50 : 100;
+            <svg className="absolute w-0 h-0">
+                <defs>
+                    <filter id="waterTextFilterTyping">
+                        <feTurbulence type="fractalNoise" baseFrequency="0.015 0.04" numOctaves="3" seed="3" result="noise">
+                            <animate attributeName="baseFrequency" values="0.015 0.04;0.02 0.06;0.015 0.04" dur="4s" repeatCount="indefinite" />
+                        </feTurbulence>
+                        <feDisplacementMap in="SourceGraphic" in2="noise" scale="6" xChannelSelector="R" yChannelSelector="G" />
+                    </filter>
+                </defs>
+            </svg>
 
-  useEffect(() => {
-    const cursorInterval = setInterval(() => {
-      setShowCursor((prev) => !prev);
-    }, 530);
-    return () => clearInterval(cursorInterval);
-  }, []);
+            <div className="absolute inset-0 flex items-center justify-center z-10 pointer-events-none">
+                <div className="absolute inset-0 flex justify-center mt-[-10px] sm:mt-0">
+                    {[...Array(5)].map((_, i) => (
+                        <motion.div
+                            key={`drip-${i}`}
+                            className="absolute rounded-full"
+                            style={{
+                                width: 3 + Math.random() * 3,
+                                height: 8 + Math.random() * 10,
+                                left: `${25 + i * 12}%`,
+                                top: '40%',
+                                background: 'linear-gradient(to bottom, hsl(195, 100%, 70% / 0.8), hsl(195, 100%, 50% / 0.3))',
+                                borderRadius: '50% 50% 50% 50% / 30% 30% 70% 70%',
+                            }}
+                            animate={{
+                                y: [0, 30, 50],
+                                opacity: [0.8, 0.5, 0],
+                                scaleY: [1, 1.5, 0.5],
+                            }}
+                            transition={{
+                                duration: 1.5 + Math.random(),
+                                repeat: Infinity,
+                                delay: i * 0.6 + Math.random() * 0.5,
+                                ease: "easeIn",
+                                repeatDelay: 1 + Math.random() * 2,
+                            }}
+                        />
+                    ))}
+                </div>
+            </div>
 
-  useEffect(() => {
-    const handleTyping = () => {
-      if (!isDeleting) {
-        if (displayText.length < currentWord.length) {
-          setDisplayText(currentWord.slice(0, displayText.length + 1));
-        } else {
-          setTimeout(() => setIsDeleting(true), 2000);
-          return;
-        }
-      } else {
-        if (displayText.length > 0) {
-          setDisplayText(currentWord.slice(0, displayText.length - 1));
-        } else {
-          setIsDeleting(false);
-          setCurrentIndex((prev) => (prev + 1) % avishkaarLanguages.length);
-        }
-      }
-    };
-
-    const timer = setTimeout(handleTyping, typingSpeed);
-    return () => clearTimeout(timer);
-  }, [displayText, isDeleting, currentWord, typingSpeed]);
-
-  return (
-    <div className="flex flex-col items-center">
-      <div className="relative min-h-[100px] md:min-h-[140px] flex items-center justify-center">
-        <motion.span
-          key={currentIndex}
-          className="relative text-5xl md:text-7xl lg:text-9xl font-display font-black text-gradient-liquid"
-          initial={{ opacity: 0, scale: 0.8 }}
-          animate={{ 
-            opacity: 1, 
-            scale: 1,
-            filter: [
-              "drop-shadow(0 0 20px hsl(190 100% 50% / 0.8)) drop-shadow(0 0 60px hsl(190 100% 50% / 0.4))",
-              "drop-shadow(0 0 40px hsl(175 100% 55% / 0.9)) drop-shadow(0 0 80px hsl(175 100% 55% / 0.5))",
-              "drop-shadow(0 0 25px hsl(220 80% 55% / 0.7)) drop-shadow(0 0 50px hsl(220 80% 55% / 0.3))",
-              "drop-shadow(0 0 35px hsl(190 100% 50% / 0.85)) drop-shadow(0 0 70px hsl(190 100% 50% / 0.45))",
-              "drop-shadow(0 0 20px hsl(190 100% 50% / 0.8)) drop-shadow(0 0 60px hsl(190 100% 50% / 0.4))",
-            ]
-          }}
-          exit={{ opacity: 0, scale: 0.8 }}
-          transition={{ 
-            duration: 0.3,
-            filter: { duration: 0.8, repeat: Infinity, ease: "easeInOut" }
-          }}
-        >
-          {displayText}
-          <span
-            className={`inline-block w-1 md:w-2 h-12 md:h-20 bg-primary ml-1 ${
-              showCursor ? "opacity-100" : "opacity-0"
-            }`}
-          />
-        </motion.span>
-      </div>
-      <AnimatePresence mode="wait">
-        <motion.span
-          key={avishkaarLanguages[currentIndex].language}
-          initial={{ opacity: 0, y: 10, scale: 0.9 }}
-          animate={{ opacity: 1, y: 0, scale: 1 }}
-          exit={{ opacity: 0, y: -10, scale: 0.9 }}
-          transition={{ duration: 0.3 }}
-          className="text-sm md:text-base text-muted-foreground font-display uppercase tracking-widest mt-2"
-        >
-          {avishkaarLanguages[currentIndex].language}
-        </motion.span>
-      </AnimatePresence>
-    </div>
-  );
+            <div className="relative z-10 w-full h-full flex items-center justify-center pointer-events-none">
+                <ParticleAvishkaar text={displayText} />
+            </div>
+        </div>
+    );
 };
-
 export default TypingEffect;
