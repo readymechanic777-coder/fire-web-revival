@@ -85,6 +85,13 @@ const FAQSection = () => {
 
   return (<section ref={ref} className="relative py-24 overflow-hidden min-h-[50vh]" id="faq">
     <FloatingParticles count={40} />
+    <SwimmingFish configs={[
+      { y: "10%", color: "hsl(200, 90%, 60%)", size: 40, duration: 15, delay: 0, flip: true },
+      { y: "35%", color: "hsl(50, 85%, 55%)", size: 34, duration: 12, delay: 2, flip: false },
+      { y: "60%", color: "hsl(320, 75%, 58%)", size: 46, duration: 17, delay: 4, flip: true },
+      { y: "80%", color: "hsl(170, 80%, 48%)", size: 30, duration: 10, delay: 1, flip: false },
+      { y: "50%", color: "hsl(260, 70%, 60%)", size: 38, duration: 14, delay: 6, flip: true },
+    ]} />
 
     <motion.div className="absolute top-1/4 left-0 w-[400px] h-[400px] pointer-events-none" style={{
       background: 'radial-gradient(circle, hsl(195, 100%, 50% / 0.1), transparent 70%)',

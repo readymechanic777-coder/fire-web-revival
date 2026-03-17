@@ -836,7 +836,15 @@ const HackathonSection = () => {
   ];
 
   return (<section className="relative py-20 md:py-32 overflow-hidden min-h-[50vh]" id="hackathon">
-    <FloatingParticles count={50} />      <div className="relative z-10 container mx-auto px-4">
+    <FloatingParticles count={50} />
+    <SwimmingFish configs={[
+      { y: "8%", color: "hsl(185, 90%, 55%)", size: 42, duration: 13, delay: 0, flip: true },
+      { y: "25%", color: "hsl(25, 85%, 58%)", size: 36, duration: 15, delay: 2, flip: false },
+      { y: "55%", color: "hsl(310, 75%, 55%)", size: 48, duration: 18, delay: 4, flip: true },
+      { y: "78%", color: "hsl(120, 80%, 48%)", size: 32, duration: 11, delay: 1, flip: false },
+      { y: "92%", color: "hsl(210, 85%, 60%)", size: 34, duration: 14, delay: 5, flip: true },
+    ]} />
+    <div className="relative z-10 container mx-auto px-4">
 
       <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="text-center mb-4">
         <h2 className="text-3xl md:text-5xl font-display font-black text-cyan-400 drop-shadow-[0_0_10px_rgba(34,211,238,0.8)]">
