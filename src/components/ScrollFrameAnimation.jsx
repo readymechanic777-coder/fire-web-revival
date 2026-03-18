@@ -14,8 +14,6 @@ const ScrollFrameAnimation = ({ children }) => {
   const videoRef = useRef(null);
   const heroOverlayRef = useRef(null);
   const dimOverlayRef = useRef(null);
-  const heroRevealedRef = useRef(false);
-  const [heroRevealed, setHeroRevealed] = useState(false);
   const [videoReady, setVideoReady] = useState(false);
 
   useEffect(() => {
