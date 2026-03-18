@@ -3,6 +3,7 @@ import { useRef } from "react";
 import TypingEffect from "./TypingEffect";
 import FloatingParticles from "./FloatingParticles";
 import OceanFloor3D from "./OceanFloor3D";
+import Fish3DOverlay from "./Fish3DOverlay";
 
 const WelcomeSection = () => {
   const ref = useRef(null);
