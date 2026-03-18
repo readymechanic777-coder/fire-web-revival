@@ -1,93 +1,37 @@
 import { useEffect, useRef, useState } from "react";
-import { gsap } from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { motion } from "framer-motion";
 
-gsap.registerPlugin(ScrollTrigger);
-
-const PIN_SCROLL_DISTANCE = 3.5;
-const HERO_START = 0.85;
-const HERO_FULL = 0.96;
-
 const ScrollFrameAnimation = ({ children }) => {
-  const sectionRef = useRef(null);
   const videoRef = useRef(null);
-  const heroOverlayRef = useRef(null);
-  const dimOverlayRef = useRef(null);
+  const [videoEnded, setVideoEnded] = useState(false);
   const [videoReady, setVideoReady] = useState(false);
 
   useEffect(() => {
     const video = videoRef.current;
     if (!video) return;
 
-    const onLoaded = () => {
+    const onReady = () => {
       setVideoReady(true);
+      video.play().catch(() => {});
     };
 
-    if (video.readyState >= 2) {
-      onLoaded();
-    } else {
-      video.addEventListener("loadeddata", onLoaded);
-    }
+    const onEnded = () => setVideoEnded(true);
 
-    return () => video.removeEventListener("loadeddata", onLoaded);
+    if (video.readyState >= 2) {
+      onReady();
+    } else {
+      video.addEventListener("canplaythrough", onReady);
+    }
+    video.addEventListener("ended", onEnded);
+
+    return () => {
+      video.removeEventListener("canplaythrough", onReady);
+      video.removeEventListener("ended", onEnded);
+    };
   }, []);
 
-  useEffect(() => {
-    if (!videoReady) return;
-    const video = videoRef.current;
-    if (!video || !video.duration) return;
-
-    const st = ScrollTrigger.create({
-      trigger: sectionRef.current,
-      start: "top top",
-      end: () => `+=${window.innerHeight * PIN_SCROLL_DISTANCE}`,
-      pin: true,
-      pinSpacing: true,
-      anticipatePin: 1,
-      onUpdate: (self) => {
-        const progress = self.progress;
-
-        // Scrub video based on scroll
-        const videoProgress = Math.min(progress / HERO_START, 1);
-        video.currentTime = videoProgress * video.duration;
-
-        // Hero overlay fade-in
-        if (heroOverlayRef.current) {
-          let opacity = 0;
-          if (progress >= HERO_START) {
-            opacity = Math.min((progress - HERO_START) / (HERO_FULL - HERO_START), 1);
-          }
-          heroOverlayRef.current.style.opacity = opacity;
-        }
-
-        // Dark dim overlay
-        if (dimOverlayRef.current) {
-          if (progress >= HERO_START) {
-            const dim = Math.min((progress - HERO_START) / (HERO_FULL - HERO_START), 1);
-            dimOverlayRef.current.style.opacity = dim;
-          } else {
-            dimOverlayRef.current.style.opacity = 0;
-          }
-        }
-
-        // Hero reveal via visibility (no conditional render to avoid DOM conflicts with GSAP pin)
-        if (heroOverlayRef.current) {
-          heroOverlayRef.current.style.visibility = progress >= HERO_START - 0.02 ? "visible" : "hidden";
-        }
-      },
-    });
-
-    return () => st.kill();
-  }, [videoReady]);
-
   return (
-    <section
-      ref={sectionRef}
-      className="relative w-full h-screen overflow-hidden"
-      style={{ zIndex: 1 }}
-      id="scroll-animation"
-    >
+    <section className="relative w-full min-h-screen overflow-hidden" id="scroll-animation">
       {/* Deep ocean gradient behind video */}
       <div
         className="absolute inset-0 z-0"
@@ -97,15 +41,29 @@ const ScrollFrameAnimation = ({ children }) => {
         }}
       />
 
-      {/* Video background */}
-      <video
-        ref={videoRef}
-        src="/videos/hero-bg.mp4"
-        muted
-        playsInline
-        preload="auto"
-        className="absolute inset-0 z-10 w-full h-full object-cover"
-        style={{ display: videoReady ? "block" : "none" }}
+      {/* Video background - fixed during playback, then static last frame */}
+      <div className={`${videoEnded ? "absolute" : "fixed"} inset-0 z-10`}>
+        <video
+          ref={videoRef}
+          src="/videos/hero-bg.mp4"
+          muted
+          playsInline
+          preload="auto"
+          className="w-full h-full object-cover"
+          style={{ display: videoReady ? "block" : "none" }}
+        />
+      </div>
+
+      {/* Dark dim overlay - fades in when video ends */}
+      <motion.div
+        className="absolute inset-0 pointer-events-none z-[15]"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: videoEnded ? 1 : 0 }}
+        transition={{ duration: 1.2 }}
+        style={{
+          background:
+            "linear-gradient(180deg, rgba(2,6,23,0.7) 0%, rgba(3,43,67,0.6) 25%, rgba(1,22,39,0.65) 50%, rgba(1,22,39,0.85) 75%, #011627 100%)",
+        }}
       />
 
       {/* Bubbles overlay */}
@@ -137,25 +95,20 @@ const ScrollFrameAnimation = ({ children }) => {
         ))}
       </div>
 
-      {/* Dark dim overlay */}
-      <div
-        ref={dimOverlayRef}
-        className="absolute inset-0 pointer-events-none"
-        style={{ opacity: 0, zIndex: 15, background: "linear-gradient(180deg, rgba(2,6,23,0.7) 0%, rgba(3,43,67,0.6) 25%, rgba(1,22,39,0.65) 50%, rgba(1,22,39,0.85) 75%, #011627 100%)" }}
-      />
-
-      {/* Hero content overlay - always rendered, visibility toggled to avoid React/GSAP DOM conflict */}
-      <div
-        ref={heroOverlayRef}
-        className="absolute inset-0 z-30"
-        style={{ opacity: 0, visibility: "hidden" }}
+      {/* Hero content - appears after video ends */}
+      <motion.div
+        className="relative z-30 min-h-screen"
+        initial={{ opacity: 0, y: 30 }}
+        animate={videoEnded ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
+        transition={{ duration: 1, delay: 0.3 }}
+        style={{ pointerEvents: videoEnded ? "auto" : "none" }}
       >
         {children}
-      </div>
+      </motion.div>
 
       {/* Loading overlay */}
       {!videoReady && (
-        <div className="absolute inset-0 z-40 flex flex-col items-center justify-center bg-background/90 backdrop-blur-md">
+        <div className="fixed inset-0 z-40 flex flex-col items-center justify-center bg-background/90 backdrop-blur-md">
           <div className="w-12 h-12 border-2 border-cyan-400/30 border-t-cyan-400 rounded-full animate-spin mb-4" />
           <p className="text-sm font-display text-cyan-300 tracking-widest uppercase">
             Loading…
