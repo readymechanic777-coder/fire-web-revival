@@ -202,7 +202,7 @@ const ReadableParticleLoader = () => {
             window.removeEventListener('mousemove', onMouseMove);
             window.removeEventListener('mouseout', onMouseOut);
             window.removeEventListener('resize', handleResize);
-            if (container.contains(renderer.domElement)) {
+            if (renderer.domElement?.parentNode === container) {
                 container.removeChild(renderer.domElement);
             }
             renderer.dispose();

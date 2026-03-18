@@ -33,9 +33,9 @@ export function LiquidEffectAnimation() {
     document.body.appendChild(script);
 
     return () => {
-      // cleanup script if needed
-      if (script.parentNode) {
-        script.parentNode.removeChild(script);
+      // cleanup script safely to avoid DOM mismatch during unmount
+      if (script.parentNode === document.body) {
+        document.body.removeChild(script);
       }
     };
   }, [canvasId]);

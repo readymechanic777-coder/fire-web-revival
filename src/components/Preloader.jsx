@@ -94,8 +94,9 @@ const ThreeOceanPreloader = ({ progress, isExiting }) => {
         return () => {
             window.removeEventListener('resize', handleResize);
             cancelAnimationFrame(animationFrameId);
-            if (mountRef.current && renderer.domElement) {
-                mountRef.current.removeChild(renderer.domElement);
+            const mountNode = mountRef.current;
+            if (mountNode && renderer.domElement?.parentNode === mountNode) {
+                mountNode.removeChild(renderer.domElement);
             }
             renderer.dispose();
         };
