@@ -271,7 +271,7 @@ const ParticleAvishkaar = ({ text = "AVISHKAAR" }) => {
             window.removeEventListener('resize', handleResize);
             if (container) {
                 container.removeEventListener('mouseleave', onMouseOut);
-                if (container.contains(renderer.domElement)) {
+                if (renderer.domElement?.parentNode === container) {
                     container.removeChild(renderer.domElement);
                 }
             }
