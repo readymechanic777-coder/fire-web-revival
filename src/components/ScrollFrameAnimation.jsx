@@ -144,13 +144,13 @@ const ScrollFrameAnimation = ({ children }) => {
         style={{ opacity: 0, zIndex: 15, background: "linear-gradient(180deg, rgba(2,6,23,0.7) 0%, rgba(3,43,67,0.6) 25%, rgba(1,22,39,0.65) 50%, rgba(1,22,39,0.85) 75%, #011627 100%)" }}
       />
 
-      {/* Hero content overlay */}
+      {/* Hero content overlay - always rendered, visibility toggled to avoid React/GSAP DOM conflict */}
       <div
         ref={heroOverlayRef}
         className="absolute inset-0 z-30"
-        style={{ opacity: 0 }}
+        style={{ opacity: 0, visibility: "hidden" }}
       >
-        {heroRevealed && children}
+        {children}
       </div>
 
       {/* Loading overlay */}
