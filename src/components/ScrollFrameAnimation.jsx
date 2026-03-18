@@ -71,13 +71,9 @@ const ScrollFrameAnimation = ({ children }) => {
           }
         }
 
-        // Hero reveal toggle
-        if (progress >= HERO_START - 0.02 && !heroRevealedRef.current) {
-          heroRevealedRef.current = true;
-          setHeroRevealed(true);
-        } else if (progress < HERO_START - 0.08 && heroRevealedRef.current) {
-          heroRevealedRef.current = false;
-          setHeroRevealed(false);
+        // Hero reveal via visibility (no conditional render to avoid DOM conflicts with GSAP pin)
+        if (heroOverlayRef.current) {
+          heroOverlayRef.current.style.visibility = progress >= HERO_START - 0.02 ? "visible" : "hidden";
         }
       },
     });
