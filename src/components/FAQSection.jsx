@@ -1,7 +1,7 @@
 import { useState, useRef } from 'react';
 import { motion, AnimatePresence, useInView } from 'framer-motion';
 import FloatingParticles from './FloatingParticles';
-import SwimmingFish from './SwimmingFish';
+import Fish3DOverlay from './Fish3DOverlay';
 const faqData = {
   virtual: [
     {
