@@ -3,6 +3,7 @@ import { useRef } from "react";
 import TypingEffect from "./TypingEffect";
 import FloatingParticles from "./FloatingParticles";
 import OceanFloor3D from "./OceanFloor3D";
+import Fish3DOverlay from "./Fish3DOverlay";
 
 const WelcomeSection = () => {
   const ref = useRef(null);
@@ -53,6 +54,7 @@ const WelcomeSection = () => {
     </div>
 
     <FloatingParticles count={40} />
+    <Fish3DOverlay zone="trench" />
     <motion.div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] pointer-events-none z-[1]" style={{
       background: 'radial-gradient(circle, hsl(195, 100%, 50% / 0.15), transparent 60%)',
     }} animate={{

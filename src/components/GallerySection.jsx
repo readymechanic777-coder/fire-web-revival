@@ -3,7 +3,7 @@ import { useRef } from "react";
 import { useInView } from "framer-motion";
 import { Camera } from "lucide-react";
 import FloatingParticles from "./FloatingParticles";
-import SwimmingFish from "./SwimmingFish";
+import Fish3DOverlay from "./Fish3DOverlay";
 // Placeholder gallery images with different sizes
 const galleryImages = [
   { id: 1, title: "Hackathon Kickoff", size: "large" },
@@ -21,12 +21,7 @@ const GallerySection = () => {
   return (<section ref={ref} className="relative py-24 overflow-hidden min-h-[50vh]" id="gallery">
 
     <FloatingParticles count={40} />
-    <SwimmingFish configs={[
-      { y: "20%", color: "hsl(190, 85%, 55%)", size: 44, duration: 14, delay: 0, flip: false },
-      { y: "50%", color: "hsl(40, 90%, 58%)", size: 32, duration: 11, delay: 3, flip: true },
-      { y: "75%", color: "hsl(280, 70%, 60%)", size: 38, duration: 16, delay: 5, flip: false },
-      { y: "90%", color: "hsl(150, 80%, 50%)", size: 28, duration: 12, delay: 2, flip: true },
-    ]} />
+    <Fish3DOverlay zone="midnight" />
 
     <motion.div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] rounded-full pointer-events-none" style={{
       background: 'radial-gradient(circle, hsl(195, 100%, 50% / 0.1), transparent 70%)',
