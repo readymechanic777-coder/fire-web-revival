@@ -14,8 +14,6 @@ const ScrollFrameAnimation = ({ children }) => {
   const videoRef = useRef(null);
   const heroOverlayRef = useRef(null);
   const dimOverlayRef = useRef(null);
-  const heroRevealedRef = useRef(false);
-  const [heroRevealed, setHeroRevealed] = useState(false);
   const [videoReady, setVideoReady] = useState(false);
 
   useEffect(() => {
@@ -73,13 +71,9 @@ const ScrollFrameAnimation = ({ children }) => {
           }
         }
 
-        // Hero reveal toggle
-        if (progress >= HERO_START - 0.02 && !heroRevealedRef.current) {
-          heroRevealedRef.current = true;
-          setHeroRevealed(true);
-        } else if (progress < HERO_START - 0.08 && heroRevealedRef.current) {
-          heroRevealedRef.current = false;
-          setHeroRevealed(false);
+        // Hero reveal via visibility (no conditional render to avoid DOM conflicts with GSAP pin)
+        if (heroOverlayRef.current) {
+          heroOverlayRef.current.style.visibility = progress >= HERO_START - 0.02 ? "visible" : "hidden";
         }
       },
     });
@@ -150,13 +144,13 @@ const ScrollFrameAnimation = ({ children }) => {
         style={{ opacity: 0, zIndex: 15, background: "linear-gradient(180deg, rgba(2,6,23,0.7) 0%, rgba(3,43,67,0.6) 25%, rgba(1,22,39,0.65) 50%, rgba(1,22,39,0.85) 75%, #011627 100%)" }}
       />
 
-      {/* Hero content overlay */}
+      {/* Hero content overlay - always rendered, visibility toggled to avoid React/GSAP DOM conflict */}
       <div
         ref={heroOverlayRef}
         className="absolute inset-0 z-30"
-        style={{ opacity: 0 }}
+        style={{ opacity: 0, visibility: "hidden" }}
       >
-        {heroRevealed && children}
+        {children}
       </div>
 
       {/* Loading overlay */}
