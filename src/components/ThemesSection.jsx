@@ -3,7 +3,7 @@ import { useRef } from "react";
 import { Users, Bus, Leaf, Heart, Recycle, Zap, Plane, Lightbulb } from "lucide-react";
 import WaterTextEffect from "./WaterTextEffect";
 import FloatingParticles from "./FloatingParticles";
-import SwimmingFish from "./SwimmingFish";
+import Fish3DOverlay from "./Fish3DOverlay";
 const themes = [
   {
     icon: Users,
