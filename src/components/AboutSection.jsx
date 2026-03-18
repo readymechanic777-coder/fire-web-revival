@@ -2,6 +2,7 @@ import { motion } from "framer-motion";
 import { useRef } from "react";
 import { Code, Lightbulb, Trophy, Users } from "lucide-react";
 import FloatingParticles from "./FloatingParticles";
+import Fish3DOverlay from "./Fish3DOverlay";
 const features = [
   {
     icon: Code,
