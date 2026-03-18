@@ -24,6 +24,7 @@ const PartnersSection = () => {
   return (<section ref={ref} className="relative py-24 overflow-hidden min-h-[50vh]" id="partners">
 
     <FloatingParticles count={40} />
+    <Fish3DOverlay zone="abyss" />
 
     <div className="container mx-auto px-4 relative z-10">
 

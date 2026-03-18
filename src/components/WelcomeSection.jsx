@@ -54,6 +54,7 @@ const WelcomeSection = () => {
     </div>
 
     <FloatingParticles count={40} />
+    <Fish3DOverlay zone="trench" />
     <motion.div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] pointer-events-none z-[1]" style={{
       background: 'radial-gradient(circle, hsl(195, 100%, 50% / 0.15), transparent 60%)',
     }} animate={{
