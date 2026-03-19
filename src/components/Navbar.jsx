@@ -115,7 +115,32 @@ const Navbar = () => {
             <motion.div initial={{ opacity: 0, x: -50 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -50 }} transition={{ duration: 0.4, delay: 0.1 }} className="flex flex-col justify-center">
               <nav className="space-y-4">
                 {navItems.map((item, index) => (<motion.div key={item.name} initial={{ opacity: 0, x: -30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 + index * 0.05 }}>
-                  <a href={item.to} onClick={(e) => handleLinkClick(e, item.to)} className="group flex items-center text-2xl md:text-4xl font-display font-bold text-foreground hover:text-primary transition-colors duration-300">
+                  <a
+                    href={item.to}
+                    onClick={(e) => {
+                      // Ripple effect
+                      const btn = e.currentTarget;
+                      const ripple = document.createElement('span');
+                      const rect = btn.getBoundingClientRect();
+                      const size = Math.max(rect.width, rect.height);
+                      const x = e.clientX - rect.left - size / 2;
+                      const y = e.clientY - rect.top - size / 2;
+                      ripple.style.cssText = `
+                        position:absolute;width:${size}px;height:${size}px;
+                        left:${x}px;top:${y}px;
+                        background:radial-gradient(circle,hsl(var(--primary)/0.4) 0%,transparent 70%);
+                        border-radius:50%;transform:scale(0);
+                        animation:nav-ripple 0.6s ease-out forwards;
+                        pointer-events:none;
+                      `;
+                      btn.style.position = 'relative';
+                      btn.style.overflow = 'hidden';
+                      btn.appendChild(ripple);
+                      setTimeout(() => ripple.remove(), 700);
+                      handleLinkClick(e, item.to);
+                    }}
+                    className="group relative flex items-center text-2xl md:text-4xl font-display font-bold text-foreground hover:text-primary transition-colors duration-300 overflow-hidden"
+                  >
                     <motion.span className="text-primary mr-4 opacity-0 group-hover:opacity-100 transition-opacity" whileHover={{ x: 5 }}>
                       →
                     </motion.span>
