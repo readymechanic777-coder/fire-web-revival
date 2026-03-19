@@ -85,7 +85,7 @@ const FAQSection = () => {
 
   return (<section ref={ref} className="relative py-24 overflow-hidden min-h-[50vh]" id="faq">
     <FloatingParticles count={40} />
-    <Fish3DOverlay zone="hadal" />
+    
 
     <motion.div className="absolute top-1/4 left-0 w-[400px] h-[400px] pointer-events-none" style={{
       background: 'radial-gradient(circle, hsl(195, 100%, 50% / 0.1), transparent 70%)',

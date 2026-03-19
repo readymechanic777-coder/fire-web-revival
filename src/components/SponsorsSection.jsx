@@ -26,7 +26,7 @@ const SponsorsSection = () => {
   return (<section ref={ref} className="relative py-24 overflow-hidden min-h-[50vh]" id="sponsors">
 
     <FloatingParticles count={40} />
-    <Fish3DOverlay zone="deep" />
+    
 
     <motion.div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[300px] pointer-events-none" style={{
       background: 'radial-gradient(ellipse, hsl(195, 100%, 50% / 0.15), transparent 70%)',

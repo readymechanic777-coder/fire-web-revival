@@ -29,7 +29,7 @@ const AboutSection = () => {
   return (<section className="relative py-20 md:py-32 overflow-hidden min-h-[50vh]" id="about">
     {/* Top gradient bleed for seamless transition from hero */}
     <div className="absolute top-0 left-0 right-0 h-40 pointer-events-none" style={{ background: 'linear-gradient(180deg, #011627 0%, transparent 100%)' }} />
-    <Fish3DOverlay zone="surface" />
+    
     <FloatingParticles />
     <div className="relative z-10 container mx-auto px-4">
 
