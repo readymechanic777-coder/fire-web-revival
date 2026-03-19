@@ -96,7 +96,7 @@ const Navbar = () => {
       {isOpen && (<motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.3 }} className="fixed inset-0 z-40 bg-background/98 backdrop-blur-xl overflow-y-auto">
 
         <div className="absolute inset-0 pointer-events-none overflow-hidden">
-          <div className="absolute inset-0 opacity-40 mix-blend-screen">
+          <div className="absolute inset-0 opacity-70">
             <LiquidEffectAnimation />
           </div>
           <motion.div className="absolute top-1/4 left-1/4 w-96 h-96 bg-primary/10 rounded-full blur-3xl" animate={{
