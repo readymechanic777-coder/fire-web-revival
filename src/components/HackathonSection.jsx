@@ -3,7 +3,7 @@ import { motion, AnimatePresence, useMotionValue, useTransform, animate, useScro
 import { Laptop, Users, Trophy, Medal, Award, Star, ArrowRight, Clock } from "lucide-react";
 import WaterTextEffect from "./WaterTextEffect";
 import FloatingParticles from "./FloatingParticles";
-import Fish3DOverlay from "./Fish3DOverlay";
+
 function AnimatedNumber({ value, delay = 0 }) {
   const count = useMotionValue(0);
   const rounded = useTransform(count, (latest) => Math.round(latest).toLocaleString());
@@ -837,7 +837,7 @@ const HackathonSection = () => {
 
   return (<section className="relative py-20 md:py-32 overflow-hidden min-h-[50vh]" id="hackathon">
     <FloatingParticles count={50} />
-    <Fish3DOverlay zone="twilight" />
+    
     <div className="relative z-10 container mx-auto px-4">
 
       <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="text-center mb-4">

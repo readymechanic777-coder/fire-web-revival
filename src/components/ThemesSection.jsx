@@ -3,7 +3,7 @@ import { useRef } from "react";
 import { Users, Bus, Leaf, Heart, Recycle, Zap, Plane, Lightbulb } from "lucide-react";
 import WaterTextEffect from "./WaterTextEffect";
 import FloatingParticles from "./FloatingParticles";
-import Fish3DOverlay from "./Fish3DOverlay";
+
 const themes = [
   {
     icon: Users,
@@ -65,7 +65,7 @@ const themes = [
 const ThemesSection = () => {
   return (<section className="relative py-20 md:py-32 overflow-hidden min-h-[50vh]" id="themes">
     <FloatingParticles />
-    <Fish3DOverlay zone="shallow" />
+    
     <div className="relative z-10 container mx-auto px-4">
 
       <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.6 }} className="text-center mb-4">
