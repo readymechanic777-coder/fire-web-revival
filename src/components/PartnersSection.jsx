@@ -2,7 +2,7 @@ import { motion } from "framer-motion";
 import { useRef } from "react";
 import { useInView } from "framer-motion";
 import FloatingParticles from "./FloatingParticles";
-import Fish3DOverlay from "./Fish3DOverlay";
+
 const allPartners = [
   { name: "GDG", initials: "GDG", type: "Outreach Partner" },
   { name: "GFG", initials: "GFG", type: "Outreach Partner" },
