@@ -11,10 +11,12 @@ import WelcomeSection from "@/components/WelcomeSection";
 import Footer from "@/components/Footer";
 import DeepOceanWrapper from "@/components/DeepOceanWrapper";
 import ScrollFrameAnimation from "@/components/ScrollFrameAnimation";
+import ScrollTurtleCompanion from "@/components/ScrollTurtleCompanion";
 
 const Index = () => {
   return (<div className="min-h-screen bg-background scroll-smooth overflow-x-hidden">
     <Navbar />
+    <ScrollTurtleCompanion />
     <DeepOceanWrapper>
       <main className="relative z-10">
         <ScrollFrameAnimation>
