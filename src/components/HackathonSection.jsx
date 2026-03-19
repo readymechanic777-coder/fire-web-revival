@@ -3,7 +3,7 @@ import { motion, AnimatePresence, useMotionValue, useTransform, animate, useScro
 import { Laptop, Users, Trophy, Medal, Award, Star, ArrowRight, Clock } from "lucide-react";
 import WaterTextEffect from "./WaterTextEffect";
 import FloatingParticles from "./FloatingParticles";
-import Fish3DOverlay from "./Fish3DOverlay";
+
 function AnimatedNumber({ value, delay = 0 }) {
   const count = useMotionValue(0);
   const rounded = useTransform(count, (latest) => Math.round(latest).toLocaleString());
