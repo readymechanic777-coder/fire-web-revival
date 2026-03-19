@@ -3,7 +3,7 @@ import { useRef } from "react";
 import { useInView } from "framer-motion";
 import { Camera } from "lucide-react";
 import FloatingParticles from "./FloatingParticles";
-import Fish3DOverlay from "./Fish3DOverlay";
+
 // Placeholder gallery images with different sizes
 const galleryImages = [
   { id: 1, title: "Hackathon Kickoff", size: "large" },
