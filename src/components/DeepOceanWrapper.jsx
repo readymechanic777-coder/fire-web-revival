@@ -1,50 +1,6 @@
 import React, { useMemo } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
 
-// SVG Assets for Marine Life (Glowing Silhouettes style)
-const JellyfishSVG = ({ className }) => (
-    <svg viewBox="0 0 100 120" className={className} fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M50 10C30 10 15 25 10 45C10 50 12 55 15 55C18 55 20 50 25 50C30 50 32 55 35 55C38 55 40 50 45 50C50 50 52 55 55 55C58 55 60 50 65 50C70 50 72 55 75 55C78 55 80 50 85 50C90 50 90 45 90 45C85 25 70 10 50 10Z" fill="url(#jelly-glow)" fillOpacity="0.4" />
-        <path d="M50 10C30 10 15 25 10 45C10 50 12 55 15 55C18 55 20 50 25 50" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
-        <path d="M75 55C78 55 80 50 85 50C90 50 90 45 90 45C85 25 70 10 50 10" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
-        <path d="M20 55 C20 80, 10 100, 15 110" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
-        <path d="M40 55 C40 85, 30 105, 35 115" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
-        <path d="M60 55 C60 90, 70 100, 65 115" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
-        <path d="M80 55 C80 80, 90 95, 85 105" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
-        <defs>
-            <radialGradient id="jelly-glow" cx="50" cy="30" r="40" gradientUnits="userSpaceOnUse">
-                <stop stopColor="currentColor" stopOpacity="0.8" />
-                <stop offset="1" stopColor="currentColor" stopOpacity="0" />
-            </radialGradient>
-        </defs>
-    </svg>
-);
-
-const MantaRaySVG = ({ className }) => (
-    <svg viewBox="0 0 120 100" className={className} fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M60 20 C70 10, 80 15, 85 20 C100 35, 115 50, 115 60 C115 65, 100 65, 85 55 C70 50, 65 60, 60 70 C55 60, 50 50, 35 55 C20 65, 5 65, 5 60 C5 50, 20 35, 35 20 C40 15, 50 10, 60 20 Z" fill="currentColor" fillOpacity="0.2" stroke="currentColor" strokeWidth="1.5" />
-        <path d="M55 70 L55 90 L60 100 L65 90 L65 70" fill="currentColor" fillOpacity="0.3" />
-        <circle cx="50" cy="30" r="2" fill="currentColor" />
-        <circle cx="70" cy="30" r="2" fill="currentColor" />
-    </svg>
-);
-
-const SharkSVG = ({ className }) => (
-    <svg viewBox="0 0 140 60" className={className} fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M10 30 C30 10, 60 15, 80 20 C100 25, 120 20, 130 15 L125 35 L135 50 C120 40, 100 45, 80 45 C60 45, 30 50, 10 30 Z" fill="currentColor" fillOpacity="0.2" stroke="currentColor" strokeWidth="1.5" />
-        <path d="M60 20 L50 5 L65 15" fill="currentColor" fillOpacity="0.2" stroke="currentColor" strokeWidth="1" />
-        <path d="M70 45 L60 55 L75 45" fill="currentColor" fillOpacity="0.2" stroke="currentColor" strokeWidth="1" />
-        <circle cx="25" cy="27" r="1.5" fill="currentColor" />
-    </svg>
-);
-
-const SmallFishSVG = ({ className }) => (
-    <svg viewBox="0 0 40 20" className={className} fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M5 10 C15 0, 25 0, 30 10 C25 20, 15 20, 5 10 Z" fill="currentColor" fillOpacity="0.3" stroke="currentColor" strokeWidth="1" />
-        <path d="M30 10 L38 5 L35 10 L38 15 Z" fill="currentColor" fillOpacity="0.3" stroke="currentColor" strokeWidth="1" />
-    </svg>
-);
-
 // CSS-based bubbles for performance
 const Bubbles = () => {
     const bubbles = useMemo(() => {
@@ -204,53 +160,6 @@ const DeepOceanWrapper = ({ children }) => {
             <LightRays />
             <Bubbles />
 
-            {/* Scroll-based elements - Absolute positioned throughout the page depth */}
-            <div className="absolute inset-0 pointer-events-none overflow-hidden z-[5]">
-
-                {/* Surface level / Shallow - Small Fish */}
-                <div className="absolute top-[8%] left-0 w-full"
-                    style={{ animation: 'swimRightFast 25s linear infinite' }}
-                >
-                    <div className="flex gap-4 absolute left-0 top-0">
-                        <SmallFishSVG className="w-8 h-4 text-cyan-300 drop-shadow-[0_0_8px_rgba(34,211,238,0.8)]" />
-                        <SmallFishSVG className="w-6 h-3 text-cyan-400 mt-2 drop-shadow-[0_0_5px_rgba(34,211,238,0.8)]" />
-                        <SmallFishSVG className="w-7 h-3 text-sky-300 -mt-1 drop-shadow-[0_0_8px_rgba(56,189,248,0.8)]" />
-                    </div>
-                </div>
-
-                {/* Medium Depth - Manta Ray */}
-                <div className="absolute top-[25%] left-0 w-full"
-                    style={{ animation: 'swimLeftSlow 45s ease-in-out infinite' }}
-                >
-                    <MantaRaySVG className="w-64 h-64 text-blue-400 drop-shadow-[0_0_15px_rgba(96,165,250,0.4)] opacity-60 absolute left-0" />
-                </div>
-
-                {/* Medium-Deep - Shark */}
-                <div className="absolute top-[48%] left-0 w-full"
-                    style={{ animation: 'swimRightSlow 50s ease-in-out infinite 5s' }}
-                >
-                    <SharkSVG className="w-56 h-32 text-slate-400 drop-shadow-[0_0_20px_rgba(148,163,184,0.3)] opacity-40 absolute left-0" />
-                </div>
-
-                {/* Deep Depth - Glowing Jellyfish */}
-                <div className="absolute top-[72%] right-[15%]"
-                    style={{ animation: 'jellyfishBob 12s ease-in-out infinite' }}
-                >
-                    <JellyfishSVG className="w-48 h-48 text-purple-400 drop-shadow-[0_0_25px_rgba(168,85,247,0.7)] opacity-80" />
-                </div>
-
-                <div className="absolute top-[85%] left-[20%]"
-                    style={{ animation: 'jellyfishBob 15s ease-in-out infinite 2s' }}
-                >
-                    <JellyfishSVG className="w-32 h-32 text-pink-400 drop-shadow-[0_0_25px_rgba(236,72,153,0.7)] opacity-80" />
-                </div>
-
-                <div className="absolute top-[96%] left-[60%]"
-                    style={{ animation: 'jellyfishBob 18s ease-in-out infinite 5s' }}
-                >
-                    <JellyfishSVG className="w-24 h-24 text-cyan-400 drop-shadow-[0_0_25px_rgba(34,211,238,0.7)] opacity-80" />
-                </div>
-            </div>
 
             {/* Main content (sections + footer) */}
             <div className="relative z-[15]">

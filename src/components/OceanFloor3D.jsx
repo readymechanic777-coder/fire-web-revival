@@ -664,10 +664,6 @@ const OceanFloorScene = () => {
                 <ParticleGem key={`gem-${i}`} position={g.pos} color={g.color} size={g.size} speed={g.speed} />
             ))}
 
-            {/* Fish Schools */}
-            <FishSchool center={[-2, 2, 0]} count={10} color="#67e8f9" />
-            <FishSchool center={[3, 1.8, -0.5]} count={8} color="#38bdf8" />
-            <FishSchool center={[0, 2.5, 1]} count={6} color="#7dd3fc" />
 
             {/* Bubbles & Plankton */}
             <BubbleField count={70} />
