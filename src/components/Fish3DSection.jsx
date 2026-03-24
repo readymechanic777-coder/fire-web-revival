@@ -61,7 +61,7 @@ const FishModel = () => {
 
   return (
     <>
-      <primitive ref={group} object={clonedScene} scale={5.5} />
+      <primitive ref={group} object={clonedScene} scale={15} />
       <spotLight
         ref={spotlightRef}
         intensity={8}
