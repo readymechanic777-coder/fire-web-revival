@@ -265,7 +265,7 @@ const ScrollTurtle3D = () => {
   if (!visible) return null;
 
   return (
-    <div className="fixed inset-0 pointer-events-none" style={{ zIndex: 40 }}>
+    <div className="fixed inset-0 pointer-events-none" style={{ zIndex: 5 }}>
       <TurtleCanvas scrollProgress={scrollProgress} mousePos={mousePos} />
     </div>
   );
