@@ -61,7 +61,7 @@ const FishModel = () => {
 
   return (
     <>
-      <primitive ref={group} object={clonedScene} scale={5.5} />
+      <primitive ref={group} object={clonedScene} scale={15} />
       <spotLight
         ref={spotlightRef}
         intensity={8}
@@ -80,7 +80,7 @@ const Fish3DSection = () => {
     <section className="relative py-8 md:py-12 overflow-visible" style={{ zIndex: 20 }}>
       <div className="w-full max-w-5xl mx-auto h-[350px] md:h-[450px]">
         <Canvas
-          camera={{ position: [0, 0, 8], fov: 50 }}
+          camera={{ position: [0, 0, 4], fov: 55 }}
           gl={{ antialias: true, alpha: true, powerPreference: 'high-performance', toneMapping: THREE.ACESFilmicToneMapping, toneMappingExposure: 1.8 }}
           dpr={[1, 1.5]}
           style={{ background: 'transparent' }}
@@ -91,6 +91,8 @@ const Fish3DSection = () => {
           <pointLight position={[0, 0, 4]} intensity={3} color="#22d3ee" distance={15} />
           <pointLight position={[-3, 2, 2]} intensity={1.5} color="#06b6d4" distance={12} />
           <pointLight position={[3, -1, 3]} intensity={1.5} color="#0ea5e9" distance={12} />
+          <pointLight position={[0, 0, -3]} intensity={4} color="#ffffff" distance={15} />
+          <directionalLight position={[0, 0, -5]} intensity={2} color="#e0f2fe" />
           <hemisphereLight args={['#22d3ee', '#064e3b', 1]} />
           <fog attach="fog" args={['#011627', 15, 35]} />
           <Suspense fallback={null}>
