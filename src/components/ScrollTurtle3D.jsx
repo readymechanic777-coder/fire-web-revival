@@ -130,42 +130,37 @@ const TurtleModel = ({ scrollProgress, mousePos }) => {
     const currentScale = THREE.MathUtils.lerp(group.current.scale.x, targetScale, 0.06);
     group.current.scale.setScalar(currentScale);
 
-    // === POSITION: playful S-curve path across the whole site ===
+    // === POSITION: turtle follows the cursor ===
     let targetX, targetY, targetZ;
 
+    // Convert mouse position (-1 to 1) to 3D world coordinates
+    const cursorX = mousePos.current.x * 6; // wider range to cover viewport
+    const cursorY = mousePos.current.y * -3.5; // invert Y, map to 3D space
+
     if (t <= 0.05) {
-      // Start at center of hero
-      targetX = 0;
-      targetY = 0;
+      // Start at center of hero, begin following cursor
+      const heroT = THREE.MathUtils.smoothstep(t, 0, 0.05);
+      targetX = THREE.MathUtils.lerp(0, cursorX, heroT);
+      targetY = THREE.MathUtils.lerp(0, cursorY, heroT);
       targetZ = 4;
     } else if (t > 0.88) {
       // Footer: settle to the right side, below "Follow Us"
       const footerT = THREE.MathUtils.smoothstep(t, 0.88, 1.0);
-      targetX = THREE.MathUtils.lerp(turtlePos.current.x, 3.5, footerT * 0.05);
-      targetY = THREE.MathUtils.lerp(0, -2.5, footerT);
+      targetX = THREE.MathUtils.lerp(cursorX, 3.5, footerT);
+      targetY = THREE.MathUtils.lerp(cursorY, -2.5, footerT);
       targetZ = THREE.MathUtils.lerp(4, 3, footerT);
     } else {
-      // Main journey: playful wide swimming across the viewport
-      const journeyT = (t - 0.05) / 0.83; // normalize 0.05-0.88 to 0-1
-
-      // Wide side-to-side swimming (covers full viewport width)
-      targetX = Math.sin(journeyT * Math.PI * 5) * 4 + Math.cos(journeyT * Math.PI * 3.7) * 1.5;
+      // Main journey: follow cursor with playful offset
+      const journeyT = (t - 0.05) / 0.83;
       
-      // Vertical: general downward trend with playful bobbing
-      targetY = 2 - journeyT * 5 + Math.sin(swimTime.current * 1.8) * 0.3 + Math.sin(journeyT * Math.PI * 4) * 1.2;
-      
-      // Depth: comes close and goes far, creating a playful feel
-      targetZ = 4 + Math.sin(journeyT * Math.PI * 3) * 2 + Math.cos(journeyT * Math.PI * 7) * 0.8;
+      // Follow cursor with gentle swimming offset
+      targetX = cursorX + Math.sin(swimTime.current * 0.8) * 0.5;
+      targetY = cursorY + Math.sin(swimTime.current * 1.2) * 0.3 + Math.cos(journeyT * Math.PI * 2) * 0.4;
+      targetZ = 4 + Math.sin(journeyT * Math.PI * 3) * 1.5;
     }
 
-    // Add mouse influence (subtle)
-    if (t <= 0.88) {
-      targetX += mousePos.current.x * 0.4;
-      targetY += mousePos.current.y * -0.2;
-    }
-
-    // Smooth interpolation
-    const lerpSpeed = t > 0.88 ? 0.02 : 0.04;
+    // Smooth interpolation - slightly delayed to feel organic/alive
+    const lerpSpeed = t > 0.88 ? 0.02 : 0.045;
     turtlePos.current.x = THREE.MathUtils.lerp(turtlePos.current.x, targetX, lerpSpeed);
     turtlePos.current.y = THREE.MathUtils.lerp(turtlePos.current.y, targetY, lerpSpeed);
     turtlePos.current.z = THREE.MathUtils.lerp(turtlePos.current.z, targetZ, lerpSpeed);
