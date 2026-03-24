@@ -13,6 +13,7 @@ import DeepOceanWrapper from "@/components/DeepOceanWrapper";
 import ScrollFrameAnimation from "@/components/ScrollFrameAnimation";
 import LazySection from "@/components/LazySection";
 import ScrollTurtle3D from "@/components/ScrollTurtle3D";
+import Fish3DSection from "@/components/Fish3DSection";
 
 const Index = () => {
   return (
@@ -29,6 +30,9 @@ const Index = () => {
           </LazySection>
           <LazySection animation="fade-left" delay={0.1}>
             <ThemesSection />
+          </LazySection>
+          <LazySection animation="scale">
+            <Fish3DSection />
           </LazySection>
           <LazySection animation="scale">
             <HackathonSection />
