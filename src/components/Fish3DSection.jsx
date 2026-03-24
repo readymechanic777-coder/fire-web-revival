@@ -5,6 +5,7 @@ import * as THREE from 'three';
 
 const FishModel = () => {
   const group = useRef();
+  const spotlightRef = useRef();
   const { scene, animations } = useGLTF('/models/emperor_angelfish.glb');
   const mixer = useRef(null);
 
@@ -13,7 +14,10 @@ const FishModel = () => {
     clone.traverse((child) => {
       if (child.isMesh && child.material) {
         child.material = child.material.clone();
-        child.material.envMapIntensity = 1.5;
+        child.material.envMapIntensity = 3;
+        child.material.emissive = new THREE.Color('#0e4a6a');
+        child.material.emissiveIntensity = 0.4;
+        child.material.toneMapped = false;
       }
     });
     return clone;
@@ -36,25 +40,39 @@ const FishModel = () => {
     if (mixer.current) mixer.current.update(delta);
 
     const t = state.clock.elapsedTime;
+    const cycleLength = 8;
+    const progress = (t % cycleLength) / cycleLength;
 
-    // Swim left to right repeatedly
-    const cycleLength = 8; // seconds per full crossing
-    const progress = (t % cycleLength) / cycleLength; // 0 to 1
-
-    // X: -6 to 6 (left to right)
     group.current.position.x = THREE.MathUtils.lerp(-6, 6, progress);
-
-    // Gentle vertical bobbing
     group.current.position.y = Math.sin(t * 1.5) * 0.4;
-
-    // Face swimming direction (right)
     group.current.rotation.y = Math.PI / 2 + Math.sin(t * 2) * 0.1;
-
-    // Slight body sway
     group.current.rotation.z = Math.sin(t * 3) * 0.05;
+
+    // Spotlight follows the fish
+    if (spotlightRef.current) {
+      spotlightRef.current.position.set(
+        group.current.position.x,
+        group.current.position.y + 4,
+        group.current.position.z + 3
+      );
+      spotlightRef.current.target = group.current;
+    }
   });
 
-  return <primitive ref={group} object={clonedScene} scale={4.5} />;
+  return (
+    <>
+      <primitive ref={group} object={clonedScene} scale={5.5} />
+      <spotLight
+        ref={spotlightRef}
+        intensity={8}
+        angle={0.5}
+        penumbra={0.8}
+        color="#22d3ee"
+        distance={20}
+        castShadow={false}
+      />
+    </>
+  );
 };
 
 const Fish3DSection = () => {
@@ -63,15 +81,18 @@ const Fish3DSection = () => {
       <div className="w-full max-w-5xl mx-auto h-[350px] md:h-[450px]">
         <Canvas
           camera={{ position: [0, 0, 8], fov: 50 }}
-          gl={{ antialias: true, alpha: true, powerPreference: 'high-performance' }}
+          gl={{ antialias: true, alpha: true, powerPreference: 'high-performance', toneMapping: THREE.ACESFilmicToneMapping, toneMappingExposure: 1.8 }}
           dpr={[1, 1.5]}
           style={{ background: 'transparent' }}
         >
-          <ambientLight intensity={0.6} color="#0891b2" />
-          <directionalLight position={[5, 5, 5]} intensity={1.2} color="#22d3ee" />
-          <pointLight position={[-3, 2, 2]} intensity={0.6} color="#06b6d4" />
-          <pointLight position={[3, -1, -2]} intensity={0.4} color="#0e7490" />
-          <fog attach="fog" args={['#011627', 12, 30]} />
+          <ambientLight intensity={1.2} color="#38bdf8" />
+          <directionalLight position={[5, 5, 5]} intensity={2.5} color="#22d3ee" />
+          <directionalLight position={[-3, 3, 4]} intensity={1.5} color="#67e8f9" />
+          <pointLight position={[0, 0, 4]} intensity={3} color="#22d3ee" distance={15} />
+          <pointLight position={[-3, 2, 2]} intensity={1.5} color="#06b6d4" distance={12} />
+          <pointLight position={[3, -1, 3]} intensity={1.5} color="#0ea5e9" distance={12} />
+          <hemisphereLight args={['#22d3ee', '#064e3b', 1]} />
+          <fog attach="fog" args={['#011627', 15, 35]} />
           <Suspense fallback={null}>
             <FishModel />
             <Environment preset="night" />
