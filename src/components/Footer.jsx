@@ -30,7 +30,7 @@ const Footer = () => {
 
         <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }} viewport={{ once: true }}>
           <h3 className="text-lg font-display font-bold text-gradient-water mb-1.5">Quick Links</h3>
-          <ul className="flex flex-wrap gap-x-4 gap-y-0">
+          <ul className="space-y-0">
             {quickLinks.map((link) => (<li key={link.name}>
               <Link to={link.path} className="text-muted-foreground hover:text-primary transition-colors duration-300 text-xs leading-5">
                 {link.name}
