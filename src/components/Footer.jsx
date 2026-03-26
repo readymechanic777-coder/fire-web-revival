@@ -30,9 +30,9 @@ const Footer = () => {
 
         <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }} viewport={{ once: true }}>
           <h3 className="text-xl font-display font-bold text-gradient-water mb-3">Quick Links</h3>
-          <ul className="space-y-1">
+          <ul className="space-y-0">
             {quickLinks.map((link) => (<li key={link.name}>
-              <Link to={link.path} className="text-muted-foreground hover:text-primary transition-colors duration-300 hover:translate-x-1 inline-block text-sm leading-tight">
+              <Link to={link.path} className="text-muted-foreground hover:text-primary transition-colors duration-300 hover:translate-x-1 inline-block text-sm leading-6">
                 {link.name}
               </Link>
             </li>))}
@@ -42,7 +42,7 @@ const Footer = () => {
 
         <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: 0.1 }} viewport={{ once: true }}>
           <h3 className="text-xl font-display font-bold text-gradient-water mb-3">Contact Us</h3>
-          <ul className="space-y-1.5">
+          <ul className="space-y-0.5">
             {contacts.map((contact, index) => (<li key={index}>
               <a href={contact.href} className="flex items-start gap-3 text-muted-foreground hover:text-primary transition-colors duration-300 group">
                 <contact.icon className="w-4 h-4 text-primary shrink-0 mt-1 group-hover:scale-110 transition-transform" />
