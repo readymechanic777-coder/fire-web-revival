@@ -54,7 +54,7 @@ const Footer = () => {
 
 
         <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: 0.2 }} viewport={{ once: true }}>
-          <h3 className="text-xl font-display font-bold text-gradient-water mb-6">Follow Us</h3>
+          <h3 className="text-xl font-display font-bold text-gradient-water mb-3">Follow Us</h3>
           <div className="flex gap-4">
             {socialLinks.map((social) => (<a key={social.label} href={social.href} aria-label={social.label} className="w-10 h-10 bg-muted rounded-lg flex items-center justify-center hover:bg-primary/20 hover:text-primary transition-all duration-300 hover:scale-110 hover:shadow-[0_0_15px_hsl(var(--primary)/0.5)]">
               <social.icon className="w-5 h-5" />
