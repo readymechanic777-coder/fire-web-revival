@@ -25,14 +25,14 @@ const Footer = () => {
   ];
   return (<footer className="relative bg-gradient-to-b from-background to-card border-t border-primary/20">
 
-    <div className="container mx-auto px-4 py-12">
-      <div className="grid md:grid-cols-3 gap-8">
+    <div className="container mx-auto px-4 py-8">
+      <div className="grid md:grid-cols-3 gap-6">
 
         <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }} viewport={{ once: true }}>
-          <h3 className="text-xl font-display font-bold text-gradient-water mb-6">Quick Links</h3>
-          <ul className="space-y-3">
+          <h3 className="text-xl font-display font-bold text-gradient-water mb-3">Quick Links</h3>
+          <ul className="space-y-1">
             {quickLinks.map((link) => (<li key={link.name}>
-              <Link to={link.path} className="text-muted-foreground hover:text-primary transition-colors duration-300 hover:translate-x-1 inline-block">
+              <Link to={link.path} className="text-muted-foreground hover:text-primary transition-colors duration-300 hover:translate-x-1 inline-block text-sm leading-tight">
                 {link.name}
               </Link>
             </li>))}
@@ -41,8 +41,8 @@ const Footer = () => {
 
 
         <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: 0.1 }} viewport={{ once: true }}>
-          <h3 className="text-xl font-display font-bold text-gradient-water mb-6">Contact Us</h3>
-          <ul className="space-y-4">
+          <h3 className="text-xl font-display font-bold text-gradient-water mb-3">Contact Us</h3>
+          <ul className="space-y-1.5">
             {contacts.map((contact, index) => (<li key={index}>
               <a href={contact.href} className="flex items-start gap-3 text-muted-foreground hover:text-primary transition-colors duration-300 group">
                 <contact.icon className="w-4 h-4 text-primary shrink-0 mt-1 group-hover:scale-110 transition-transform" />
@@ -54,7 +54,7 @@ const Footer = () => {
 
 
         <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: 0.2 }} viewport={{ once: true }}>
-          <h3 className="text-xl font-display font-bold text-gradient-water mb-6">Follow Us</h3>
+          <h3 className="text-xl font-display font-bold text-gradient-water mb-3">Follow Us</h3>
           <div className="flex gap-4">
             {socialLinks.map((social) => (<a key={social.label} href={social.href} aria-label={social.label} className="w-10 h-10 bg-muted rounded-lg flex items-center justify-center hover:bg-primary/20 hover:text-primary transition-all duration-300 hover:scale-110 hover:shadow-[0_0_15px_hsl(var(--primary)/0.5)]">
               <social.icon className="w-5 h-5" />
