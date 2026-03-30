@@ -1,5 +1,6 @@
 import React, { useMemo } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
+import SwimmingFish3D from './SwimmingFish3D';
 
 // CSS-based bubbles for performance
 const Bubbles = () => {
@@ -159,7 +160,7 @@ const DeepOceanWrapper = ({ children }) => {
             <ScrollDepthMeter />
             <LightRays />
             <Bubbles />
-
+            <SwimmingFish3D />
 
             {/* Main content (sections + footer) */}
             <div className="relative z-[15]">
