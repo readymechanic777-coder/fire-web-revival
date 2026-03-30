@@ -252,7 +252,7 @@ const Jellyfish = ({ startPos, size, color, speed, direction, depthMin, depthMax
         {/* Inner bell */}
         <mesh scale={0.88}>
           <sphereGeometry args={[1.2, 20, 16, 0, Math.PI * 2, 0, Math.PI * 0.5]} />
-          <meshPhysicalMaterial color={innerCol} transparent opacity={0.2} emissive={col} emissiveIntensity={0.8} side={THREE.DoubleSide} />
+          <meshPhysicalMaterial color={innerCol} transparent opacity={0.35} emissive={col} emissiveIntensity={1.5} side={THREE.DoubleSide} />
         </mesh>
         {/* Rim glow */}
         <mesh position={[0, -0.45, 0]} rotation={[Math.PI / 2, 0, 0]}>
