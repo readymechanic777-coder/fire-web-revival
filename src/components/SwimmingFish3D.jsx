@@ -284,7 +284,7 @@ const Jellyfish = ({ startPos, size, color, speed, direction, depthMin, depthMax
           );
         })}
       </group>
-      <pointLight position={[0, 0, 0]} color={color} intensity={0.8} distance={6} />
+      <pointLight position={[0, 0, 0]} color={color} intensity={2.5} distance={12} />
     </group>
   );
 };
