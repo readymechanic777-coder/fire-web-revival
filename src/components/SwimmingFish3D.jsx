@@ -247,7 +247,7 @@ const Jellyfish = ({ startPos, size, color, speed, direction, depthMin, depthMax
       <group ref={bellRef}>
         <mesh>
           <sphereGeometry args={[1.2, 24, 20, 0, Math.PI * 2, 0, Math.PI * 0.55]} />
-          <meshPhysicalMaterial color={col} transparent opacity={0.4} emissive={col} emissiveIntensity={0.5} side={THREE.DoubleSide} roughness={0.1} transmission={0.3} thickness={0.5} />
+          <meshPhysicalMaterial color={col} transparent opacity={0.55} emissive={col} emissiveIntensity={1.2} side={THREE.DoubleSide} roughness={0.1} transmission={0.3} thickness={0.5} />
         </mesh>
         {/* Inner bell */}
         <mesh scale={0.88}>
