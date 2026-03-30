@@ -759,6 +759,136 @@ const Whale = ({ startPos, size, speed, direction, depthMin, depthMax }) => {
 };
 
 // ═══════════════════════════════════════════════
+// ═══════════════════════════════════════════════
+// OCTOPUS — Flowing tentacles with individual segments
+// ═══════════════════════════════════════════════
+const Octopus = ({ startPos, size, color, speed, direction, depthMin, depthMax }) => {
+  const groupRef = useRef();
+  const headRef = useRef();
+  const tentRefs = useRef([]);
+  const timeOffset = useMemo(() => Math.random() * 100, []);
+
+  useFrame(({ clock }) => {
+    const t = clock.getElapsedTime() + timeOffset;
+    const g = groupRef.current;
+    if (!g) return;
+
+    const opacity = getZoneOpacity(scrollState.progress, depthMin, depthMax);
+    g.visible = opacity > 0.01;
+    if (!g.visible) return;
+
+    g.position.x += speed * direction * 0.007;
+    if (direction > 0 && g.position.x > 26) g.position.x = -26;
+    if (direction < 0 && g.position.x < -26) g.position.x = 26;
+    g.position.y = startPos[1] + Math.sin(t * 0.35) * 2 + Math.sin(t * 0.13) * 1;
+    g.position.z = startPos[2] + Math.cos(t * 0.25) * 1.5;
+    g.rotation.y = direction > 0 ? -0.3 : Math.PI + 0.3;
+
+    if (headRef.current) {
+      headRef.current.rotation.x = Math.sin(t * 0.6) * 0.12;
+      headRef.current.rotation.z = Math.cos(t * 0.4) * 0.08;
+    }
+
+    // Animate tentacles — flowing organic wave
+    tentRefs.current.forEach((ref, i) => {
+      if (!ref) return;
+      const phase = i * 0.8;
+      ref.rotation.x = Math.sin(t * 1.8 + phase) * 0.5;
+      ref.rotation.z = Math.cos(t * 1.4 + phase * 0.7) * 0.35;
+      // Children segments get more wave
+      if (ref.children) {
+        ref.children.forEach((child, ci) => {
+          if (child.isGroup || child.isObject3D) {
+            child.rotation.x = Math.sin(t * 1.6 + phase + ci * 0.6) * (0.2 + ci * 0.12);
+            child.rotation.z = Math.cos(t * 1.2 + phase + ci * 0.5) * (0.15 + ci * 0.08);
+          }
+        });
+      }
+    });
+
+    g.scale.setScalar(size * Math.min(opacity, 1));
+  });
+
+  const col = new THREE.Color(color);
+  const tentCol = col.clone().multiplyScalar(0.85);
+  const suckerCol = col.clone().lerp(new THREE.Color('#ffccaa'), 0.4);
+
+  const tentacleAngles = useMemo(() => Array.from({ length: 8 }).map((_, i) => (i / 8) * Math.PI * 2), []);
+
+  return (
+    <group ref={groupRef} position={startPos} scale={size}>
+      <group ref={headRef}>
+        {/* Mantle */}
+        <mesh position={[0, 0.6, 0]} scale={[0.85, 1.1, 0.8]}>
+          <sphereGeometry args={[1, 20, 16]} />
+          <meshPhysicalMaterial color={col} roughness={0.25} metalness={0.2} clearcoat={0.6} clearcoatRoughness={0.15} emissive={col} emissiveIntensity={0.1} />
+        </mesh>
+        {/* Spots */}
+        {[...Array(6)].map((_, i) => {
+          const a = (i / 6) * Math.PI * 2;
+          return (
+            <mesh key={i} position={[Math.cos(a) * 0.65, 0.7 + Math.sin(a * 2) * 0.3, Math.sin(a) * 0.6]} scale={0.12}>
+              <sphereGeometry args={[1, 6, 6]} />
+              <meshPhysicalMaterial color={col} roughness={0.2} transparent opacity={0.4} clearcoat={0.8} />
+            </mesh>
+          );
+        })}
+        {/* Eyes */}
+        <group position={[0.55, 0.3, 0.5]}>
+          <mesh scale={[0.22, 0.18, 0.15]}><sphereGeometry args={[1, 12, 12]} /><meshPhysicalMaterial color="#e8e4d0" roughness={0.1} clearcoat={1} /></mesh>
+          <mesh position={[0.06, 0, 0.04]} scale={[0.14, 0.16, 0.1]}><sphereGeometry args={[1, 10, 10]} /><meshStandardMaterial color="#1a1a1a" metalness={0.9} /></mesh>
+          <mesh position={[0.09, 0.03, 0.06]} scale={0.035}><sphereGeometry args={[1, 6, 6]} /><meshStandardMaterial color="#fff" emissive="#fff" emissiveIntensity={0.5} /></mesh>
+        </group>
+        <group position={[0.55, 0.3, -0.5]}>
+          <mesh scale={[0.22, 0.18, 0.15]}><sphereGeometry args={[1, 12, 12]} /><meshPhysicalMaterial color="#e8e4d0" roughness={0.1} clearcoat={1} /></mesh>
+          <mesh position={[0.06, 0, -0.04]} scale={[0.14, 0.16, 0.1]}><sphereGeometry args={[1, 10, 10]} /><meshStandardMaterial color="#1a1a1a" metalness={0.9} /></mesh>
+          <mesh position={[0.09, 0.03, -0.06]} scale={0.035}><sphereGeometry args={[1, 6, 6]} /><meshStandardMaterial color="#fff" emissive="#fff" emissiveIntensity={0.5} /></mesh>
+        </group>
+        {/* Siphon */}
+        <mesh position={[0.4, -0.3, 0]} rotation={[0, 0, 0.4]} scale={[0.15, 0.25, 0.12]}>
+          <cylinderGeometry args={[0.8, 1, 1, 6]} />
+          <meshPhysicalMaterial color={col} roughness={0.3} clearcoat={0.3} />
+        </mesh>
+      </group>
+
+      {/* 8 Tentacles — each with 4 segments */}
+      {tentacleAngles.map((angle, tIdx) => {
+        const baseX = Math.cos(angle) * 0.6;
+        const baseZ = Math.sin(angle) * 0.6;
+        return (
+          <group key={tIdx} ref={el => { tentRefs.current[tIdx] = el; }} position={[baseX, -0.7, baseZ]}>
+            <mesh scale={[0.16, 0.5, 0.16]}>
+              <cylinderGeometry args={[1, 0.8, 1, 6]} />
+              <meshPhysicalMaterial color={tentCol} roughness={0.35} metalness={0.15} clearcoat={0.4} emissive={tentCol} emissiveIntensity={0.05} />
+            </mesh>
+            <mesh position={[0, -0.15, 0]} scale={0.05}><sphereGeometry args={[1, 5, 5]} /><meshStandardMaterial color={suckerCol} /></mesh>
+            <group position={[0, -0.5, 0]}>
+              <mesh scale={[0.13, 0.45, 0.13]}>
+                <cylinderGeometry args={[1, 0.75, 1, 6]} />
+                <meshPhysicalMaterial color={tentCol} roughness={0.35} clearcoat={0.3} />
+              </mesh>
+              <mesh position={[0, -0.12, 0]} scale={0.04}><sphereGeometry args={[1, 5, 5]} /><meshStandardMaterial color={suckerCol} /></mesh>
+              <group position={[0, -0.45, 0]}>
+                <mesh scale={[0.1, 0.4, 0.1]}>
+                  <cylinderGeometry args={[1, 0.7, 1, 5]} />
+                  <meshPhysicalMaterial color={tentCol} roughness={0.4} clearcoat={0.2} />
+                </mesh>
+                <group position={[0, -0.4, 0]}>
+                  <mesh scale={[0.07, 0.35, 0.07]}>
+                    <cylinderGeometry args={[1, 0.5, 1, 4]} />
+                    <meshPhysicalMaterial color={tentCol} roughness={0.4} />
+                  </mesh>
+                </group>
+              </group>
+            </group>
+          </group>
+        );
+      })}
+    </group>
+  );
+};
+
+// ═══════════════════════════════════════════════
 // SCENE — Cinematic lighting + all creatures
 // ═══════════════════════════════════════════════
 const OceanScene = () => {
@@ -769,16 +899,14 @@ const OceanScene = () => {
       <directionalLight position={[15, 20, 10]} intensity={0.45} color="#4a9fd4" />
       <directionalLight position={[-10, -5, -8]} intensity={0.15} color="#1a5080" />
       <pointLight position={[0, 15, 5]} intensity={0.3} color="#38bdf8" distance={50} />
-      {/* Deep water caustic-like light */}
       <pointLight position={[0, -15, -5]} intensity={0.1} color="#064e7a" distance={40} />
 
-      {/* ═══ SURFACE ZONE (0-30%): Tropical fish + Seahorses ═══ */}
+      {/* ═══ SURFACE (0-35%): Tropical fish + Seahorses ═══ */}
       <TropicalFish startPos={[-18, 5, -5]} speed={2.2} size={0.55} bodyColor="#ff6b35" accentColor="#ffd23f" wobbleAmp={1.3} wobbleFreq={0.9} direction={1} depthMin={0} depthMax={0.35} />
       <TropicalFish startPos={[12, 7, -7]} speed={1.7} size={0.45} bodyColor="#22d3ee" accentColor="#06b6d4" wobbleAmp={1.6} wobbleFreq={0.75} direction={-1} depthMin={0} depthMax={0.35} />
       <TropicalFish startPos={[-5, 3, -4]} speed={2.5} size={0.5} bodyColor="#f472b6" accentColor="#ec4899" wobbleAmp={1.1} wobbleFreq={1.1} direction={1} depthMin={0} depthMax={0.35} />
       <TropicalFish startPos={[20, 4, -6]} speed={1.4} size={0.6} bodyColor="#a3e635" accentColor="#84cc16" wobbleAmp={1.8} wobbleFreq={0.65} direction={-1} depthMin={0} depthMax={0.35} />
       <TropicalFish startPos={[6, 6, -8]} speed={1.9} size={0.4} bodyColor="#fbbf24" accentColor="#f59e0b" wobbleAmp={1.0} wobbleFreq={1.0} direction={1} depthMin={0} depthMax={0.35} />
-
       <Seahorse startPos={[-10, 3, -5]} size={0.5} color="#f97316" speed={0.5} direction={1} depthMin={0.05} depthMax={0.3} />
       <Seahorse startPos={[15, 5, -6]} size={0.4} color="#fbbf24" speed={0.3} direction={-1} depthMin={0.05} depthMax={0.3} />
 
@@ -788,9 +916,11 @@ const OceanScene = () => {
       <Jellyfish startPos={[4, 6, -8]} size={1.1} color="#818cf8" speed={0.7} direction={1} depthMin={0.22} depthMax={0.5} />
       <Jellyfish startPos={[-16, 2, -7]} size={0.5} color="#a78bfa" speed={0.4} direction={-1} depthMin={0.2} depthMax={0.48} />
 
-      {/* ═══ MID-DEEP (38-68%): Manta Rays ═══ */}
+      {/* ═══ MID-DEEP (38-68%): Manta Rays + Octopus ═══ */}
       <MantaRay startPos={[-14, -1, -6]} size={1.1} speed={1.6} direction={1} depthMin={0.35} depthMax={0.68} />
       <MantaRay startPos={[18, 2, -8]} size={0.85} speed={1.2} direction={-1} depthMin={0.38} depthMax={0.7} />
+      <Octopus startPos={[-8, 0, -5]} size={1.0} color="#c0392b" speed={0.8} direction={1} depthMin={0.35} depthMax={0.68} />
+      <Octopus startPos={[12, 3, -7]} size={0.75} color="#8e44ad" speed={0.6} direction={-1} depthMin={0.4} depthMax={0.72} />
 
       {/* ═══ DEEP (50-82%): Sharks ═══ */}
       <Shark startPos={[-22, -1, -7]} size={1.3} speed={2.2} direction={1} depthMin={0.48} depthMax={0.82} />
