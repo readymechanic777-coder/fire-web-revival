@@ -210,24 +210,27 @@ const Jellyfish = ({ startPos, size, color, speed, direction, depthMin, depthMax
     if (direction > 0 && g.position.x > 25) g.position.x = -25;
     if (direction < 0 && g.position.x < -25) g.position.x = 25;
 
-    // Pulsing vertical movement
-    const pulse = Math.sin(t * 1.2);
-    g.position.y = startPos[1] + Math.sin(t * 0.35) * 2.5 + pulse * 0.6;
+    // Smooth pulsing propulsion — jellyfish jet motion
+    const pulseRaw = Math.sin(t * 1.2);
+    const pulse = pulseRaw * pulseRaw * Math.sign(pulseRaw); // smooth eased pulse
+    g.position.y = startPos[1] + Math.sin(t * 0.35) * 2.5 + pulse * 0.8;
     g.position.z = startPos[2] + Math.cos(t * 0.25) * 1;
 
-    // Bell contraction
+    // Bell contraction — smooth breathing
     if (bellRef.current) {
-      const contract = 1 - Math.max(0, pulse) * 0.15;
-      bellRef.current.scale.set(size * contract, size * (1 + Math.max(0, pulse) * 0.08), size * contract);
+      const breathe = Math.sin(t * 1.2);
+      const contractX = 1 - Math.max(0, breathe) * 0.2;
+      const expandY = 1 + Math.max(0, breathe) * 0.12;
+      bellRef.current.scale.set(size * contractX, size * expandY, size * contractX);
     }
 
-    // Tentacle sway — each with different phase for organic feel
+    // Tentacle sway — smooth flowing with more amplitude
     tentRefs.current.forEach((ref, i) => {
       if (ref) {
         const phase = i * 0.7;
-        ref.rotation.x = Math.sin(t * 0.8 + phase) * 0.25;
-        ref.rotation.z = Math.cos(t * 0.6 + phase) * 0.2;
-        ref.scale.y = 1 + Math.sin(t * 1.2 + phase) * 0.15;
+        ref.rotation.x = Math.sin(t * 0.8 + phase) * 0.4;
+        ref.rotation.z = Math.cos(t * 0.6 + phase) * 0.3;
+        ref.scale.y = 1 + Math.sin(t * 1.0 + phase) * 0.2;
       }
     });
 
@@ -244,12 +247,12 @@ const Jellyfish = ({ startPos, size, color, speed, direction, depthMin, depthMax
       <group ref={bellRef}>
         <mesh>
           <sphereGeometry args={[1.2, 24, 20, 0, Math.PI * 2, 0, Math.PI * 0.55]} />
-          <meshPhysicalMaterial color={col} transparent opacity={0.4} emissive={col} emissiveIntensity={0.5} side={THREE.DoubleSide} roughness={0.1} transmission={0.3} thickness={0.5} />
+          <meshPhysicalMaterial color={col} transparent opacity={0.55} emissive={col} emissiveIntensity={1.2} side={THREE.DoubleSide} roughness={0.1} transmission={0.3} thickness={0.5} />
         </mesh>
         {/* Inner bell */}
         <mesh scale={0.88}>
           <sphereGeometry args={[1.2, 20, 16, 0, Math.PI * 2, 0, Math.PI * 0.5]} />
-          <meshPhysicalMaterial color={innerCol} transparent opacity={0.2} emissive={col} emissiveIntensity={0.8} side={THREE.DoubleSide} />
+          <meshPhysicalMaterial color={innerCol} transparent opacity={0.35} emissive={col} emissiveIntensity={1.5} side={THREE.DoubleSide} />
         </mesh>
         {/* Rim glow */}
         <mesh position={[0, -0.45, 0]} rotation={[Math.PI / 2, 0, 0]}>
@@ -281,7 +284,7 @@ const Jellyfish = ({ startPos, size, color, speed, direction, depthMin, depthMax
           );
         })}
       </group>
-      <pointLight position={[0, 0, 0]} color={color} intensity={0.8} distance={6} />
+      <pointLight position={[0, 0, 0]} color={color} intensity={2.5} distance={12} />
     </group>
   );
 };
@@ -889,49 +892,53 @@ const Octopus = ({ startPos, size, color, speed, direction, depthMin, depthMax }
 };
 
 // ═══════════════════════════════════════════════
+// ═══════════════════════════════════════════════
 // SCENE — Cinematic lighting + all creatures
 // ═══════════════════════════════════════════════
 const OceanScene = () => {
   return (
     <>
-      {/* Cinematic lighting */}
-      <ambientLight intensity={0.15} color="#0a3050" />
-      <directionalLight position={[15, 20, 10]} intensity={0.45} color="#4a9fd4" />
-      <directionalLight position={[-10, -5, -8]} intensity={0.15} color="#1a5080" />
-      <pointLight position={[0, 15, 5]} intensity={0.3} color="#38bdf8" distance={50} />
-      <pointLight position={[0, -15, -5]} intensity={0.1} color="#064e7a" distance={40} />
+      {/* Brighter cinematic lighting for visibility */}
+      <ambientLight intensity={0.35} color="#1a6090" />
+      <directionalLight position={[15, 20, 10]} intensity={0.7} color="#4a9fd4" />
+      <directionalLight position={[-10, -5, -8]} intensity={0.35} color="#1a5080" />
+      <pointLight position={[0, 15, 5]} intensity={0.5} color="#38bdf8" distance={60} />
+      {/* Deep zone extra lighting */}
+      <pointLight position={[0, -10, 0]} intensity={0.4} color="#0ea5e9" distance={50} />
+      <pointLight position={[-15, -15, -5]} intensity={0.3} color="#22d3ee" distance={45} />
+      <pointLight position={[15, -15, -5]} intensity={0.3} color="#06b6d4" distance={45} />
 
-      {/* ═══ SURFACE (0-35%): Tropical fish + Seahorses ═══ */}
-      <TropicalFish startPos={[-18, 5, -5]} speed={2.2} size={0.55} bodyColor="#ff6b35" accentColor="#ffd23f" wobbleAmp={1.3} wobbleFreq={0.9} direction={1} depthMin={0} depthMax={0.35} />
-      <TropicalFish startPos={[12, 7, -7]} speed={1.7} size={0.45} bodyColor="#22d3ee" accentColor="#06b6d4" wobbleAmp={1.6} wobbleFreq={0.75} direction={-1} depthMin={0} depthMax={0.35} />
-      <TropicalFish startPos={[-5, 3, -4]} speed={2.5} size={0.5} bodyColor="#f472b6" accentColor="#ec4899" wobbleAmp={1.1} wobbleFreq={1.1} direction={1} depthMin={0} depthMax={0.35} />
-      <TropicalFish startPos={[20, 4, -6]} speed={1.4} size={0.6} bodyColor="#a3e635" accentColor="#84cc16" wobbleAmp={1.8} wobbleFreq={0.65} direction={-1} depthMin={0} depthMax={0.35} />
-      <TropicalFish startPos={[6, 6, -8]} speed={1.9} size={0.4} bodyColor="#fbbf24" accentColor="#f59e0b" wobbleAmp={1.0} wobbleFreq={1.0} direction={1} depthMin={0} depthMax={0.35} />
-      <Seahorse startPos={[-10, 3, -5]} size={0.5} color="#f97316" speed={0.5} direction={1} depthMin={0.05} depthMax={0.3} />
-      <Seahorse startPos={[15, 5, -6]} size={0.4} color="#fbbf24" speed={0.3} direction={-1} depthMin={0.05} depthMax={0.3} />
+      {/* ═══ SURFACE (0-35%): Tropical fish + Seahorses — BIGGER, CLOSER ═══ */}
+      <TropicalFish startPos={[-12, 4, -2]} speed={2.2} size={1.2} bodyColor="#ff6b35" accentColor="#ffd23f" wobbleAmp={1.3} wobbleFreq={0.9} direction={1} depthMin={0} depthMax={0.35} />
+      <TropicalFish startPos={[10, 6, -3]} speed={1.7} size={1.0} bodyColor="#22d3ee" accentColor="#06b6d4" wobbleAmp={1.6} wobbleFreq={0.75} direction={-1} depthMin={0} depthMax={0.35} />
+      <TropicalFish startPos={[-5, 2, -1]} speed={2.5} size={1.1} bodyColor="#f472b6" accentColor="#ec4899" wobbleAmp={1.1} wobbleFreq={1.1} direction={1} depthMin={0} depthMax={0.35} />
+      <TropicalFish startPos={[16, 3, -2]} speed={1.4} size={1.3} bodyColor="#a3e635" accentColor="#84cc16" wobbleAmp={1.8} wobbleFreq={0.65} direction={-1} depthMin={0} depthMax={0.35} />
+      <TropicalFish startPos={[4, 5, -4]} speed={1.9} size={0.9} bodyColor="#fbbf24" accentColor="#f59e0b" wobbleAmp={1.0} wobbleFreq={1.0} direction={1} depthMin={0} depthMax={0.35} />
+      <Seahorse startPos={[-8, 3, -2]} size={1.2} color="#f97316" speed={0.5} direction={1} depthMin={0.05} depthMax={0.3} />
+      <Seahorse startPos={[13, 5, -3]} size={1.0} color="#fbbf24" speed={0.3} direction={-1} depthMin={0.05} depthMax={0.3} />
 
-      {/* ═══ MID-DEPTH (20-50%): Jellyfish ═══ */}
-      <Jellyfish startPos={[-9, 4, -6]} size={0.9} color="#c084fc" speed={0.9} direction={1} depthMin={0.18} depthMax={0.52} />
-      <Jellyfish startPos={[14, -1, -5]} size={0.65} color="#f0abfc" speed={0.5} direction={-1} depthMin={0.2} depthMax={0.55} />
-      <Jellyfish startPos={[4, 6, -8]} size={1.1} color="#818cf8" speed={0.7} direction={1} depthMin={0.22} depthMax={0.5} />
-      <Jellyfish startPos={[-16, 2, -7]} size={0.5} color="#a78bfa" speed={0.4} direction={-1} depthMin={0.2} depthMax={0.48} />
+      {/* ═══ MID-DEPTH (20-50%): Jellyfish — MUCH BIGGER ═══ */}
+      <Jellyfish startPos={[-7, 4, -2]} size={2.5} color="#c084fc" speed={0.9} direction={1} depthMin={0.18} depthMax={0.52} />
+      <Jellyfish startPos={[12, -1, -1]} size={2.0} color="#f0abfc" speed={0.5} direction={-1} depthMin={0.2} depthMax={0.55} />
+      <Jellyfish startPos={[3, 6, -3]} size={3.0} color="#818cf8" speed={0.7} direction={1} depthMin={0.22} depthMax={0.5} />
+      <Jellyfish startPos={[-14, 2, -2]} size={1.8} color="#a78bfa" speed={0.4} direction={-1} depthMin={0.2} depthMax={0.48} />
 
-      {/* ═══ MID-DEEP (38-68%): Manta Rays + Octopus ═══ */}
-      <MantaRay startPos={[-14, -1, -6]} size={1.1} speed={1.6} direction={1} depthMin={0.35} depthMax={0.68} />
-      <MantaRay startPos={[18, 2, -8]} size={0.85} speed={1.2} direction={-1} depthMin={0.38} depthMax={0.7} />
-      <Octopus startPos={[-8, 0, -5]} size={1.0} color="#c0392b" speed={0.8} direction={1} depthMin={0.35} depthMax={0.68} />
-      <Octopus startPos={[12, 3, -7]} size={0.75} color="#8e44ad" speed={0.6} direction={-1} depthMin={0.4} depthMax={0.72} />
+      {/* ═══ MID-DEEP (38-68%): Manta Rays + Octopus — MUCH BIGGER ═══ */}
+      <MantaRay startPos={[-10, -1, -2]} size={2.2} speed={1.6} direction={1} depthMin={0.35} depthMax={0.68} />
+      <MantaRay startPos={[14, 2, -3]} size={1.8} speed={1.2} direction={-1} depthMin={0.38} depthMax={0.7} />
+      <Octopus startPos={[-6, 0, -1]} size={2.5} color="#c0392b" speed={0.8} direction={1} depthMin={0.35} depthMax={0.68} />
+      <Octopus startPos={[10, 3, -2]} size={2.0} color="#8e44ad" speed={0.6} direction={-1} depthMin={0.4} depthMax={0.72} />
 
-      {/* ═══ DEEP (50-82%): Sharks ═══ */}
-      <Shark startPos={[-22, -1, -7]} size={1.3} speed={2.2} direction={1} depthMin={0.48} depthMax={0.82} />
-      <Shark startPos={[24, 2, -9]} size={1.0} speed={1.7} direction={-1} depthMin={0.52} depthMax={0.85} />
+      {/* ═══ DEEP (50-82%): Sharks — BIGGER ═══ */}
+      <Shark startPos={[-16, -1, -3]} size={2.5} speed={2.2} direction={1} depthMin={0.48} depthMax={0.82} />
+      <Shark startPos={[18, 2, -4]} size={2.0} speed={1.7} direction={-1} depthMin={0.52} depthMax={0.85} />
 
-      {/* ═══ DEEP (55-88%): Whale ═══ */}
-      <Whale startPos={[-28, -3, -14]} size={0.65} speed={1.0} direction={1} depthMin={0.53} depthMax={0.88} />
+      {/* ═══ DEEP (55-88%): Whale — BIGGER ═══ */}
+      <Whale startPos={[-20, -3, -6]} size={1.3} speed={1.0} direction={1} depthMin={0.53} depthMax={0.88} />
 
-      {/* ═══ ABYSS (72-100%): Anglerfish ═══ */}
-      <Anglerfish startPos={[-12, -2, -5]} size={0.85} speed={0.9} direction={1} depthMin={0.7} depthMax={1.0} />
-      <Anglerfish startPos={[16, 1, -7]} size={0.65} speed={0.6} direction={-1} depthMin={0.75} depthMax={1.0} />
+      {/* ═══ ABYSS (72-100%): Anglerfish — BIGGER ═══ */}
+      <Anglerfish startPos={[-8, -1, -2]} size={2.0} speed={0.9} direction={1} depthMin={0.7} depthMax={1.0} />
+      <Anglerfish startPos={[12, 1, -3]} size={1.6} speed={0.6} direction={-1} depthMin={0.75} depthMax={1.0} />
     </>
   );
 };
@@ -942,7 +949,7 @@ const SwimmingFish3D = () => {
   return (
     <div className="fixed inset-0 pointer-events-none" style={{ zIndex: 5 }}>
       <Canvas
-        camera={{ position: [0, 0, 20], fov: 60 }}
+        camera={{ position: [0, 0, 18], fov: 65 }}
         gl={{ alpha: true, antialias: true, powerPreference: 'low-power' }}
         dpr={[1, 1.5]}
         style={{ background: 'transparent' }}
