@@ -210,24 +210,27 @@ const Jellyfish = ({ startPos, size, color, speed, direction, depthMin, depthMax
     if (direction > 0 && g.position.x > 25) g.position.x = -25;
     if (direction < 0 && g.position.x < -25) g.position.x = 25;
 
-    // Pulsing vertical movement
-    const pulse = Math.sin(t * 1.2);
-    g.position.y = startPos[1] + Math.sin(t * 0.35) * 2.5 + pulse * 0.6;
+    // Smooth pulsing propulsion — jellyfish jet motion
+    const pulseRaw = Math.sin(t * 1.2);
+    const pulse = pulseRaw * pulseRaw * Math.sign(pulseRaw); // smooth eased pulse
+    g.position.y = startPos[1] + Math.sin(t * 0.35) * 2.5 + pulse * 0.8;
     g.position.z = startPos[2] + Math.cos(t * 0.25) * 1;
 
-    // Bell contraction
+    // Bell contraction — smooth breathing
     if (bellRef.current) {
-      const contract = 1 - Math.max(0, pulse) * 0.15;
-      bellRef.current.scale.set(size * contract, size * (1 + Math.max(0, pulse) * 0.08), size * contract);
+      const breathe = Math.sin(t * 1.2);
+      const contractX = 1 - Math.max(0, breathe) * 0.2;
+      const expandY = 1 + Math.max(0, breathe) * 0.12;
+      bellRef.current.scale.set(size * contractX, size * expandY, size * contractX);
     }
 
-    // Tentacle sway — each with different phase for organic feel
+    // Tentacle sway — smooth flowing with more amplitude
     tentRefs.current.forEach((ref, i) => {
       if (ref) {
         const phase = i * 0.7;
-        ref.rotation.x = Math.sin(t * 0.8 + phase) * 0.25;
-        ref.rotation.z = Math.cos(t * 0.6 + phase) * 0.2;
-        ref.scale.y = 1 + Math.sin(t * 1.2 + phase) * 0.15;
+        ref.rotation.x = Math.sin(t * 0.8 + phase) * 0.4;
+        ref.rotation.z = Math.cos(t * 0.6 + phase) * 0.3;
+        ref.scale.y = 1 + Math.sin(t * 1.0 + phase) * 0.2;
       }
     });
 
