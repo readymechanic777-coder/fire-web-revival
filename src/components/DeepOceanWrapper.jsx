@@ -160,7 +160,7 @@ const DeepOceanWrapper = ({ children }) => {
             <ScrollDepthMeter />
             <LightRays />
             <Bubbles />
-
+            <SwimmingFish3D />
 
             {/* Main content (sections + footer) */}
             <div className="relative z-[15]">
