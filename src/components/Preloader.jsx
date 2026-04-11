@@ -650,25 +650,46 @@ const Preloader = ({ onComplete }) => {
     const clampedProgress = Math.min(progress, 100);
     return (<motion.div className="fixed inset-0 z-[9999] flex flex-col items-center justify-center overflow-hidden" style={{
         background: 'linear-gradient(180deg, hsl(210, 60%, 4%) 0%, hsl(215, 70%, 8%) 40%, hsl(210, 60%, 12%) 70%, hsl(200, 80%, 15%) 100%)',
-    }} initial={{ opacity: 0, scale: 1.3, filter: 'blur(20px)' }} animate={{
+    }} initial={{ opacity: 0, scale: 1.15, filter: 'blur(30px)', rotateX: 8 }} animate={{
         opacity: 1,
-        scale: [1.3, 1.05, 1.08, 1.03, 1.05],
+        scale: [1.0, 1.02, 1.0, 1.01, 1.0],
         filter: 'blur(0px)',
-        x: [0, 15, -10, 8, -5, 12, -8, 0],
-        y: [0, -8, 12, -6, 10, -4, 6, 0],
+        rotateX: 0,
+        x: [0, 8, -6, 4, -3, 6, -4, 0],
+        y: [0, -5, 8, -4, 6, -3, 4, 0],
     }} exit={{
         opacity: 0,
-        scale: 2.5, // Zoom in effect for "diving"
-        filter: 'blur(20px)',
-        y: 0,
-        transition: { duration: 0.8, ease: "easeInOut" }
+        scale: 3.5,
+        filter: 'blur(40px)',
+        rotateX: -15,
+        y: -100,
+        transition: { 
+            duration: 1.2, 
+            ease: [0.76, 0, 0.24, 1],
+            opacity: { duration: 0.8, delay: 0.2 },
+            scale: { duration: 1.2, ease: [0.22, 1, 0.36, 1] },
+            rotateX: { duration: 1.0, ease: "easeIn" },
+        }
     }} transition={{
-        duration: 1.2,
+        duration: 1.5,
         ease: [0.22, 1, 0.36, 1],
-        scale: { duration: 12, repeat: Infinity, ease: "easeInOut" },
-        x: { duration: 16, repeat: Infinity, ease: "easeInOut" },
-        y: { duration: 14, repeat: Infinity, ease: "easeInOut" },
+        scale: { duration: 10, repeat: Infinity, ease: "easeInOut" },
+        x: { duration: 18, repeat: Infinity, ease: "easeInOut" },
+        y: { duration: 15, repeat: Infinity, ease: "easeInOut" },
+        rotateX: { duration: 1.5, type: "spring", stiffness: 80, damping: 20 },
     }}>
+        {/* Animated depth light sweep */}
+        <motion.div 
+            className="absolute inset-0 z-[0] pointer-events-none"
+            style={{
+                background: 'linear-gradient(135deg, transparent 30%, hsl(195, 100%, 50% / 0.08) 50%, transparent 70%)',
+            }}
+            animate={{
+                backgroundPosition: ['0% 0%', '100% 100%', '0% 0%'],
+                opacity: [0, 0.6, 0],
+            }}
+            transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
+        />
 
         <motion.div className="absolute inset-0" style={{
             background: 'radial-gradient(ellipse at 50% 80%, hsl(195, 100%, 20% / 0.4), transparent 70%)',
