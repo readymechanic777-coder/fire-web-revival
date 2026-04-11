@@ -159,6 +159,9 @@ const DeepOceanWrapper = ({ children }) => {
         >
             <GlobalOceanStyles />
             <ScrollDepthMeter />
+            <Suspense fallback={null}>
+                <DeepOceanFish />
+            </Suspense>
             <LightRays />
             <Bubbles />
 
