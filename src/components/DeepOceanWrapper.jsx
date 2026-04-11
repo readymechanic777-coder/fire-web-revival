@@ -1,5 +1,7 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, lazy, Suspense } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
+
+const DeepOceanFish = lazy(() => import('./DeepOceanFish'));
 
 // CSS-based bubbles for performance
 const Bubbles = () => {
