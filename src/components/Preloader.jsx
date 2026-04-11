@@ -650,25 +650,46 @@ const Preloader = ({ onComplete }) => {
     const clampedProgress = Math.min(progress, 100);
     return (<motion.div className="fixed inset-0 z-[9999] flex flex-col items-center justify-center overflow-hidden" style={{
         background: 'linear-gradient(180deg, hsl(210, 60%, 4%) 0%, hsl(215, 70%, 8%) 40%, hsl(210, 60%, 12%) 70%, hsl(200, 80%, 15%) 100%)',
-    }} initial={{ opacity: 0, scale: 1.3, filter: 'blur(20px)' }} animate={{
+    }} initial={{ opacity: 0, scale: 1.15, filter: 'blur(30px)', rotateX: 8 }} animate={{
         opacity: 1,
-        scale: [1.3, 1.05, 1.08, 1.03, 1.05],
+        scale: [1.0, 1.02, 1.0, 1.01, 1.0],
         filter: 'blur(0px)',
-        x: [0, 15, -10, 8, -5, 12, -8, 0],
-        y: [0, -8, 12, -6, 10, -4, 6, 0],
+        rotateX: 0,
+        x: [0, 8, -6, 4, -3, 6, -4, 0],
+        y: [0, -5, 8, -4, 6, -3, 4, 0],
     }} exit={{
         opacity: 0,
-        scale: 2.5, // Zoom in effect for "diving"
-        filter: 'blur(20px)',
-        y: 0,
-        transition: { duration: 0.8, ease: "easeInOut" }
+        scale: 3.5,
+        filter: 'blur(40px)',
+        rotateX: -15,
+        y: -100,
+        transition: { 
+            duration: 1.2, 
+            ease: [0.76, 0, 0.24, 1],
+            opacity: { duration: 0.8, delay: 0.2 },
+            scale: { duration: 1.2, ease: [0.22, 1, 0.36, 1] },
+            rotateX: { duration: 1.0, ease: "easeIn" },
+        }
     }} transition={{
-        duration: 1.2,
+        duration: 1.5,
         ease: [0.22, 1, 0.36, 1],
-        scale: { duration: 12, repeat: Infinity, ease: "easeInOut" },
-        x: { duration: 16, repeat: Infinity, ease: "easeInOut" },
-        y: { duration: 14, repeat: Infinity, ease: "easeInOut" },
+        scale: { duration: 10, repeat: Infinity, ease: "easeInOut" },
+        x: { duration: 18, repeat: Infinity, ease: "easeInOut" },
+        y: { duration: 15, repeat: Infinity, ease: "easeInOut" },
+        rotateX: { duration: 1.5, type: "spring", stiffness: 80, damping: 20 },
     }}>
+        {/* Animated depth light sweep */}
+        <motion.div 
+            className="absolute inset-0 z-[0] pointer-events-none"
+            style={{
+                background: 'linear-gradient(135deg, transparent 30%, hsl(195, 100%, 50% / 0.08) 50%, transparent 70%)',
+            }}
+            animate={{
+                backgroundPosition: ['0% 0%', '100% 100%', '0% 0%'],
+                opacity: [0, 0.6, 0],
+            }}
+            transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
+        />
 
         <motion.div className="absolute inset-0" style={{
             background: 'radial-gradient(ellipse at 50% 80%, hsl(195, 100%, 20% / 0.4), transparent 70%)',
@@ -710,7 +731,12 @@ const Preloader = ({ onComplete }) => {
 
 
             <AnimatePresence>
-                {showTitle && (<motion.div initial={{ opacity: 0, y: 30, filter: 'blur(10px)' }} animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }} transition={{ duration: 0.8, ease: "easeOut" }} className="text-center mb-3 relative">
+                {showTitle && (<motion.div initial={{ opacity: 0, y: 50, filter: 'blur(15px)', scale: 0.9 }} animate={{ opacity: 1, y: 0, filter: 'blur(0px)', scale: 1 }} transition={{ 
+                    duration: 1.2, 
+                    ease: [0.22, 1, 0.36, 1],
+                    scale: { type: "spring", stiffness: 100, damping: 15, delay: 0.1 },
+                    filter: { duration: 0.8 },
+                }} className="text-center mb-3 relative">
 
                     <svg className="absolute w-0 h-0">
                         <defs>
@@ -727,8 +753,6 @@ const Preloader = ({ onComplete }) => {
                         <h1 className="text-5xl md:text-7xl lg:text-8xl font-display font-black tracking-[0.2em] relative opacity-0 pointer-events-none">
                             AVISHKAAR
                         </h1>
-                        {/* We use pointer-events-none and opacity-0 to reserve the exact layout space 
-                            so the text doesn't collapse and overlap with the 3D rendered particle text. */}
                     </div>
 
 
@@ -740,14 +764,15 @@ const Preloader = ({ onComplete }) => {
                             top: 0,
                             background: 'linear-gradient(to bottom, hsl(195, 100%, 70% / 0.8), hsl(195, 100%, 50% / 0.3))',
                             borderRadius: '50% 50% 50% 50% / 30% 30% 70% 70%',
-                        }} animate={{
+                        }} initial={{ y: -20, opacity: 0, scaleY: 0 }}
+                        animate={{
                             y: [0, 30, 50],
                             opacity: [0.8, 0.5, 0],
                             scaleY: [1, 1.5, 0.5],
                         }} transition={{
                             duration: 1.5 + Math.random(),
                             repeat: Infinity,
-                            delay: i * 0.6 + Math.random() * 0.5,
+                            delay: 0.8 + i * 0.6 + Math.random() * 0.5,
                             ease: "easeIn",
                             repeatDelay: 1 + Math.random() * 2,
                         }} />))}
@@ -757,7 +782,12 @@ const Preloader = ({ onComplete }) => {
 
 
             <AnimatePresence>
-                {showTitle && (<motion.p initial={{ opacity: 0, letterSpacing: '0.5em' }} animate={{ opacity: 1, letterSpacing: '0.4em' }} transition={{ duration: 1, delay: 0.3 }} className="text-sm md:text-lg font-display uppercase text-muted-foreground mb-10 tracking-[0.4em]">
+                {showTitle && (<motion.p initial={{ opacity: 0, letterSpacing: '1em', y: 20 }} animate={{ opacity: 1, letterSpacing: '0.4em', y: 0 }} transition={{ 
+                    duration: 1.2, 
+                    delay: 0.5,
+                    letterSpacing: { type: "spring", stiffness: 50, damping: 12 },
+                    y: { type: "spring", stiffness: 80, damping: 15 },
+                }} className="text-sm md:text-lg font-display uppercase text-muted-foreground mb-10 tracking-[0.4em]">
                     Season 4 · 2026
                 </motion.p>)}
             </AnimatePresence>
