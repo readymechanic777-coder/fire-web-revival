@@ -81,33 +81,37 @@ const ScrollFrameAnimation = ({ children }) => {
         }}
       />
 
-      {/* Bubbles overlay */}
+      {/* Bubbles overlay - CSS animated for perf */}
       <div className="absolute inset-0 z-20 pointer-events-none overflow-hidden">
-        {[...Array(18)].map((_, i) => (
-          <motion.div
-            key={i}
-            className="absolute rounded-full border border-cyan-400/30"
-            style={{
-              width: 4 + Math.random() * 12,
-              height: 4 + Math.random() * 12,
-              left: `${Math.random() * 100}%`,
-              bottom: "-5%",
-              background:
-                "radial-gradient(circle at 30% 30%, rgba(34,211,238,0.35), transparent)",
-            }}
-            animate={{
-              y: [0, -(window?.innerHeight || 900) * 1.2],
-              x: [0, (Math.random() - 0.5) * 60],
-              opacity: [0, 1, 1, 0],
-            }}
-            transition={{
-              duration: 6 + Math.random() * 6,
-              repeat: Infinity,
-              delay: Math.random() * 8,
-              ease: "linear",
-            }}
-          />
-        ))}
+        <style>{`
+          @keyframes heroBubbleRise {
+            0% { transform: translateY(0); opacity: 0; }
+            15% { opacity: 1; }
+            85% { opacity: 1; }
+            100% { transform: translateY(-110vh); opacity: 0; }
+          }
+        `}</style>
+        {[...Array(10)].map((_, i) => {
+          const size = 4 + Math.random() * 12;
+          const left = Math.random() * 100;
+          const dur = 6 + Math.random() * 6;
+          const delay = Math.random() * 8;
+          return (
+            <div
+              key={i}
+              className="absolute rounded-full border border-cyan-400/30"
+              style={{
+                width: size,
+                height: size,
+                left: `${left}%`,
+                bottom: '-5%',
+                background: 'radial-gradient(circle at 30% 30%, rgba(34,211,238,0.35), transparent)',
+                animation: `heroBubbleRise ${dur}s linear ${delay}s infinite`,
+                willChange: 'transform, opacity',
+              }}
+            />
+          );
+        })}
       </div>
 
       {/* Hero content - appears after video ends */}
