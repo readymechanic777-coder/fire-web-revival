@@ -1,7 +1,6 @@
-import React, { useMemo, lazy, Suspense } from 'react';
+import React, { useMemo } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
-
-const DeepOceanFish = lazy(() => import('./DeepOceanFish'));
+import RealisticFish from './RealisticFish';
 
 // CSS-based bubbles for performance
 const Bubbles = () => {
@@ -159,9 +158,9 @@ const DeepOceanWrapper = ({ children }) => {
         >
             <GlobalOceanStyles />
             <ScrollDepthMeter />
-            <Suspense fallback={null}>
-                <DeepOceanFish />
-            </Suspense>
+            <div className="fixed inset-0 pointer-events-none z-[5]">
+                <RealisticFish />
+            </div>
             <LightRays />
             <Bubbles />
 

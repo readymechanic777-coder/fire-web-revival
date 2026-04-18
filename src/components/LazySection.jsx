@@ -27,22 +27,23 @@ const LazySection = ({ children, className = '', animation = 'fade-up', delay = 
     return () => observer.disconnect();
   }, [hasLoaded]);
 
+  // Ocean-themed entrance animations: floating, drifting, surfacing
   const variants = {
     'fade-up': {
-      hidden: { opacity: 0, y: 60 },
-      visible: { opacity: 1, y: 0 },
+      hidden: { opacity: 0, y: 80, filter: 'blur(8px)' },
+      visible: { opacity: 1, y: 0, filter: 'blur(0px)' },
     },
     'fade-left': {
-      hidden: { opacity: 0, x: -60 },
-      visible: { opacity: 1, x: 0 },
+      hidden: { opacity: 0, x: -80, rotate: -2, filter: 'blur(6px)' },
+      visible: { opacity: 1, x: 0, rotate: 0, filter: 'blur(0px)' },
     },
     'fade-right': {
-      hidden: { opacity: 0, x: 60 },
-      visible: { opacity: 1, x: 0 },
+      hidden: { opacity: 0, x: 80, rotate: 2, filter: 'blur(6px)' },
+      visible: { opacity: 1, x: 0, rotate: 0, filter: 'blur(0px)' },
     },
     'scale': {
-      hidden: { opacity: 0, scale: 0.9 },
-      visible: { opacity: 1, scale: 1 },
+      hidden: { opacity: 0, scale: 0.85, filter: 'blur(10px)' },
+      visible: { opacity: 1, scale: 1, filter: 'blur(0px)' },
     },
   };
 
@@ -56,12 +57,17 @@ const LazySection = ({ children, className = '', animation = 'fade-up', delay = 
           animate={isVisible ? 'visible' : 'hidden'}
           variants={selectedVariant}
           transition={{
-            duration: 0.7,
+            duration: 1.2,
             delay,
-            ease: [0.22, 1, 0.36, 1],
+            ease: [0.16, 1, 0.3, 1],
           }}
         >
-          {children}
+          <motion.div
+            animate={isVisible ? { y: [0, -6, 0, 4, 0] } : {}}
+            transition={{ duration: 8, repeat: Infinity, ease: 'easeInOut' }}
+          >
+            {children}
+          </motion.div>
         </motion.div>
       ) : (
         <div style={{ minHeight: '50vh' }} />
