@@ -2,10 +2,11 @@ import React, { useMemo } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import RealisticFish from './RealisticFish';
 
-// CSS-based bubbles for performance
+// CSS-based bubbles for performance — reduced count
 const Bubbles = () => {
     const bubbles = useMemo(() => {
-        return Array.from({ length: 30 }).map((_, i) => ({
+        const count = window.matchMedia('(max-width: 768px)').matches ? 10 : 18;
+        return Array.from({ length: count }).map((_, i) => ({
             id: i,
             size: Math.random() * 8 + 4,
             left: Math.random() * 100,
@@ -25,7 +26,8 @@ const Bubbles = () => {
                         height: b.size,
                         left: `${b.left}%`,
                         background: 'radial-gradient(circle at 30% 30%, rgba(34, 211, 238, 0.4), transparent)',
-                        animation: `bubbleFloat ${b.duration}s linear ${b.delay}s infinite`
+                        animation: `bubbleFloat ${b.duration}s linear ${b.delay}s infinite`,
+                        willChange: 'transform, opacity'
                     }}
                 />
             ))}

@@ -676,18 +676,33 @@ const OceanFloorScene = () => {
    EXPORTED COMPONENT
    ═══════════════════════════════════════════════════════════════ */
 const OceanFloor3D = () => {
+    const [inView, setInView] = React.useState(false);
+    const [isMobile] = React.useState(() => typeof window !== 'undefined' && window.matchMedia('(max-width: 768px)').matches);
+    const containerRef = useRef(null);
+
+    React.useEffect(() => {
+        const el = containerRef.current;
+        if (!el) return;
+        const obs = new IntersectionObserver(([entry]) => setInView(entry.isIntersecting), { rootMargin: '100px' });
+        obs.observe(el);
+        return () => obs.disconnect();
+    }, []);
+
     return (
-        <div className="w-full h-full relative">
-            <Canvas
-                camera={{ position: [0, 5, 4], fov: 45, near: 0.1, far: 25, rotation: [-0.7, 0, 0] }}
-                dpr={[1, 1.5]}
-                gl={{ antialias: true, alpha: true, powerPreference: 'high-performance' }}
-                style={{ background: 'transparent' }}
-            >
-                <Suspense fallback={null}>
-                    <OceanFloorScene />
-                </Suspense>
-            </Canvas>
+        <div ref={containerRef} className="w-full h-full relative">
+            {inView && (
+                <Canvas
+                    camera={{ position: [0, 5, 4], fov: 45, near: 0.1, far: 25, rotation: [-0.7, 0, 0] }}
+                    dpr={isMobile ? [1, 1] : [1, 1.5]}
+                    gl={{ antialias: !isMobile, alpha: true, powerPreference: 'high-performance' }}
+                    frameloop={inView ? 'always' : 'never'}
+                    style={{ background: 'transparent' }}
+                >
+                    <Suspense fallback={null}>
+                        <OceanFloorScene />
+                    </Suspense>
+                </Canvas>
+            )}
         </div>
     );
 };

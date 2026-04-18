@@ -215,11 +215,12 @@ const UnderwaterAtmosphere = () => (
   </>
 );
 
-const TurtleCanvas = ({ scrollProgress, mousePos }) => (
+const TurtleCanvas = ({ scrollProgress, mousePos, isMobile }) => (
   <Canvas
     camera={{ position: [0, 0, 10], fov: 50, near: 0.1, far: 100 }}
-    gl={{ antialias: true, alpha: true, powerPreference: 'high-performance', stencil: false, depth: true }}
-    dpr={[1, 1.5]}
+    gl={{ antialias: !isMobile, alpha: true, powerPreference: 'high-performance', stencil: false, depth: true }}
+    dpr={isMobile ? [1, 1] : [1, 1.5]}
+    frameloop="always"
     style={{ background: 'transparent' }}
   >
     <UnderwaterAtmosphere />
@@ -234,21 +235,39 @@ const ScrollTurtle3D = () => {
   const scrollProgress = useRef(0);
   const mousePos = useRef({ x: 0, y: 0 });
   const [visible, setVisible] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
+    const mobile = window.matchMedia('(max-width: 768px)').matches;
+    setIsMobile(mobile);
+    // Skip turtle entirely on mobile for perf
+    if (mobile) return;
+
     const timer = setTimeout(() => setVisible(true), 800);
 
+    let ticking = false;
     const handleScroll = () => {
-      const scrollTop = window.scrollY;
-      const docHeight = document.documentElement.scrollHeight - window.innerHeight;
-      scrollProgress.current = docHeight > 0 ? scrollTop / docHeight : 0;
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(() => {
+        const scrollTop = window.scrollY;
+        const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+        scrollProgress.current = docHeight > 0 ? scrollTop / docHeight : 0;
+        ticking = false;
+      });
     };
 
+    let mouseTicking = false;
     const handleMouseMove = (e) => {
-      mousePos.current = {
-        x: (e.clientX / window.innerWidth - 0.5) * 2,
-        y: (e.clientY / window.innerHeight - 0.5) * 2,
-      };
+      if (mouseTicking) return;
+      mouseTicking = true;
+      requestAnimationFrame(() => {
+        mousePos.current = {
+          x: (e.clientX / window.innerWidth - 0.5) * 2,
+          y: (e.clientY / window.innerHeight - 0.5) * 2,
+        };
+        mouseTicking = false;
+      });
     };
 
     window.addEventListener('scroll', handleScroll, { passive: true });
@@ -262,11 +281,11 @@ const ScrollTurtle3D = () => {
     };
   }, []);
 
-  if (!visible) return null;
+  if (!visible || isMobile) return null;
 
   return (
     <div className="fixed inset-0 pointer-events-none" style={{ zIndex: 5 }}>
-      <TurtleCanvas scrollProgress={scrollProgress} mousePos={mousePos} />
+      <TurtleCanvas scrollProgress={scrollProgress} mousePos={mousePos} isMobile={isMobile} />
     </div>
   );
 };

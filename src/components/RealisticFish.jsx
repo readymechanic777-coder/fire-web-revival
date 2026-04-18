@@ -1,5 +1,5 @@
-import { motion } from "framer-motion";
 import { useMemo } from "react";
+import { useDeviceCapability } from "@/hooks/use-device-capability";
 
 // Highly detailed realistic tropical fish SVGs
 const FishSVG = ({ type, size = 60, flip = false }) => {
@@ -179,66 +179,59 @@ const FishSVG = ({ type, size = 60, flip = false }) => {
 };
 
 const defaultConfigs = [
-  { y: "10%", type: "clownfish", size: 70, duration: 28, delay: 0, flip: false },
-  { y: "25%", type: "tang", size: 60, duration: 35, delay: 5, flip: true },
-  { y: "45%", type: "angelfish", size: 75, duration: 40, delay: 12, flip: false },
-  { y: "62%", type: "butterfly", size: 55, duration: 32, delay: 3, flip: true },
-  { y: "78%", type: "clownfish", size: 50, duration: 38, delay: 18, flip: false },
-  { y: "35%", type: "jellyfish", size: 65, duration: 45, delay: 8, flip: false },
-  { y: "85%", type: "tang", size: 45, duration: 30, delay: 22, flip: true },
+  { y: "12%", type: "clownfish", size: 70, duration: 32, delay: 0, flip: false },
+  { y: "30%", type: "tang", size: 60, duration: 38, delay: 6, flip: true },
+  { y: "55%", type: "angelfish", size: 75, duration: 42, delay: 14, flip: false },
+  { y: "75%", type: "butterfly", size: 55, duration: 36, delay: 4, flip: true },
+  { y: "40%", type: "jellyfish", size: 65, duration: 50, delay: 10, flip: false },
 ];
 
+// CSS keyframes injected once
+const fishStyles = `
+@keyframes fishSwimRight { 0%{transform:translateX(-180px)} 100%{transform:translateX(calc(100vw + 180px))} }
+@keyframes fishSwimLeft  { 0%{transform:translateX(calc(100vw + 180px))} 100%{transform:translateX(-180px)} }
+@keyframes fishBob { 0%,100%{transform:translateY(0) rotate(0)} 25%{transform:translateY(-10px) rotate(2deg)} 75%{transform:translateY(8px) rotate(-2deg)} }
+@keyframes jellyPulse { 0%,100%{transform:scaleY(1)} 50%{transform:scaleY(0.88)} }
+`;
+
 const RealisticFish = ({ configs = defaultConfigs, className = "" }) => {
-  const fish = useMemo(() => configs, [configs]);
+  const { isLowEnd, ready } = useDeviceCapability();
+  const fish = useMemo(() => {
+    if (!ready) return [];
+    return isLowEnd ? configs.slice(0, 2) : configs;
+  }, [configs, isLowEnd, ready]);
+
+  if (!ready) return null;
 
   return (
     <div className={`absolute inset-0 overflow-hidden pointer-events-none ${className}`}>
+      <style>{fishStyles}</style>
       {fish.map((f, i) => (
-        <motion.div
+        <div
           key={i}
           className="absolute"
-          style={{ top: f.y, willChange: "transform" }}
-          initial={{
-            x: f.flip ? "calc(100vw + 100px)" : "-150px",
-            opacity: 0,
-          }}
-          animate={{
-            x: f.flip ? "-150px" : "calc(100vw + 100px)",
-            opacity: [0, 0.9, 0.9, 0.9, 0],
-          }}
-          transition={{
-            duration: f.duration,
-            delay: f.delay,
-            repeat: Infinity,
-            ease: "linear",
+          style={{
+            top: f.y,
+            left: 0,
+            willChange: "transform",
+            animation: `${f.flip ? "fishSwimLeft" : "fishSwimRight"} ${f.duration}s linear ${f.delay}s infinite`,
           }}
         >
-          <motion.div
-            animate={{
-              y: [0, -15, 0, 12, 0],
-              rotate: f.type === "jellyfish" ? 0 : [0, 3, 0, -3, 0],
-            }}
-            transition={{
-              duration: f.type === "jellyfish" ? 6 : 5,
-              repeat: Infinity,
-              ease: "easeInOut",
+          <div
+            style={{
+              willChange: "transform",
+              animation: f.type === "jellyfish"
+                ? `jellyPulse 4s ease-in-out infinite`
+                : `fishBob 5s ease-in-out infinite`,
             }}
           >
-            {f.type === "jellyfish" ? (
-              <motion.div
-                animate={{ scaleY: [1, 0.85, 1, 0.9, 1] }}
-                transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
-              >
-                <FishSVG type={f.type} size={f.size} flip={f.flip} />
-              </motion.div>
-            ) : (
-              <FishSVG type={f.type} size={f.size} flip={f.flip} />
-            )}
-          </motion.div>
-        </motion.div>
+            <FishSVG type={f.type} size={f.size} flip={f.flip} />
+          </div>
+        </div>
       ))}
     </div>
   );
 };
 
 export default RealisticFish;
+

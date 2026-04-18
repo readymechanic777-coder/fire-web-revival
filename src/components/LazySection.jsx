@@ -27,23 +27,23 @@ const LazySection = ({ children, className = '', animation = 'fade-up', delay = 
     return () => observer.disconnect();
   }, [hasLoaded]);
 
-  // Ocean-themed entrance animations: floating, drifting, surfacing
+  // Lightweight ocean entrance — no infinite per-section animations (perf)
   const variants = {
     'fade-up': {
-      hidden: { opacity: 0, y: 80, filter: 'blur(8px)' },
-      visible: { opacity: 1, y: 0, filter: 'blur(0px)' },
+      hidden: { opacity: 0, y: 50 },
+      visible: { opacity: 1, y: 0 },
     },
     'fade-left': {
-      hidden: { opacity: 0, x: -80, rotate: -2, filter: 'blur(6px)' },
-      visible: { opacity: 1, x: 0, rotate: 0, filter: 'blur(0px)' },
+      hidden: { opacity: 0, x: -50 },
+      visible: { opacity: 1, x: 0 },
     },
     'fade-right': {
-      hidden: { opacity: 0, x: 80, rotate: 2, filter: 'blur(6px)' },
-      visible: { opacity: 1, x: 0, rotate: 0, filter: 'blur(0px)' },
+      hidden: { opacity: 0, x: 50 },
+      visible: { opacity: 1, x: 0 },
     },
     'scale': {
-      hidden: { opacity: 0, scale: 0.85, filter: 'blur(10px)' },
-      visible: { opacity: 1, scale: 1, filter: 'blur(0px)' },
+      hidden: { opacity: 0, scale: 0.94 },
+      visible: { opacity: 1, scale: 1 },
     },
   };
 
@@ -57,17 +57,13 @@ const LazySection = ({ children, className = '', animation = 'fade-up', delay = 
           animate={isVisible ? 'visible' : 'hidden'}
           variants={selectedVariant}
           transition={{
-            duration: 1.2,
+            duration: 0.7,
             delay,
-            ease: [0.16, 1, 0.3, 1],
+            ease: [0.22, 1, 0.36, 1],
           }}
+          style={{ willChange: isVisible ? 'auto' : 'transform, opacity' }}
         >
-          <motion.div
-            animate={isVisible ? { y: [0, -6, 0, 4, 0] } : {}}
-            transition={{ duration: 8, repeat: Infinity, ease: 'easeInOut' }}
-          >
-            {children}
-          </motion.div>
+          {children}
         </motion.div>
       ) : (
         <div style={{ minHeight: '50vh' }} />
