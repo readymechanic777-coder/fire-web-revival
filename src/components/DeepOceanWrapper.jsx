@@ -1,6 +1,7 @@
 import React, { useMemo } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import RealisticFish from './RealisticFish';
+import DeepSeaCreatures from './DeepSeaCreatures';
 
 // CSS-based bubbles for performance — reduced count
 const Bubbles = () => {
