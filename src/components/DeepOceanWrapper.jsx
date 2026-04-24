@@ -1,6 +1,7 @@
 import React, { useMemo } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import RealisticFish from './RealisticFish';
+import DeepSeaCreatures from './DeepSeaCreatures';
 
 // CSS-based bubbles for performance — reduced count
 const Bubbles = () => {
@@ -163,6 +164,8 @@ const DeepOceanWrapper = ({ children }) => {
             <div className="fixed inset-0 pointer-events-none z-[5]">
                 <RealisticFish />
             </div>
+            {/* Depth-based marine life: jellyfish, sharks, whales — spans full document */}
+            <DeepSeaCreatures />
             <LightRays />
             <Bubbles />
 
