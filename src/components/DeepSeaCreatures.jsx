@@ -1,417 +1,315 @@
-import { useEffect, useState, useMemo } from "react";
+import { useEffect, useId, useMemo, useState } from "react";
 import { useDeviceCapability } from "@/hooks/use-device-capability";
 
-// ===== Realistic SVG creatures =====
-const Jellyfish = ({ size = 120, hue = 280 }) => {
-  const w = size;
-  const h = size * 1.6;
+const Jellyfish = ({ size = 150, hue = 284, opacity = 0.8 }) => {
+  const bellId = useId();
+  const glowId = useId();
+  const organId = useId();
+
   return (
-    <svg width={w} height={h} viewBox="0 0 120 200" style={{ filter: `drop-shadow(0 0 18px hsla(${hue}, 90%, 65%, 0.55))` }}>
+    <svg
+      width={size}
+      height={size * 1.8}
+      viewBox="0 0 180 300"
+      style={{
+        opacity,
+        overflow: "visible",
+        filter: `drop-shadow(0 0 18px hsla(${hue} 90% 72% / 0.28))`,
+      }}
+    >
       <defs>
-        <radialGradient id={`jf-bell-${hue}`} cx="50%" cy="35%">
-          <stop offset="0%" stopColor={`hsla(${hue}, 100%, 88%, 0.95)`} />
-          <stop offset="50%" stopColor={`hsla(${hue}, 85%, 65%, 0.7)`} />
-          <stop offset="100%" stopColor={`hsla(${hue}, 80%, 30%, 0.35)`} />
+        <radialGradient id={bellId} cx="50%" cy="28%" r="65%">
+          <stop offset="0%" stopColor={`hsla(${hue} 95% 92% / 0.96)`} />
+          <stop offset="38%" stopColor={`hsla(${hue} 80% 78% / 0.72)`} />
+          <stop offset="78%" stopColor={`hsla(${hue} 72% 58% / 0.28)`} />
+          <stop offset="100%" stopColor={`hsla(${hue} 78% 42% / 0.08)`} />
         </radialGradient>
-        <radialGradient id={`jf-inner-${hue}`} cx="50%" cy="50%">
-          <stop offset="0%" stopColor={`hsla(${hue}, 100%, 90%, 0.6)`} />
-          <stop offset="100%" stopColor={`hsla(${hue}, 100%, 70%, 0)`} />
+        <radialGradient id={glowId} cx="50%" cy="40%" r="55%">
+          <stop offset="0%" stopColor={`hsla(${hue} 100% 96% / 0.52)`} />
+          <stop offset="100%" stopColor={`hsla(${hue} 100% 96% / 0)`} />
         </radialGradient>
+        <linearGradient id={organId} x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stopColor={`hsla(${hue} 90% 86% / 0.65)`} />
+          <stop offset="100%" stopColor={`hsla(${hue} 80% 70% / 0.18)`} />
+        </linearGradient>
       </defs>
-      {/* Long flowing tentacles */}
-      {[15, 28, 42, 60, 78, 92, 105].map((x, i) => (
+
+      {[18, 34, 52, 70, 88, 106, 124, 142, 160].map((x, index) => (
         <path
-          key={i}
-          d={`M${x},80 Q${x + (i % 2 ? 10 : -10)},120 ${x + (i % 2 ? -6 : 6)},150 Q${x + (i % 2 ? -12 : 12)},175 ${x},198`}
-          stroke={`hsla(${hue}, 90%, 80%, 0.55)`}
-          strokeWidth="1.8"
+          key={`tentacle-${x}`}
+          d={`M${x} 125 C ${x + (index % 2 === 0 ? -14 : 12)} 168 ${x + (index % 3 === 0 ? 24 : -18)} 222 ${x + (index % 2 === 0 ? -6 : 8)} 294`}
+          stroke={`hsla(${hue} 92% 86% / ${index % 2 === 0 ? 0.42 : 0.28})`}
+          strokeWidth={index % 3 === 0 ? 3.2 : 2}
           fill="none"
           strokeLinecap="round"
         />
       ))}
-      {/* Frilly oral arms */}
-      {[35, 50, 70, 85].map((x, i) => (
+
+      {[62, 82, 100, 118].map((x, index) => (
         <path
-          key={`o-${i}`}
-          d={`M${x},78 Q${x + 2},95 ${x - 2},115 Q${x + 4},130 ${x},145`}
-          stroke={`hsla(${hue}, 100%, 85%, 0.7)`}
-          strokeWidth="3"
+          key={`arm-${x}`}
+          d={`M${x} 116 C ${x + 4} 142 ${x - 10} 178 ${x + 8} 222 C ${x + 2} 236 ${x - 8} 248 ${x + 4} 268`}
+          stroke={`hsla(${hue} 96% 92% / 0.46)`}
+          strokeWidth={6 - index * 0.5}
           fill="none"
           strokeLinecap="round"
         />
       ))}
-      {/* Bell */}
-      <path d="M8,80 Q8,15 60,10 Q112,15 112,80 Q90,92 60,88 Q30,92 8,80 Z" fill={`url(#jf-bell-${hue})`} />
-      {/* Inner glow */}
-      <ellipse cx="60" cy="50" rx="38" ry="22" fill={`url(#jf-inner-${hue})`} />
-      <ellipse cx="48" cy="38" rx="14" ry="7" fill="rgba(255,255,255,0.55)" />
-      {/* Bell rim highlights */}
-      <path d="M15,78 Q60,95 105,78" stroke={`hsla(${hue}, 100%, 90%, 0.4)`} strokeWidth="1.5" fill="none" />
+
+      <path
+        d="M16 118 C 16 38 48 12 90 12 C 132 12 164 38 164 118 C 140 134 118 140 90 138 C 62 140 40 134 16 118 Z"
+        fill={`url(#${bellId})`}
+      />
+      <ellipse cx="90" cy="84" rx="54" ry="38" fill={`url(#${glowId})`} />
+      <path
+        d="M52 78 C 60 104 74 116 90 120 C 106 116 120 104 128 78"
+        stroke={`url(#${organId})`}
+        strokeWidth="8"
+        fill="none"
+        strokeLinecap="round"
+      />
+      <ellipse cx="68" cy="66" rx="18" ry="9" fill="hsla(0 0% 100% / 0.28)" />
+      <path
+        d="M22 116 C 54 132 126 132 158 116"
+        stroke={`hsla(${hue} 100% 96% / 0.26)`}
+        strokeWidth="3"
+        fill="none"
+      />
     </svg>
   );
 };
 
-const Shark = ({ size = 280, flip = false }) => {
-  const w = size;
-  const h = size * 0.45;
+const SharkSilhouette = ({ size = 340, flip = false, opacity = 0.36 }) => {
+  const bodyId = useId();
+
   return (
-    <svg width={w} height={h} viewBox="0 0 400 180" style={{ transform: flip ? "scaleX(-1)" : "none", filter: "drop-shadow(0 8px 16px rgba(0,0,0,0.6))" }}>
+    <svg
+      width={size}
+      height={size * 0.38}
+      viewBox="0 0 440 170"
+      style={{
+        transform: flip ? "scaleX(-1)" : "none",
+        opacity,
+        filter: "blur(0.2px) drop-shadow(0 14px 28px hsla(210 55% 4% / 0.55))",
+      }}
+    >
       <defs>
-        <linearGradient id="shark-body" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0%" stopColor="#5a6b7d" />
-          <stop offset="55%" stopColor="#3a4856" />
-          <stop offset="56%" stopColor="#d8dde2" />
-          <stop offset="100%" stopColor="#aab2bb" />
-        </linearGradient>
-        <linearGradient id="shark-shine" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0%" stopColor="white" stopOpacity="0.3" />
-          <stop offset="100%" stopColor="white" stopOpacity="0" />
+        <linearGradient id={bodyId} x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stopColor="hsla(205 26% 42% / 0.95)" />
+          <stop offset="45%" stopColor="hsla(206 28% 24% / 0.94)" />
+          <stop offset="72%" stopColor="hsla(205 20% 14% / 0.95)" />
+          <stop offset="100%" stopColor="hsla(205 14% 8% / 0.95)" />
         </linearGradient>
       </defs>
-      {/* Tail fin (caudal) */}
-      <path d="M40,90 Q5,20 0,10 Q15,55 10,90 Q15,125 0,170 Q5,160 40,90 Z" fill="#3a4856" />
-      <path d="M42,90 Q15,35 12,28 Q22,60 18,90 Q22,120 12,152 Q15,145 42,90 Z" fill="#5a6b7d" />
-      {/* Main body — torpedo shape */}
-      <path d="M40,90 Q90,40 200,50 Q310,55 380,85 Q385,92 380,98 Q310,128 200,132 Q90,138 40,90 Z" fill="url(#shark-body)" />
-      {/* Belly highlight */}
-      <path d="M60,108 Q180,135 360,100 Q300,128 200,130 Q100,128 60,108 Z" fill="#c8d0d8" opacity="0.85" />
-      {/* Dorsal fin */}
-      <path d="M180,52 Q210,5 250,55 L240,68 Q210,55 185,68 Z" fill="#2c3742" />
-      <path d="M180,52 Q210,5 250,55" stroke="#1a232c" strokeWidth="1.5" fill="none" />
-      {/* Pectoral fin */}
-      <path d="M150,118 Q170,160 230,135 L210,118 Z" fill="#2c3742" />
-      {/* Second dorsal */}
-      <path d="M290,62 Q305,40 320,62 L315,72 Q305,65 295,72 Z" fill="#3a4856" />
-      {/* Anal fin */}
-      <path d="M280,122 Q295,145 315,125 L305,118 Z" fill="#3a4856" />
-      {/* Gill slits */}
-      <path d="M325,75 Q323,90 327,105" stroke="#1a232c" strokeWidth="1.5" fill="none" opacity="0.6" />
-      <path d="M335,75 Q333,90 337,105" stroke="#1a232c" strokeWidth="1.5" fill="none" opacity="0.6" />
-      <path d="M345,75 Q343,90 347,105" stroke="#1a232c" strokeWidth="1.5" fill="none" opacity="0.6" />
-      {/* Shine */}
-      <ellipse cx="200" cy="68" rx="120" ry="10" fill="url(#shark-shine)" />
-      {/* Eye */}
-      <circle cx="370" cy="82" r="4" fill="#1a1a1a" />
-      <circle cx="371" cy="81" r="1.2" fill="white" />
-      {/* Mouth — menacing curve with teeth */}
-      <path d="M360,98 Q375,104 385,96" stroke="#1a1a1a" strokeWidth="1.5" fill="none" />
-      <path d="M365,99 L367,103 L369,99 L371,103 L373,99 L375,103 L377,99" stroke="white" strokeWidth="0.8" fill="none" />
+
+      <path d="M42 84 C 18 38 6 24 0 18 C 10 48 14 68 10 84 C 14 100 10 120 0 150 C 6 144 18 130 42 84 Z" fill="hsla(206 28% 20% / 0.96)" />
+      <path d="M42 84 C 86 42 162 34 262 42 C 334 46 388 58 434 82 C 438 88 438 92 434 98 C 388 122 334 136 262 140 C 162 148 86 140 42 84 Z" fill={`url(#${bodyId})`} />
+      <path d="M186 40 C 202 6 228 4 254 48 L 238 60 C 222 48 204 46 190 60 Z" fill="hsla(206 30% 18% / 0.98)" />
+      <path d="M156 112 C 182 152 236 146 262 120 L 236 114 C 206 118 182 118 156 112 Z" fill="hsla(207 28% 15% / 0.92)" />
+      <path d="M332 70 C 340 58 350 56 362 72 L 356 82 C 348 76 340 76 334 84 Z" fill="hsla(205 26% 20% / 0.94)" />
+      <ellipse cx="196" cy="62" rx="98" ry="12" fill="hsla(0 0% 100% / 0.08)" />
+      <circle cx="394" cy="78" r="3.6" fill="hsla(0 0% 6% / 0.78)" />
     </svg>
   );
 };
 
-const Whale = ({ size = 460, flip = false }) => {
-  const w = size;
-  const h = size * 0.5;
+const WhaleSilhouette = ({ size = 520, flip = false, opacity = 0.3 }) => {
+  const bodyId = useId();
+
   return (
-    <svg width={w} height={h} viewBox="0 0 600 300" style={{ transform: flip ? "scaleX(-1)" : "none", filter: "drop-shadow(0 12px 24px rgba(0,0,0,0.7))" }}>
+    <svg
+      width={size}
+      height={size * 0.44}
+      viewBox="0 0 620 270"
+      style={{
+        transform: flip ? "scaleX(-1)" : "none",
+        opacity,
+        filter: "blur(0.25px) drop-shadow(0 18px 36px hsla(214 65% 3% / 0.62))",
+      }}
+    >
       <defs>
-        <linearGradient id="whale-body" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0%" stopColor="#3d4a5c" />
-          <stop offset="50%" stopColor="#1e2733" />
-          <stop offset="51%" stopColor="#a8b3bf" />
-          <stop offset="100%" stopColor="#7c8693" />
-        </linearGradient>
-        <linearGradient id="whale-shine" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0%" stopColor="white" stopOpacity="0.25" />
-          <stop offset="100%" stopColor="white" stopOpacity="0" />
+        <linearGradient id={bodyId} x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stopColor="hsla(208 24% 34% / 0.94)" />
+          <stop offset="52%" stopColor="hsla(210 24% 16% / 0.96)" />
+          <stop offset="100%" stopColor="hsla(210 20% 8% / 0.96)" />
         </linearGradient>
       </defs>
-      {/* Massive tail fluke */}
-      <path d="M60,150 Q10,30 5,15 Q30,90 25,150 Q30,210 5,285 Q10,270 60,150 Z" fill="#1e2733" />
-      <path d="M65,150 Q25,55 22,42 Q40,100 35,150 Q40,200 22,258 Q25,245 65,150 Z" fill="#3d4a5c" />
-      {/* Body — large and rounded */}
-      <path d="M60,150 Q120,55 280,60 Q460,65 570,140 Q580,150 570,160 Q460,235 280,240 Q120,245 60,150 Z" fill="url(#whale-body)" />
-      {/* White belly — humpback style */}
-      <path d="M90,180 Q280,235 560,165 Q450,225 280,235 Q140,228 90,180 Z" fill="#c5cdd6" opacity="0.95" />
-      {/* Long pectoral fin (humpback signature) */}
-      <path d="M220,200 Q260,290 360,250 L320,205 Z" fill="#2a3441" />
-      <path d="M225,202 Q265,285 355,250" stroke="#a8b3bf" strokeWidth="1.5" fill="none" opacity="0.4" />
-      {/* Small dorsal fin */}
-      <path d="M380,72 Q400,50 425,80 L418,90 Q400,80 388,88 Z" fill="#2a3441" />
-      {/* Mouth line — long baleen */}
-      <path d="M510,165 Q545,180 575,158" stroke="#1a1a1a" strokeWidth="2" fill="none" />
-      <path d="M515,167 Q545,178 570,162" stroke="#1a1a1a" strokeWidth="1" fill="none" opacity="0.5" />
-      {/* Eye */}
-      <circle cx="540" cy="135" r="5" fill="#1a1a1a" />
-      <circle cx="541" cy="134" r="1.5" fill="white" />
-      {/* Tubercles (humpback bumps on head) */}
-      <circle cx="500" cy="120" r="3" fill="#1a232c" opacity="0.5" />
-      <circle cx="515" cy="128" r="2.5" fill="#1a232c" opacity="0.5" />
-      <circle cx="525" cy="118" r="2" fill="#1a232c" opacity="0.5" />
-      <circle cx="490" cy="130" r="2.5" fill="#1a232c" opacity="0.5" />
-      {/* Throat grooves */}
-      <path d="M380,200 L500,195" stroke="#7c8693" strokeWidth="0.8" fill="none" opacity="0.4" />
-      <path d="M380,210 L500,205" stroke="#7c8693" strokeWidth="0.8" fill="none" opacity="0.4" />
-      <path d="M380,220 L495,215" stroke="#7c8693" strokeWidth="0.8" fill="none" opacity="0.4" />
-      {/* Shine */}
-      <ellipse cx="300" cy="100" rx="200" ry="18" fill="url(#whale-shine)" />
+
+      <path d="M58 132 C 22 68 8 40 0 28 C 18 78 22 104 18 132 C 22 160 18 188 0 238 C 8 226 22 196 58 132 Z" fill="hsla(211 22% 14% / 0.96)" />
+      <path d="M58 132 C 126 62 240 46 376 58 C 478 66 554 90 606 126 C 614 132 614 138 606 144 C 554 180 478 204 376 212 C 240 224 126 202 58 132 Z" fill={`url(#${bodyId})`} />
+      <path d="M246 180 C 280 246 350 250 394 206 L 348 184 C 314 190 284 190 246 180 Z" fill="hsla(210 24% 12% / 0.94)" />
+      <path d="M404 62 C 418 44 436 44 452 72 L 442 82 C 430 74 418 74 406 84 Z" fill="hsla(210 22% 14% / 0.9)" />
+      <ellipse cx="282" cy="88" rx="162" ry="14" fill="hsla(0 0% 100% / 0.06)" />
+      <path d="M512 148 C 542 160 572 156 598 140" stroke="hsla(0 0% 5% / 0.5)" strokeWidth="3" fill="none" />
+      <circle cx="548" cy="118" r="4" fill="hsla(0 0% 6% / 0.72)" />
     </svg>
   );
 };
 
-// ===== Animation styles =====
 const styles = `
-@keyframes jfRise {
-  0%   { transform: translate3d(0, 110vh, 0); opacity: 0; }
-  8%   { opacity: 1; }
-  50%  { transform: translate3d(35px, 50vh, 0); opacity: 1; }
-  92%  { opacity: 1; }
-  100% { transform: translate3d(-25px, -25vh, 0); opacity: 0; }
+@keyframes jellyRise {
+  0% { transform: translate3d(0, 118vh, 0) scale(0.94); opacity: 0; }
+  10% { opacity: 1; }
+  52% { transform: translate3d(26px, 52vh, 0) scale(1); opacity: 1; }
+  100% { transform: translate3d(-18px, -24vh, 0) scale(1.02); opacity: 0; }
 }
-@keyframes jfDrift {
-  0%, 100% { transform: translateX(0); }
-  50%      { transform: translateX(20px); }
-}
-@keyframes jfBell {
+@keyframes jellyPulse {
   0%, 100% { transform: scale(1, 1); }
-  40%      { transform: scale(1.1, 0.78); }
-  70%      { transform: scale(0.92, 1.08); }
+  35% { transform: scale(1.08, 0.84); }
+  70% { transform: scale(0.95, 1.06); }
 }
-@keyframes sharkSwimRight {
-  0%   { transform: translate3d(-30vw, 0, 0); }
-  50%  { transform: translate3d(50vw, -30px, 0); }
+@keyframes jellyCurrent {
+  0%, 100% { transform: translateX(0); }
+  50% { transform: translateX(18px); }
+}
+@keyframes sharkCruiseRight {
+  0% { transform: translate3d(-35vw, 0, 0); }
+  50% { transform: translate3d(48vw, -16px, 0); }
   100% { transform: translate3d(130vw, 0, 0); }
 }
-@keyframes sharkSwimLeft {
-  0%   { transform: translate3d(130vw, 0, 0); }
-  50%  { transform: translate3d(50vw, 25px, 0); }
-  100% { transform: translate3d(-30vw, 0, 0); }
+@keyframes sharkCruiseLeft {
+  0% { transform: translate3d(130vw, 0, 0); }
+  50% { transform: translate3d(48vw, 18px, 0); }
+  100% { transform: translate3d(-35vw, 0, 0); }
 }
-@keyframes sharkSway {
-  0%, 100% { transform: rotate(-2deg); }
-  50%      { transform: rotate(3deg); }
+@keyframes whaleCruise {
+  0% { transform: translate3d(-42vw, 0, 0); }
+  50% { transform: translate3d(44vw, -12px, 0); }
+  100% { transform: translate3d(136vw, 0, 0); }
 }
-@keyframes whaleSwim {
-  0%   { transform: translate3d(-40vw, 0, 0); }
-  50%  { transform: translate3d(50vw, -20px, 0); }
-  100% { transform: translate3d(140vw, 0, 0); }
-}
-@keyframes whaleGlide {
-  0%, 100% { transform: rotate(-1.5deg) translateY(0); }
-  50%      { transform: rotate(2deg)   translateY(8px); }
+@keyframes creatureSway {
+  0%, 100% { transform: rotate(-1.6deg) translateY(0); }
+  50% { transform: rotate(1.8deg) translateY(8px); }
 }
 `;
 
-// ===== Depth zones (vh-based) =====
-// Each zone defines what creatures appear at what scroll depth.
-// `top` is the absolute pixel position based on document height.
-const buildCreatures = (docHeight, isLowEnd) => {
-  const vh = window.innerHeight;
-  const items = [];
-
-  // Helper to push creatures
-  const add = (c) => items.push(c);
-
-  // === Zone 1: Surface (0–25%) — a few jellyfish drifting ===
-  const z1Count = isLowEnd ? 1 : 2;
-  for (let i = 0; i < z1Count; i++) {
-    add({
-      kind: "jellyfish",
-      top: docHeight * 0.05 + i * vh * 0.8,
-      x: `${15 + i * 35}%`,
-      size: 90 + i * 10,
-      hue: 285 + i * 15,
-      duration: 26 + i * 4,
-      delay: i * 6,
-    });
+const buildDepthCreatures = (progress, isLowEnd) => {
+  if (progress < 0.18) {
+    return [];
   }
 
-  // === Zone 2: Mid (25–50%) — sharks start appearing + more jellies ===
-  const z2Jellies = isLowEnd ? 2 : 4;
-  for (let i = 0; i < z2Jellies; i++) {
-    add({
-      kind: "jellyfish",
-      top: docHeight * 0.28 + i * vh * 0.6,
-      x: `${10 + i * 22}%`,
-      size: 100 + i * 8,
-      hue: 200 + i * 25,
-      duration: 28 + i * 3,
-      delay: i * 4,
-    });
-  }
-  // Sharks
-  const z2Sharks = isLowEnd ? 1 : 2;
-  for (let i = 0; i < z2Sharks; i++) {
-    add({
-      kind: "shark",
-      top: docHeight * (0.32 + i * 0.08),
-      size: 240 + i * 30,
-      flip: i % 2 === 0,
-      duration: 38 + i * 6,
-      delay: i * 8,
-    });
+  if (progress < 0.42) {
+    return [
+      { kind: "jellyfish", left: "12%", size: 120, hue: 286, bottomOffset: -16, duration: 30, delay: 0, top: "56%" },
+      { kind: "jellyfish", left: "72%", size: 96, hue: 266, bottomOffset: -20, duration: 34, delay: 8, top: "48%" },
+    ];
   }
 
-  // === Zone 3: Deep (50–75%) — whales appear, dense jellies ===
-  const z3Jellies = isLowEnd ? 3 : 6;
-  for (let i = 0; i < z3Jellies; i++) {
-    add({
-      kind: "jellyfish",
-      top: docHeight * 0.52 + i * vh * 0.45,
-      x: `${5 + i * 16}%`,
-      size: 110 + (i % 3) * 18,
-      hue: 250 + i * 20,
-      duration: 26 + (i % 4) * 3,
-      delay: i * 3,
-    });
+  if (progress < 0.74) {
+    return [
+      { kind: "jellyfish", left: "10%", size: isLowEnd ? 122 : 138, hue: 284, bottomOffset: -20, duration: 28, delay: 0, top: "62%" },
+      { kind: "jellyfish", left: "42%", size: isLowEnd ? 102 : 118, hue: 258, bottomOffset: -24, duration: 32, delay: 6, top: "52%" },
+      { kind: "jellyfish", left: "76%", size: isLowEnd ? 92 : 106, hue: 208, bottomOffset: -18, duration: 35, delay: 11, top: "58%" },
+      { kind: "shark", top: "36%", size: isLowEnd ? 260 : 320, duration: 42, delay: 4, flip: progress > 0.58 },
+    ];
   }
-  // Whale
-  add({
-    kind: "whale",
-    top: docHeight * 0.58,
-    size: isLowEnd ? 360 : 480,
-    flip: false,
-    duration: 55,
-    delay: 5,
-  });
-  // Shark
-  add({
-    kind: "shark",
-    top: docHeight * 0.66,
-    size: 270,
-    flip: true,
-    duration: 42,
-    delay: 12,
-  });
 
-  // === Zone 4: Abyss (75–100%) — multiple whales + dense bioluminescent jellies ===
-  const z4Jellies = isLowEnd ? 4 : 8;
-  for (let i = 0; i < z4Jellies; i++) {
-    add({
-      kind: "jellyfish",
-      top: docHeight * 0.78 + i * vh * 0.35,
-      x: `${4 + i * 12}%`,
-      size: 120 + (i % 3) * 20,
-      // Bioluminescent cyans/purples deep down
-      hue: i % 2 === 0 ? 180 + (i * 8) : 290 + (i * 6),
-      duration: 24 + (i % 3) * 4,
-      delay: i * 2.5,
-    });
-  }
-  // Whales
-  add({
-    kind: "whale",
-    top: docHeight * 0.82,
-    size: isLowEnd ? 380 : 520,
-    flip: true,
-    duration: 60,
-    delay: 0,
-  });
-  if (!isLowEnd) {
-    add({
-      kind: "whale",
-      top: docHeight * 0.92,
-      size: 440,
-      flip: false,
-      duration: 65,
-      delay: 18,
-    });
-  }
-  // Deep shark
-  add({
-    kind: "shark",
-    top: docHeight * 0.88,
-    size: 300,
-    flip: false,
-    duration: 45,
-    delay: 8,
-  });
-
-  return items;
+  return [
+    { kind: "jellyfish", left: "8%", size: isLowEnd ? 132 : 150, hue: 292, bottomOffset: -18, duration: 28, delay: 0, top: "66%" },
+    { kind: "jellyfish", left: "28%", size: isLowEnd ? 108 : 124, hue: 274, bottomOffset: -24, duration: 31, delay: 5, top: "58%" },
+    { kind: "jellyfish", left: "62%", size: isLowEnd ? 96 : 114, hue: 212, bottomOffset: -22, duration: 34, delay: 9, top: "50%" },
+    { kind: "jellyfish", left: "82%", size: isLowEnd ? 88 : 102, hue: 198, bottomOffset: -26, duration: 36, delay: 13, top: "62%" },
+    { kind: "shark", top: "44%", size: isLowEnd ? 260 : 320, duration: 44, delay: 6, flip: true },
+    { kind: "whale", top: "24%", size: isLowEnd ? 380 : 500, duration: 58, delay: 2, flip: false },
+  ];
 };
 
 const DeepSeaCreatures = () => {
   const { isLowEnd, ready } = useDeviceCapability();
-  const [docHeight, setDocHeight] = useState(0);
+  const [progress, setProgress] = useState(0);
 
   useEffect(() => {
-    if (!ready) return;
-    const measure = () => {
-      setDocHeight(Math.max(document.documentElement.scrollHeight, window.innerHeight));
+    if (!ready) return undefined;
+
+    let frame = 0;
+
+    const updateProgress = () => {
+      frame = 0;
+      const maxScroll = Math.max(document.documentElement.scrollHeight - window.innerHeight, 1);
+      setProgress(window.scrollY / maxScroll);
     };
-    measure();
-    // Re-measure after content loads
-    const t = setTimeout(measure, 1500);
-    window.addEventListener("resize", measure);
+
+    const onScroll = () => {
+      if (frame) return;
+      frame = window.requestAnimationFrame(updateProgress);
+    };
+
+    updateProgress();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll);
+
     return () => {
-      clearTimeout(t);
-      window.removeEventListener("resize", measure);
+      if (frame) window.cancelAnimationFrame(frame);
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onScroll);
     };
   }, [ready]);
 
   const creatures = useMemo(() => {
-    if (!ready || docHeight === 0) return [];
-    return buildCreatures(docHeight, isLowEnd);
-  }, [ready, docHeight, isLowEnd]);
+    if (!ready) return [];
+    return buildDepthCreatures(progress, isLowEnd);
+  }, [isLowEnd, progress, ready]);
 
-  if (!ready || docHeight === 0) return null;
+  if (!ready || creatures.length === 0) return null;
 
   return (
-    <div
-      className="absolute inset-x-0 top-0 pointer-events-none overflow-hidden"
-      style={{ height: docHeight, zIndex: 4 }}
-    >
+    <div className="fixed inset-0 pointer-events-none overflow-hidden z-[4]" aria-hidden="true">
       <style>{styles}</style>
-      {creatures.map((c, i) => {
-        if (c.kind === "jellyfish") {
+      {creatures.map((creature, index) => {
+        if (creature.kind === "jellyfish") {
           return (
             <div
-              key={i}
+              key={`${creature.kind}-${index}`}
               className="absolute"
               style={{
-                top: c.top,
-                left: c.x,
-                width: 0,
-                height: 0,
+                left: creature.left,
+                bottom: `${creature.bottomOffset}%`,
                 willChange: "transform, opacity",
-                animation: `jfRise ${c.duration}s linear ${c.delay}s infinite`,
+                animation: `jellyRise ${creature.duration}s linear ${creature.delay}s infinite`,
               }}
             >
-              <div style={{ animation: `jfDrift 7s ease-in-out infinite`, willChange: "transform" }}>
-                <div style={{ animation: `jfBell 2.6s ease-in-out infinite`, transformOrigin: "50% 30%", willChange: "transform" }}>
-                  <Jellyfish size={c.size} hue={c.hue} />
+              <div style={{ animation: "jellyCurrent 8s ease-in-out infinite", willChange: "transform" }}>
+                <div style={{ animation: "jellyPulse 2.8s ease-in-out infinite", transformOrigin: "50% 26%", willChange: "transform" }}>
+                  <Jellyfish size={creature.size} hue={creature.hue} opacity={0.82} />
                 </div>
               </div>
             </div>
           );
         }
-        if (c.kind === "shark") {
+
+        if (creature.kind === "shark") {
           return (
             <div
-              key={i}
+              key={`${creature.kind}-${index}`}
               className="absolute left-0"
               style={{
-                top: c.top,
+                top: creature.top,
+                animation: `${creature.flip ? "sharkCruiseLeft" : "sharkCruiseRight"} ${creature.duration}s linear ${creature.delay}s infinite`,
                 willChange: "transform",
-                animation: `${c.flip ? "sharkSwimLeft" : "sharkSwimRight"} ${c.duration}s linear ${c.delay}s infinite`,
               }}
             >
-              <div style={{ animation: `sharkSway 3.5s ease-in-out infinite`, transformOrigin: "70% 50%", willChange: "transform" }}>
-                <Shark size={c.size} flip={c.flip} />
+              <div style={{ animation: "creatureSway 5.2s ease-in-out infinite", transformOrigin: "68% 50%", willChange: "transform" }}>
+                <SharkSilhouette size={creature.size} flip={creature.flip} />
               </div>
             </div>
           );
         }
-        if (c.kind === "whale") {
-          return (
-            <div
-              key={i}
-              className="absolute left-0"
-              style={{
-                top: c.top,
-                willChange: "transform",
-                animation: `whaleSwim ${c.duration}s linear ${c.delay}s infinite`,
-                transform: c.flip ? "scaleX(-1)" : "none",
-              }}
-            >
-              <div style={{ animation: `whaleGlide 6s ease-in-out infinite`, transformOrigin: "60% 50%", willChange: "transform" }}>
-                <Whale size={c.size} flip={false} />
-              </div>
+
+        return (
+          <div
+            key={`${creature.kind}-${index}`}
+            className="absolute left-0"
+            style={{
+              top: creature.top,
+              animation: `whaleCruise ${creature.duration}s linear ${creature.delay}s infinite`,
+              willChange: "transform",
+            }}
+          >
+            <div style={{ animation: "creatureSway 7s ease-in-out infinite", transformOrigin: "60% 50%", willChange: "transform" }}>
+              <WhaleSilhouette size={creature.size} flip={creature.flip} />
             </div>
-          );
-        }
-        return null;
+          </div>
+        );
       })}
     </div>
   );
