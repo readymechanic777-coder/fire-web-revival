@@ -179,26 +179,68 @@ const FishSVG = ({ type, size = 60, flip = false }) => {
 };
 
 const defaultConfigs = [
-  { y: "12%", type: "clownfish", size: 70, duration: 32, delay: 0, flip: false },
-  { y: "30%", type: "tang", size: 60, duration: 38, delay: 6, flip: true },
-  { y: "55%", type: "angelfish", size: 75, duration: 42, delay: 14, flip: false },
-  { y: "75%", type: "butterfly", size: 55, duration: 36, delay: 4, flip: true },
-  { y: "40%", type: "jellyfish", size: 65, duration: 50, delay: 10, flip: false },
+  { y: "12%", type: "clownfish", size: 110, duration: 34, delay: 0, flip: false },
+  { y: "28%", type: "tang", size: 100, duration: 40, delay: 6, flip: true },
+  { y: "52%", type: "angelfish", size: 120, duration: 44, delay: 14, flip: false },
+  { y: "72%", type: "butterfly", size: 95, duration: 38, delay: 4, flip: true },
+  // jellyfish: x is horizontal start position, rises bottom -> top
+  { x: "15%", type: "jellyfish", size: 110, duration: 28, delay: 0, flip: false },
+  { x: "70%", type: "jellyfish", size: 90, duration: 36, delay: 12, flip: false },
 ];
 
-// CSS keyframes injected once
+// CSS keyframes — lifelike swim with curved path & tail-driven body sway
 const fishStyles = `
-@keyframes fishSwimRight { 0%{transform:translateX(-180px)} 100%{transform:translateX(calc(100vw + 180px))} }
-@keyframes fishSwimLeft  { 0%{transform:translateX(calc(100vw + 180px))} 100%{transform:translateX(-180px)} }
-@keyframes fishBob { 0%,100%{transform:translateY(0) rotate(0)} 25%{transform:translateY(-10px) rotate(2deg)} 75%{transform:translateY(8px) rotate(-2deg)} }
-@keyframes jellyPulse { 0%,100%{transform:scaleY(1)} 50%{transform:scaleY(0.88)} }
+@keyframes fishSwimRight {
+  0%   { transform: translate3d(-220px, 0, 0); }
+  25%  { transform: translate3d(25vw, -22px, 0); }
+  50%  { transform: translate3d(50vw, 14px, 0); }
+  75%  { transform: translate3d(75vw, -18px, 0); }
+  100% { transform: translate3d(calc(100vw + 220px), 0, 0); }
+}
+@keyframes fishSwimLeft {
+  0%   { transform: translate3d(calc(100vw + 220px), 0, 0); }
+  25%  { transform: translate3d(75vw, -22px, 0); }
+  50%  { transform: translate3d(50vw, 16px, 0); }
+  75%  { transform: translate3d(25vw, -14px, 0); }
+  100% { transform: translate3d(-220px, 0, 0); }
+}
+/* Body sway — like a real tail beat propelling forward */
+@keyframes fishBodySway {
+  0%, 100% { transform: rotate(-3deg) translateY(0); }
+  25%      { transform: rotate(2deg)  translateY(-3px); }
+  50%      { transform: rotate(4deg)  translateY(0); }
+  75%      { transform: rotate(1deg)  translateY(3px); }
+}
+/* Subtle scale "wiggle" for tail flick illusion */
+@keyframes fishWiggle {
+  0%, 100% { transform: scaleX(1); }
+  50%      { transform: scaleX(0.96); }
+}
+/* Jellyfish floats upward across the screen */
+@keyframes jellyRise {
+  0%   { transform: translate3d(0, 110vh, 0); opacity: 0; }
+  10%  { opacity: 1; }
+  50%  { transform: translate3d(40px, 50vh, 0); opacity: 1; }
+  90%  { opacity: 1; }
+  100% { transform: translate3d(-30px, -20vh, 0); opacity: 0; }
+}
+/* Bell pulse — contracts to push water like a real jellyfish */
+@keyframes jellyBell {
+  0%, 100% { transform: scale(1, 1); }
+  40%      { transform: scale(1.08, 0.82); }
+  70%      { transform: scale(0.94, 1.06); }
+}
+@keyframes jellyDrift {
+  0%, 100% { transform: translateX(0); }
+  50%      { transform: translateX(15px); }
+}
 `;
 
 const RealisticFish = ({ configs = defaultConfigs, className = "" }) => {
   const { isLowEnd, ready } = useDeviceCapability();
   const fish = useMemo(() => {
     if (!ready) return [];
-    return isLowEnd ? configs.slice(0, 2) : configs;
+    return isLowEnd ? configs.slice(0, 3) : configs;
   }, [configs, isLowEnd, ready]);
 
   if (!ready) return null;
@@ -206,29 +248,49 @@ const RealisticFish = ({ configs = defaultConfigs, className = "" }) => {
   return (
     <div className={`absolute inset-0 overflow-hidden pointer-events-none ${className}`}>
       <style>{fishStyles}</style>
-      {fish.map((f, i) => (
-        <div
-          key={i}
-          className="absolute"
-          style={{
-            top: f.y,
-            left: 0,
-            willChange: "transform",
-            animation: `${f.flip ? "fishSwimLeft" : "fishSwimRight"} ${f.duration}s linear ${f.delay}s infinite`,
-          }}
-        >
+      {fish.map((f, i) => {
+        const isJelly = f.type === "jellyfish";
+
+        if (isJelly) {
+          return (
+            <div
+              key={i}
+              className="absolute"
+              style={{
+                left: f.x,
+                bottom: 0,
+                willChange: "transform, opacity",
+                animation: `jellyRise ${f.duration}s linear ${f.delay}s infinite`,
+              }}
+            >
+              <div style={{ willChange: "transform", animation: `jellyDrift 6s ease-in-out infinite` }}>
+                <div style={{ willChange: "transform", animation: `jellyBell 2.4s ease-in-out infinite`, transformOrigin: "50% 30%" }}>
+                  <FishSVG type={f.type} size={f.size} flip={f.flip} />
+                </div>
+              </div>
+            </div>
+          );
+        }
+
+        return (
           <div
+            key={i}
+            className="absolute"
             style={{
+              top: f.y,
+              left: 0,
               willChange: "transform",
-              animation: f.type === "jellyfish"
-                ? `jellyPulse 4s ease-in-out infinite`
-                : `fishBob 5s ease-in-out infinite`,
+              animation: `${f.flip ? "fishSwimLeft" : "fishSwimRight"} ${f.duration}s ease-in-out ${f.delay}s infinite`,
             }}
           >
-            <FishSVG type={f.type} size={f.size} flip={f.flip} />
+            <div style={{ willChange: "transform", animation: `fishBodySway 1.6s ease-in-out infinite`, transformOrigin: "70% 50%" }}>
+              <div style={{ willChange: "transform", animation: `fishWiggle 0.6s ease-in-out infinite` }}>
+                <FishSVG type={f.type} size={f.size} flip={f.flip} />
+              </div>
+            </div>
           </div>
-        </div>
-      ))}
+        );
+      })}
     </div>
   );
 };
