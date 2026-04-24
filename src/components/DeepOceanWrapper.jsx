@@ -164,6 +164,8 @@ const DeepOceanWrapper = ({ children }) => {
             <div className="fixed inset-0 pointer-events-none z-[5]">
                 <RealisticFish />
             </div>
+            {/* Depth-based marine life: jellyfish, sharks, whales — spans full document */}
+            <DeepSeaCreatures />
             <LightRays />
             <Bubbles />
 
