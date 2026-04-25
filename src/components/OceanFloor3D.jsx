@@ -445,47 +445,114 @@ const CausticLight = () => {
 };
 
 /* ═══════════════════════════════════════════════════════════════
-   SANDY GROUND
+   REALISTIC SANDY OCEAN FLOOR — dunes, ripples, scattered rocks
    ═══════════════════════════════════════════════════════════════ */
 const OceanGround = () => {
+    // Procedural displaced sand with dune ridges + small ripples
     const geometry = useMemo(() => {
-        const geo = new THREE.PlaneGeometry(18, 10, 64, 32);
+        const geo = new THREE.PlaneGeometry(20, 12, 128, 64);
         const pos = geo.attributes.position;
         for (let i = 0; i < pos.count; i++) {
             const x = pos.getX(i);
             const y = pos.getY(i);
-            pos.setZ(i, (Math.sin(x * 3) * Math.cos(y * 4) * 0.04) + (Math.random() * 0.02));
+            const dunes = Math.sin(x * 0.6) * Math.cos(y * 0.5) * 0.18;
+            const ripples = Math.sin(x * 4.2 + y * 3.1) * 0.04;
+            const microRipples = Math.sin(x * 12) * Math.cos(y * 10) * 0.015;
+            const noise = (Math.random() - 0.5) * 0.025;
+            pos.setZ(i, dunes + ripples + microRipples + noise);
         }
         geo.computeVertexNormals();
         return geo;
     }, []);
 
+    // Vertex colors for warm sand variation
+    const sandMaterial = useMemo(() => {
+        const colors = new Float32Array(geometry.attributes.position.count * 3);
+        for (let i = 0; i < geometry.attributes.position.count; i++) {
+            const z = geometry.attributes.position.getZ(i);
+            const tint = 0.5 + z * 0.6 + Math.random() * 0.2;
+            colors[i * 3] = 0.62 * tint;       // R
+            colors[i * 3 + 1] = 0.48 * tint;   // G
+            colors[i * 3 + 2] = 0.28 * tint;   // B
+        }
+        geometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
+        return null;
+    }, [geometry]);
+
+    // Scattered rocks (deterministic positions)
+    const rocks = useMemo(() => {
+        const arr = [];
+        const seed = [0.12, 0.34, 0.51, 0.68, 0.79, 0.91, 0.23, 0.45, 0.62, 0.84];
+        for (let i = 0; i < 14; i++) {
+            const a = seed[i % seed.length];
+            arr.push({
+                x: -8 + (i * 1.35) + (a - 0.5) * 0.6,
+                z: -1 + Math.sin(i * 1.7) * 1.4,
+                s: 0.18 + a * 0.32,
+                r: a * Math.PI * 2,
+                tone: 0.32 + a * 0.18,
+            });
+        }
+        return arr;
+    }, []);
+
     return (
         <group>
-            {/* Main sandy ground */}
-            <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, -0.05, 0]} geometry={geometry}>
+            {/* Main sandy seabed */}
+            <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, -0.05, 0]} geometry={geometry} receiveShadow>
                 <meshStandardMaterial
-                    color="#5c4023"
-                    emissive="#3d2a14"
-                    emissiveIntensity={0.4}
-                    roughness={0.9}
-                    metalness={0.05}
+                    vertexColors
+                    color="#a07848"
+                    emissive="#3a2812"
+                    emissiveIntensity={0.18}
+                    roughness={1}
+                    metalness={0.02}
+                    flatShading={false}
                 />
             </mesh>
-            {/* Lighter sand highlights */}
-            <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, -0.04, 0.5]}>
-                <planeGeometry args={[16, 6]} />
+
+            {/* Wet sand sheen overlay */}
+            <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, -0.02, 0.4]}>
+                <planeGeometry args={[18, 8]} />
                 <meshStandardMaterial
-                    color="#7a5a35"
-                    emissive="#4a351a"
-                    emissiveIntensity={0.3}
-                    roughness={0.95}
-                    metalness={0}
+                    color="#c8a06a"
+                    emissive="#5a3e1c"
+                    emissiveIntensity={0.12}
+                    roughness={0.7}
+                    metalness={0.08}
                     transparent
-                    opacity={0.5}
+                    opacity={0.28}
                 />
             </mesh>
-            {/* Subtle sand grain particles on the floor */}
+
+            {/* Scattered rocks/pebbles */}
+            {rocks.map((r, i) => (
+                <mesh key={`rock-${i}`} position={[r.x, r.s * 0.4 - 0.05, r.z]} rotation={[r.r * 0.3, r.r, r.r * 0.5]} castShadow>
+                    <dodecahedronGeometry args={[r.s, 0]} />
+                    <meshStandardMaterial
+                        color={`hsl(${30 + i * 4}, 18%, ${22 + r.tone * 14}%)`}
+                        roughness={0.95}
+                        metalness={0.08}
+                        emissive="#1a1408"
+                        emissiveIntensity={0.18}
+                    />
+                </mesh>
+            ))}
+
+            {/* Tiny pebbles cluster */}
+            {Array.from({ length: 20 }).map((_, i) => {
+                const x = -7 + (i * 0.75) + Math.sin(i) * 0.4;
+                const z = Math.cos(i * 1.3) * 1.8;
+                const s = 0.06 + (i % 3) * 0.03;
+                return (
+                    <mesh key={`pebble-${i}`} position={[x, s * 0.4 - 0.03, z]} rotation={[i, i * 0.7, i * 1.3]}>
+                        <icosahedronGeometry args={[s, 0]} />
+                        <meshStandardMaterial color={`hsl(${28 + i * 3}, 22%, ${28 + (i % 4) * 5}%)`} roughness={0.95} />
+                    </mesh>
+                );
+            })}
+
+            {/* Sand grain dust */}
             <SandGrains />
         </group>
     );
