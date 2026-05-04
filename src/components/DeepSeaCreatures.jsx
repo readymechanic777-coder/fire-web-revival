@@ -184,33 +184,18 @@ const styles = `
 `;
 
 const buildDepthCreatures = (progress, isLowEnd) => {
-  if (progress < 0.18) {
-    return [];
-  }
+  // Trimmed: only jellyfish at depth. No sharks/whales for cleaner premium feel.
+  if (progress < 0.3) return [];
 
-  if (progress < 0.42) {
+  if (progress < 0.65) {
     return [
-      { kind: "jellyfish", left: "12%", size: 120, hue: 286, bottomOffset: -16, duration: 30, delay: 0, top: "56%" },
-      { kind: "jellyfish", left: "72%", size: 96, hue: 266, bottomOffset: -20, duration: 34, delay: 8, top: "48%" },
-    ];
-  }
-
-  if (progress < 0.74) {
-    return [
-      { kind: "jellyfish", left: "10%", size: isLowEnd ? 122 : 138, hue: 284, bottomOffset: -20, duration: 28, delay: 0, top: "62%" },
-      { kind: "jellyfish", left: "42%", size: isLowEnd ? 102 : 118, hue: 258, bottomOffset: -24, duration: 32, delay: 6, top: "52%" },
-      { kind: "jellyfish", left: "76%", size: isLowEnd ? 92 : 106, hue: 208, bottomOffset: -18, duration: 35, delay: 11, top: "58%" },
-      { kind: "shark", top: "36%", size: isLowEnd ? 260 : 320, duration: 42, delay: 4, flip: progress > 0.58 },
+      { kind: "jellyfish", left: "14%", size: isLowEnd ? 110 : 132, hue: 286, bottomOffset: -18, duration: 32, delay: 0, top: "58%" },
     ];
   }
 
   return [
-    { kind: "jellyfish", left: "8%", size: isLowEnd ? 132 : 150, hue: 292, bottomOffset: -18, duration: 28, delay: 0, top: "66%" },
-    { kind: "jellyfish", left: "28%", size: isLowEnd ? 108 : 124, hue: 274, bottomOffset: -24, duration: 31, delay: 5, top: "58%" },
-    { kind: "jellyfish", left: "62%", size: isLowEnd ? 96 : 114, hue: 212, bottomOffset: -22, duration: 34, delay: 9, top: "50%" },
-    { kind: "jellyfish", left: "82%", size: isLowEnd ? 88 : 102, hue: 198, bottomOffset: -26, duration: 36, delay: 13, top: "62%" },
-    { kind: "shark", top: "44%", size: isLowEnd ? 260 : 320, duration: 44, delay: 6, flip: true },
-    { kind: "whale", top: "24%", size: isLowEnd ? 380 : 500, duration: 58, delay: 2, flip: false },
+    { kind: "jellyfish", left: "12%", size: isLowEnd ? 120 : 144, hue: 290, bottomOffset: -20, duration: 30, delay: 0, top: "62%" },
+    { kind: "jellyfish", left: "72%", size: isLowEnd ? 96 : 116, hue: 208, bottomOffset: -22, duration: 34, delay: 8, top: "54%" },
   ];
 };
 
