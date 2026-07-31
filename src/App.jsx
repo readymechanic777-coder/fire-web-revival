@@ -3,7 +3,7 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { usePreloader } from "./components/Preloader";
+
 import Index from "./pages/Index";
 import AboutPage from "./pages/AboutPage";
 import LoginPage from "./pages/LoginPage";
@@ -16,27 +16,22 @@ import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
 const App = () => {
-    const { isLoading, PreloaderComponent } = usePreloader();
     return (<QueryClientProvider client={queryClient}>
       <TooltipProvider>
-        <PreloaderComponent />
-        {!isLoading && (<>
-          <Toaster />
-          <Sonner />
-          <BrowserRouter>
-            <Routes>
-              <Route path="/" element={<Index />}/>
-              <Route path="/about" element={<AboutPage />}/>
-              <Route path="/login" element={<LoginPage />}/>
-              <Route path="/register" element={<RegisterPage />}/>
-              <Route path="/team" element={<TeamPage />}/>
-              <Route path="/tracks" element={<TracksPage />}/>
-              <Route path="/liquid-demo" element={<LiquidDemo />}/>
-              
-              <Route path="*" element={<NotFound />}/>
-            </Routes>
-          </BrowserRouter>
-        </>)}
+        <Toaster />
+        <Sonner />
+        <BrowserRouter>
+          <Routes>
+            <Route path="/" element={<Index />}/>
+            <Route path="/about" element={<AboutPage />}/>
+            <Route path="/login" element={<LoginPage />}/>
+            <Route path="/register" element={<RegisterPage />}/>
+            <Route path="/team" element={<TeamPage />}/>
+            <Route path="/tracks" element={<TracksPage />}/>
+            <Route path="/liquid-demo" element={<LiquidDemo />}/>
+            <Route path="*" element={<NotFound />}/>
+          </Routes>
+        </BrowserRouter>
       </TooltipProvider>
     </QueryClientProvider>);
 };
