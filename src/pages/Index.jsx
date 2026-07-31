@@ -39,7 +39,7 @@ const Index = () => {
             </LazySection>
           </ParallaxSection>
 
-          <ParallaxSection variant="mask">
+          <ParallaxSection variant="rise" intensity={0.8}>
             <LazySection animation="fade-left" delay={0.1}>
               <ThemesSection />
             </LazySection>
@@ -69,7 +69,7 @@ const Index = () => {
             </LazySection>
           </ParallaxSection>
 
-          <ParallaxSection variant="mask">
+          <ParallaxSection variant="rise" intensity={0.8}>
             <LazySection animation="scale">
               <FAQSection />
             </LazySection>
