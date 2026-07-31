@@ -94,10 +94,10 @@ const FishSVG = ({ type, size = 60, flip = false }) => {
   );
 };
 
+// Trimmed to just 2 fish for minimal, premium ocean feel
 const defaultConfigs = [
-  { y: "18%", type: "tang", size: 96, duration: 40, delay: 2, flip: false },
-  { y: "44%", type: "angelfish", size: 112, duration: 48, delay: 12, flip: true },
-  { y: "68%", type: "clownfish", size: 104, duration: 44, delay: 22, flip: false },
+  { y: "32%", type: "tang", size: 90, duration: 46, delay: 3, flip: false },
+  { y: "62%", type: "clownfish", size: 96, duration: 52, delay: 18, flip: true },
 ];
 
 const fishStyles = `
