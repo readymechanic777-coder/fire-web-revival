@@ -24,10 +24,10 @@ export const ParallaxSection = ({
 
   // Hooks must be called unconditionally
   const yRise = useTransform(scrollYProgress, [0, 0.5, 1], [120 * intensity, 0, -80 * intensity]);
-  const opacityRise = useTransform(scrollYProgress, [0, 0.2, 0.85, 1], [0, 1, 1, 0.6]);
+  const opacityRise = useTransform(scrollYProgress, [0, 0.15, 1], [0, 1, 1]);
 
   const scaleZoom = useTransform(scrollYProgress, [0, 0.5, 1], [0.82, 1, 1.08]);
-  const opacityZoom = useTransform(scrollYProgress, [0, 0.25, 0.85, 1], [0, 1, 1, 0.7]);
+  const opacityZoom = useTransform(scrollYProgress, [0, 0.15, 1], [0, 1, 1]);
   const blurZoom = useTransform(scrollYProgress, [0, 0.3, 0.85, 1], ["8px", "0px", "0px", "4px"]);
 
   const rotateXTilt = useTransform(scrollYProgress, [0, 0.5, 1], [10 * intensity, 0, -8 * intensity]);
@@ -55,8 +55,7 @@ export const ParallaxSection = ({
         style={{
           scale: scaleZoom,
           opacity: opacityZoom,
-          filter: useTransformToFilter(blurZoom),
-          willChange: "transform, opacity, filter",
+          willChange: "transform, opacity",
         }}
       >
         {children}

@@ -183,19 +183,25 @@ const CinematicDiveIntro = ({ onDone }) => {
             transition={{ duration: 0.6 }}
           >
             <motion.h1
-              className="font-display font-black tracking-[0.4em] text-cyan-50 drop-shadow-[0_0_25px_rgba(34,211,238,0.9)]"
-              style={{ fontSize: "clamp(1.5rem, 5vw, 3.5rem)" }}
-              animate={{ scale: phase >= 2 ? 1.4 : 1, opacity: phase >= 2 ? 0 : 1 }}
+              className="font-display font-black tracking-[0.3em] md:tracking-[0.5em] text-cyan-50 drop-shadow-[0_0_30px_rgba(34,211,238,1)] text-center"
+              style={{ fontSize: "clamp(2.5rem, 8vw, 5rem)" }}
+              animate={{ 
+                scale: phase >= 2 ? 1.5 : 1, 
+                opacity: phase >= 2 ? 0 : 1,
+              }}
               transition={{ duration: 1 }}
             >
-              DIVING IN
+              AVISHKAAR
             </motion.h1>
-            <motion.p
-              className="mt-3 text-xs md:text-sm font-mono uppercase tracking-[0.3em] text-cyan-200/80"
-              animate={{ opacity: phase >= 2 ? 0 : 0.8 }}
+            <motion.div
+              className="mt-6 px-8 py-2 border border-cyan-400/40 bg-cyan-900/30 backdrop-blur-md rounded-full shadow-[0_0_20px_rgba(34,211,238,0.3)]"
+              animate={{ opacity: phase >= 2 ? 0 : 1, y: phase >= 2 ? 20 : 0 }}
+              transition={{ duration: 0.8, delay: 0.1 }}
             >
-              AVISHKAAR · Season 4
-            </motion.p>
+              <p className="text-sm md:text-lg font-mono font-bold uppercase tracking-[0.4em] text-cyan-100">
+                Season 4
+              </p>
+            </motion.div>
           </motion.div>
 
           {/* Skip hint */}

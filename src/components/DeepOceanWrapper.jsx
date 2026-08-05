@@ -1,6 +1,5 @@
 import React, { useMemo } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
-import RealisticFish from './RealisticFish';
 import DeepSeaCreatures from './DeepSeaCreatures';
 
 // CSS-based bubbles for performance — reduced count
@@ -66,18 +65,17 @@ const GlobalOceanStyles = () => (
         body {
             background-color: #000814 !important;
         }
-        .bg-background, 
-        .bg-slate-950,
         main,
-        section:not(#scroll-animation),
-        div[class*="bg-gradient-to-"] {
+        section:not(#scroll-animation) {
             background-color: transparent !important;
-            background-image: none !important;
         }
+        .glass-card,
         .bg-card {
-            background-color: rgba(3, 43, 67, 0.3) !important;
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
+            background: rgba(8, 28, 50, 0.85) !important;
+            backdrop-filter: blur(16px) !important;
+            -webkit-backdrop-filter: blur(16px) !important;
+            border: 1px solid rgba(34, 211, 238, 0.35) !important;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), 0 0 20px rgba(34, 211, 238, 0.15) !important;
         }
         #hero-section canvas {
             opacity: 0.5;
@@ -161,9 +159,6 @@ const DeepOceanWrapper = ({ children }) => {
         >
             <GlobalOceanStyles />
             <ScrollDepthMeter />
-            <div className="fixed inset-0 pointer-events-none z-[5]">
-                <RealisticFish />
-            </div>
             {/* Depth-based marine life: jellyfish, sharks, whales — spans full document */}
             <DeepSeaCreatures />
             <LightRays />

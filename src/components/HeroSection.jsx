@@ -208,7 +208,7 @@ const HeroSection = () => {
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.7, delay: 0.1, type: "spring" }}
-          className="mb-4 w-full h-[150px] md:h-[250px] flex flex-col items-center justify-center relative"
+          className="mb-4 w-full h-[200px] md:h-[300px] flex flex-col items-center justify-center relative"
         >
           <TypingEffect />
         </motion.div>
@@ -273,7 +273,7 @@ const HeroSection = () => {
           className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-4xl mx-auto"
         >
           {[
-            { icon: Trophy, label: "Prize Pool", value: "₹2L+", color: "from-cyan-400 to-sky-400" },
+            { icon: Trophy, label: "Prize Pool", value: "₹3L+", color: "from-cyan-400 to-sky-400" },
             { icon: Users, label: "Participants", value: "500+", color: "from-sky-400 to-blue-400" },
             { icon: Calendar, label: "Duration", value: "48 Hrs", color: "from-teal-400 to-cyan-400" },
             { icon: MapPin, label: "Venue", value: "AITAM", color: "from-indigo-400 to-cyan-400" },

@@ -1,5 +1,6 @@
 import React, { useRef, useMemo, useEffect, useState, Suspense } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
+import { useDeviceCapability } from '@/hooks/use-device-capability';
 import { useGLTF, Environment } from '@react-three/drei';
 import * as THREE from 'three';
 
@@ -100,7 +101,7 @@ const TurtleModel = ({ scrollProgress, mousePos }) => {
   }, [animations, clonedScene]);
 
   useFrame((state, delta) => {
-    if (!group.current) return;
+    if (!group.current || document.body.classList.contains('nav-open')) return;
 
     // Animation mixer
     if (mixer.current) {
@@ -180,10 +181,9 @@ const TurtleModel = ({ scrollProgress, mousePos }) => {
       const dy = targetY - turtlePos.current.y;
       
       // Y rotation: face cursor direction + continuous spin from scroll
+      // Y rotation: face cursor direction
       const cursorAngle = Math.atan2(dx, 1); // heading toward cursor
-      const scrollSpin = t * Math.PI * 6; // full rotations as user scrolls
-      const timeSpin = swimTime.current * 0.2;
-      totalRotation.current = cursorAngle + scrollSpin + timeSpin;
+      totalRotation.current = cursorAngle;
       group.current.rotation.y = THREE.MathUtils.lerp(group.current.rotation.y, totalRotation.current, 0.04);
 
       // X rotation: tilt toward cursor vertically
@@ -215,11 +215,11 @@ const UnderwaterAtmosphere = () => (
   </>
 );
 
-const TurtleCanvas = ({ scrollProgress, mousePos, isMobile }) => (
+const TurtleCanvas = ({ scrollProgress, mousePos }) => (
   <Canvas
     camera={{ position: [0, 0, 10], fov: 50, near: 0.1, far: 100 }}
-    gl={{ antialias: !isMobile, alpha: true, powerPreference: 'high-performance', stencil: false, depth: true }}
-    dpr={isMobile ? [1, 1] : [1, 1.5]}
+    gl={{ antialias: false, alpha: true, powerPreference: 'high-performance', stencil: false, depth: true }}
+    dpr={[1, 1]}
     frameloop="always"
     style={{ background: 'transparent' }}
   >
@@ -235,14 +235,8 @@ const ScrollTurtle3D = () => {
   const scrollProgress = useRef(0);
   const mousePos = useRef({ x: 0, y: 0 });
   const [visible, setVisible] = useState(false);
-  const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
-    const mobile = window.matchMedia('(max-width: 768px)').matches;
-    setIsMobile(mobile);
-    // Skip turtle entirely on mobile for perf
-    if (mobile) return;
-
     const timer = setTimeout(() => setVisible(true), 800);
 
     let ticking = false;
@@ -281,11 +275,11 @@ const ScrollTurtle3D = () => {
     };
   }, []);
 
-  if (!visible || isMobile) return null;
+  if (!visible) return null;
 
   return (
     <div className="fixed inset-0 pointer-events-none" style={{ zIndex: 5 }}>
-      <TurtleCanvas scrollProgress={scrollProgress} mousePos={mousePos} isMobile={isMobile} />
+      <TurtleCanvas scrollProgress={scrollProgress} mousePos={mousePos} />
     </div>
   );
 };

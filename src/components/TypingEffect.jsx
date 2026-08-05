@@ -49,7 +49,7 @@ const TypingEffect = () => {
         return () => clearTimeout(timer);
     }, [displayText, isDeleting, currentWord]);
     return (
-        <div className="relative w-full h-[150px] md:h-[250px] flex items-center justify-center">
+        <div className="relative w-full h-[200px] md:h-[300px] flex items-center justify-center">
 
             <svg className="absolute w-0 h-0">
                 <defs>

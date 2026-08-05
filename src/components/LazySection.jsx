@@ -15,9 +15,6 @@ const LazySection = ({ children, className = '', animation = 'fade-up', delay = 
         if (entry.isIntersecting) {
           setIsVisible(true);
           setHasLoaded(true);
-        } else if (hasLoaded) {
-          // Keep rendered once loaded, but mark not visible
-          setIsVisible(false);
         }
       },
       { rootMargin: '200px 0px', threshold: 0.01 }

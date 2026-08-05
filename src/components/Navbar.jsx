@@ -62,16 +62,25 @@ const Navbar = () => {
   return (<div className="overflow-hidden">
    {isOpen && (
       <style>{`
+        body.nav-open main,
         body.nav-open section,
-        body.nav-open footer {
-          visibility: hidden;
+        body.nav-open footer,
+        body.nav-open #scroll-animation {
+          visibility: hidden !important;
+          opacity: 0 !important;
+          pointer-events: none !important;
+        }
+        body.nav-open canvas:not(.navbar-overlay canvas),
+        body.nav-open video {
+          display: none !important;
+        }
+        body.nav-open *:not(.navbar-overlay *):not(nav *):not(header *) {
+          animation-play-state: paused !important;
         }
       `}</style>
     )}
 
-    <motion.nav initial={{ y: -100 }} animate={{ y: 0 }} className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${scrolled
-      ? 'bg-background/95 backdrop-blur-lg border-b border-primary/20'
-      : 'bg-transparent'}`}>
+    <motion.nav initial={{ y: -100 }} animate={{ y: 0 }} className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 bg-transparent`}>
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-20 md:h-24">
 
@@ -93,7 +102,7 @@ const Navbar = () => {
 
 
     <AnimatePresence>
-      {isOpen && (<motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.3 }} className="fixed inset-0 z-40 bg-background/98 backdrop-blur-xl overflow-y-auto">
+      {isOpen && (<motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.3 }} className="fixed inset-0 z-40 bg-background/98 backdrop-blur-xl overflow-y-auto navbar-overlay">
 
         <div className="absolute inset-0 pointer-events-none overflow-hidden">
           <div className="absolute inset-0 opacity-70">

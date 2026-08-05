@@ -5,6 +5,7 @@ import AboutSection from "@/components/AboutSection";
 import ThemesSection from "@/components/ThemesSection";
 import HackathonSection from "@/components/HackathonSection";
 import GallerySection from "@/components/GallerySection";
+import RealisticGLBJellyfish from "@/components/RealisticGLBJellyfish";
 import SponsorsSection from "@/components/SponsorsSection";
 import PartnersSection from "@/components/PartnersSection";
 import FAQSection from "@/components/FAQSection";
@@ -39,13 +40,13 @@ const Index = () => {
             </LazySection>
           </ParallaxSection>
 
-          <ParallaxSection variant="rise" intensity={0.8}>
+          <ParallaxSection variant="rise" intensity={0.4}>
             <LazySection animation="fade-left" delay={0.1}>
               <ThemesSection />
             </LazySection>
           </ParallaxSection>
 
-          <ParallaxSection variant="tilt">
+          <ParallaxSection variant="rise" intensity={0.4}>
             <LazySection animation="scale">
               <HackathonSection />
             </LazySection>
@@ -57,29 +58,34 @@ const Index = () => {
             </LazySection>
           </ParallaxSection>
 
-          <ParallaxSection variant="rise">
-            <LazySection animation="fade-up">
-              <SponsorsSection />
-            </LazySection>
-          </ParallaxSection>
+          {/* Jellyfish Background Wrapper for Bottom Sections */}
+          <div className="relative">
+            <RealisticGLBJellyfish />
 
-          <ParallaxSection variant="rise" intensity={0.7}>
-            <LazySection animation="fade-up" delay={0.1}>
-              <PartnersSection />
-            </LazySection>
-          </ParallaxSection>
+            <ParallaxSection variant="rise">
+              <LazySection animation="fade-up">
+                <SponsorsSection />
+              </LazySection>
+            </ParallaxSection>
 
-          <ParallaxSection variant="rise" intensity={0.8}>
-            <LazySection animation="scale">
-              <FAQSection />
-            </LazySection>
-          </ParallaxSection>
+            <ParallaxSection variant="rise" intensity={0.7}>
+              <LazySection animation="fade-up" delay={0.1}>
+                <PartnersSection />
+              </LazySection>
+            </ParallaxSection>
 
-          <ParallaxSection variant="zoom">
-            <LazySection animation="fade-up">
-              <WelcomeSection />
-            </LazySection>
-          </ParallaxSection>
+            <ParallaxSection variant="rise" intensity={0.8}>
+              <LazySection animation="scale">
+                <FAQSection />
+              </LazySection>
+            </ParallaxSection>
+
+            <ParallaxSection variant="zoom">
+              <LazySection animation="fade-up">
+                <WelcomeSection />
+              </LazySection>
+            </ParallaxSection>
+          </div>
         </main>
         <Footer />
       </DeepOceanWrapper>

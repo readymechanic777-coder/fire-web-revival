@@ -184,19 +184,7 @@ const styles = `
 `;
 
 const buildDepthCreatures = (progress, isLowEnd) => {
-  // Trimmed: only jellyfish at depth. No sharks/whales for cleaner premium feel.
-  if (progress < 0.3) return [];
-
-  if (progress < 0.65) {
-    return [
-      { kind: "jellyfish", left: "14%", size: isLowEnd ? 110 : 132, hue: 286, bottomOffset: -18, duration: 32, delay: 0, top: "58%" },
-    ];
-  }
-
-  return [
-    { kind: "jellyfish", left: "12%", size: isLowEnd ? 120 : 144, hue: 290, bottomOffset: -20, duration: 30, delay: 0, top: "62%" },
-    { kind: "jellyfish", left: "72%", size: isLowEnd ? 96 : 116, hue: 208, bottomOffset: -22, duration: 34, delay: 8, top: "54%" },
-  ];
+  return [];
 };
 
 const DeepSeaCreatures = () => {

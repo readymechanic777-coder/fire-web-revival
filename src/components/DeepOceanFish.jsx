@@ -267,16 +267,19 @@ const FishScene = () => {
     );
 };
 
-const DeepOceanFish = () => {
-    const { scrollYProgress } = useScroll();
+const DeepOceanFish = ({ containerRef }) => {
+    const { scrollYProgress } = useScroll({
+        target: containerRef,
+        offset: ["start end", "end start"]
+    });
     const [visible, setVisible] = useState(false);
 
-    // 1600m-4000m out of 10994m = ~0.145-0.364 scroll progress
-    const opacity = useTransform(scrollYProgress, [0.12, 0.16, 0.34, 0.38], [0, 1, 1, 0]);
+    // Fade in during first 15%, stay 1, fade out during last 15%
+    const opacity = useTransform(scrollYProgress, [0, 0.15, 0.85, 1], [0, 1, 1, 0]);
 
     useEffect(() => {
         const unsubscribe = scrollYProgress.on('change', (v) => {
-            setVisible(v > 0.11 && v < 0.39);
+            setVisible(v > 0.05 && v < 0.95);
         });
         return unsubscribe;
     }, [scrollYProgress]);

@@ -21,6 +21,7 @@ export function LiquidEffectAnimation() {
 
       if (canvas) {
         const app = LiquidBackground(canvas);
+        window["liquidApp_" + "${uid}"] = app;
 
         app.loadImage("https://images.unsplash.com/photo-1500375592092-40eb2168fd21?auto=format&fit=crop&w=1200&q=80");
         app.liquidPlane.material.metalness = 0.4;
@@ -33,9 +34,15 @@ export function LiquidEffectAnimation() {
     document.body.appendChild(script);
 
     return () => {
-      // cleanup script if needed
       if (script.parentNode) {
         script.parentNode.removeChild(script);
+      }
+      const app = window["liquidApp_" + uid];
+      if (app && app.renderer) {
+        app.renderer.forceContextLoss();
+        app.renderer.context = null;
+        app.renderer.domElement = null;
+        app.renderer.dispose();
       }
     };
   }, [canvasId]);

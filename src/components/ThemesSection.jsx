@@ -63,7 +63,7 @@ const themes = [
   },
 ];
 const ThemesSection = () => {
-  return (<section className="relative py-20 md:py-32 overflow-hidden min-h-[50vh]" id="themes">
+  return (<section className="relative pt-12 pb-6 md:pt-20 md:pb-10 overflow-hidden" id="themes">
     <FloatingParticles />
     
     <div className="relative z-10 container mx-auto px-4">
