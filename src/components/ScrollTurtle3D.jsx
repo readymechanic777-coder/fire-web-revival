@@ -284,5 +284,5 @@ const ScrollTurtle3D = () => {
   );
 };
 
-useGLTF.preload('/models/turtle.glb');
+// useGLTF.preload('/models/turtle.glb');
 export default ScrollTurtle3D;

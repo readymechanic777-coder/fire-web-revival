@@ -4,6 +4,7 @@ import { useGLTF } from '@react-three/drei';
 import * as THREE from 'three';
 import { Canvas } from '@react-three/fiber';
 import { useDeviceCapability } from '@/hooks/use-device-capability';
+import { useInView } from 'framer-motion';
 
 export function SwimmingFishGLB({ url, scale = 1, speed = 1, color }) {
   const { scene } = useGLTF(url);
@@ -80,32 +81,39 @@ export function SwimmingFishGLB({ url, scale = 1, speed = 1, color }) {
 
 const RealisticGLBFish = () => {
   const { isLowEnd, ready } = useDeviceCapability();
+  const ref = useRef(null);
+  const isInView = useInView(ref, { margin: "1000px 0px 1000px 0px" });
   
   if (!ready || isLowEnd) return null;
 
   return (
-    <div className="absolute inset-0 z-0 pointer-events-none" style={{ opacity: 0.7 }}>
-      <Canvas
-        camera={{ position: [0, 0, 10], fov: 50 }}
-        gl={{ alpha: true, antialias: false, powerPreference: 'high-performance' }}
-        dpr={[1, 1]}
-      >
-        <ambientLight intensity={0.5} color="#22d3ee" />
-        <directionalLight position={[10, 10, 5]} intensity={1} color="#ffffff" />
-        
-        {/* Render a couple of fish instances with increased scale and speed */}
-        <SwimmingFishGLB url="/models/fish.glb" scale={2.5} speed={2.5} />
-        
-        <group position={[5, -3, -4]}>
-            <SwimmingFishGLB url="/models/fish.glb" scale={1.8} speed={2.0} color="#22d3ee" />
-        </group>
-        
-        <group position={[-6, 3, -6]}>
-            <SwimmingFishGLB url="/models/fish.glb" scale={2.2} speed={3.0} color="#a78bfa" />
-        </group>
-      </Canvas>
+    <div ref={ref} className="absolute inset-0 z-0 pointer-events-none" style={{ opacity: 0.7 }}>
+      {isInView && (
+        <Canvas
+          camera={{ position: [0, 0, 10], fov: 50 }}
+          gl={{ alpha: true, antialias: false, powerPreference: 'high-performance' }}
+          dpr={[1, 1]}
+        >
+          <ambientLight intensity={0.5} color="#22d3ee" />
+          <directionalLight position={[10, 10, 5]} intensity={1} color="#ffffff" />
+          
+          {/* Render a couple of fish instances with increased scale and speed */}
+          <SwimmingFishGLB url="/models/fish.glb" scale={2.5} speed={2.5} />
+          
+          <group position={[5, -3, -4]}>
+              <SwimmingFishGLB url="/models/fish.glb" scale={1.8} speed={2.0} color="#22d3ee" />
+          </group>
+          
+          <group position={[-6, 3, -6]}>
+              <SwimmingFishGLB url="/models/fish.glb" scale={2.2} speed={3.0} color="#a78bfa" />
+          </group>
+        </Canvas>
+      )}
     </div>
   );
 };
+
+// Preload the model
+// useGLTF.preload('/models/fish.glb');
 
 export default RealisticGLBFish;

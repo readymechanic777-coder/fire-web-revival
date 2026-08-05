@@ -683,7 +683,7 @@ const OceanFloor3D = () => {
     React.useEffect(() => {
         const el = containerRef.current;
         if (!el) return;
-        const obs = new IntersectionObserver(([entry]) => setInView(entry.isIntersecting), { rootMargin: '100px' });
+        const obs = new IntersectionObserver(([entry]) => setInView(entry.isIntersecting), { rootMargin: '1000px' });
         obs.observe(el);
         return () => obs.disconnect();
     }, []);

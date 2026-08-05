@@ -114,7 +114,7 @@ const RealisticGLBJellyfish = () => {
 };
 
 // Preload the models
-useGLTF.preload('/models/jellyfish.glb');
-useGLTF.preload('/models/jellyfish1.glb');
+// useGLTF.preload('/models/jellyfish.glb');
+// useGLTF.preload('/models/jellyfish1.glb');
 
 export default RealisticGLBJellyfish;
