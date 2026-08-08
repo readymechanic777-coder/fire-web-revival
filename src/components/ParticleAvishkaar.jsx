@@ -31,11 +31,11 @@ const ParticleAvishkaar = ({ text = "AVISHKAAR" }) => {
 
         let particles;
         // [CHANGE HERE]: Total text particles (Density of the words)
-        const particleCount = 50000;
+        const particleCount = 25000; // Reduced for massive CPU optimization
         let positions, colors, targets, velocities;
         // [CHANGE HERE]: Base text color glow
-        const colorBase = new THREE.Color(0xe0f2fe);
-        const colorActive = new THREE.Color(0xffffff);
+        const colorBase = new THREE.Color(0x22d3ee); // Cyan to match the theme perfectly
+        const colorActive = new THREE.Color(0xffffff); // Bright white for interaction
         const clock = new THREE.Clock();
 
         const mouse = new THREE.Vector2();
@@ -43,6 +43,12 @@ const ParticleAvishkaar = ({ text = "AVISHKAAR" }) => {
         const mousePlane = new THREE.Plane(new THREE.Vector3(0, 0, 1), 0);
         const mouse3D = new THREE.Vector3(0, 0, 0);
         let isMouseActive = false;
+        
+        let isVisible = true;
+        const observer = new IntersectionObserver((entries) => {
+            isVisible = entries[0].isIntersecting;
+        });
+        observer.observe(container);
 
         const onMouseMove = (event) => {
             const rect = container.getBoundingClientRect();
@@ -62,8 +68,8 @@ const ParticleAvishkaar = ({ text = "AVISHKAAR" }) => {
         texCanvas.height = 16;
         const context = texCanvas.getContext('2d');
         const gradient = context.createRadialGradient(8, 8, 0, 8, 8, 8);
-        gradient.addColorStop(0, 'rgba(0, 191, 255, 1)');
-        gradient.addColorStop(0.5, 'rgba(0, 191, 255, 0.9)');
+        gradient.addColorStop(0, 'rgba(13, 214, 245, 1)'); // Cyan core
+        gradient.addColorStop(0.5, 'rgba(34, 211, 238, 0.8)'); // Cyan edge
         gradient.addColorStop(1, 'rgba(34, 211, 238, 0)');
         context.fillStyle = gradient;
         context.fillRect(0, 0, 16, 16);
@@ -91,7 +97,7 @@ const ParticleAvishkaar = ({ text = "AVISHKAAR" }) => {
 
         // [CHANGE HERE]: The size of the text particles
         const material = new THREE.PointsMaterial({
-            size: 1.5,
+            size: 1.8, // Increased size to compensate for lower particle count
             vertexColors: true,
             map: particleTexture,
             transparent: true,
@@ -178,7 +184,7 @@ const ParticleAvishkaar = ({ text = "AVISHKAAR" }) => {
 
         const animate = () => {
             animationFrameId = requestAnimationFrame(animate);
-            if (document.body.classList.contains('nav-open')) return;
+            if (!isVisible || document.body.classList.contains('nav-open')) return;
             const time = clock.getElapsedTime();
 
             if (textRef.current !== lastText) {
@@ -266,14 +272,13 @@ const ParticleAvishkaar = ({ text = "AVISHKAAR" }) => {
         window.addEventListener('resize', handleResize);
 
         return () => {
-            cancelAnimationFrame(animationFrameId);
             window.removeEventListener('mousemove', onMouseMove);
-            window.removeEventListener('resize', handleResize);
-            if (container) {
-                container.removeEventListener('mouseleave', onMouseOut);
-                if (renderer.domElement?.parentNode === container) {
-                    container.removeChild(renderer.domElement);
-                }
+            container.removeEventListener('mouseleave', onMouseOut);
+            cancelAnimationFrame(animationFrameId);
+            observer.disconnect();
+            
+            if (container && renderer.domElement && container.contains(renderer.domElement)) {
+                container.removeChild(renderer.domElement);
             }
             renderer.dispose();
             scene.clear();

@@ -135,8 +135,9 @@ const TurtleModel = ({ scrollProgress, mousePos }) => {
     let targetX, targetY, targetZ;
 
     // Convert mouse position (-1 to 1) to 3D world coordinates
-    const cursorX = mousePos.current.x * 6; // wider range to cover viewport
-    const cursorY = mousePos.current.y * -3.5; // invert Y, map to 3D space
+    // Multipliers reduced heavily so the turtle stays far away from the edges
+    const cursorX = mousePos.current.x * 2.5; 
+    const cursorY = mousePos.current.y * -1.5; 
 
     if (t <= 0.05) {
       // Start at center of hero, begin following cursor
@@ -145,10 +146,10 @@ const TurtleModel = ({ scrollProgress, mousePos }) => {
       targetY = THREE.MathUtils.lerp(0, cursorY, heroT);
       targetZ = 4;
     } else if (t > 0.88) {
-      // Footer: settle to the right side, below "Follow Us"
+      // Footer: continue following cursor but move slightly closer to camera
       const footerT = THREE.MathUtils.smoothstep(t, 0.88, 1.0);
-      targetX = THREE.MathUtils.lerp(cursorX, 3.5, footerT);
-      targetY = THREE.MathUtils.lerp(cursorY, -2.5, footerT);
+      targetX = cursorX + Math.sin(swimTime.current * 0.8) * 0.5;
+      targetY = cursorY + Math.sin(swimTime.current * 1.2) * 0.3;
       targetZ = THREE.MathUtils.lerp(4, 3, footerT);
     } else {
       // Main journey: follow cursor with playful offset

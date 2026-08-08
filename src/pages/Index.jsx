@@ -25,10 +25,14 @@ const Index = () => {
   return (
     <div className="min-h-screen bg-background overflow-x-hidden">
       {!introDone && <CinematicDiveIntro onDone={() => setIntroDone(true)} />}
-      <SmoothScroll />
-      <Navbar />
-      <ScrollTurtle3D />
-      <DeepOceanWrapper>
+      
+      {introDone && (
+        <>
+          <SmoothScroll />
+          <Navbar />
+          <ScrollTurtle3D />
+          <RealisticGLBJellyfish />
+          <DeepOceanWrapper>
         <main className="relative z-10">
           <ScrollFrameAnimation>
             <HeroSection />
@@ -58,37 +62,36 @@ const Index = () => {
             </LazySection>
           </ParallaxSection>
 
-          {/* Jellyfish Background Wrapper for Bottom Sections */}
-          <div className="relative">
-            <RealisticGLBJellyfish />
 
-            <ParallaxSection variant="rise">
-              <LazySection animation="fade-up">
-                <SponsorsSection />
-              </LazySection>
-            </ParallaxSection>
 
-            <ParallaxSection variant="rise" intensity={0.7}>
-              <LazySection animation="fade-up" delay={0.1}>
-                <PartnersSection />
-              </LazySection>
-            </ParallaxSection>
+          <ParallaxSection variant="rise">
+            <LazySection animation="fade-up">
+              <SponsorsSection />
+            </LazySection>
+          </ParallaxSection>
 
-            <ParallaxSection variant="rise" intensity={0.8}>
-              <LazySection animation="scale">
-                <FAQSection />
-              </LazySection>
-            </ParallaxSection>
+          <ParallaxSection variant="rise" intensity={0.7}>
+            <LazySection animation="fade-up" delay={0.1}>
+              <PartnersSection />
+            </LazySection>
+          </ParallaxSection>
 
-            <ParallaxSection variant="zoom">
-              <LazySection animation="fade-up">
-                <WelcomeSection />
-              </LazySection>
-            </ParallaxSection>
-          </div>
+          <ParallaxSection variant="rise" intensity={0.8}>
+            <LazySection animation="scale">
+              <FAQSection />
+            </LazySection>
+          </ParallaxSection>
+
+          <ParallaxSection variant="zoom">
+            <LazySection animation="fade-up">
+              <WelcomeSection />
+            </LazySection>
+          </ParallaxSection>
         </main>
         <Footer />
       </DeepOceanWrapper>
+        </>
+      )}
     </div>
   );
 };

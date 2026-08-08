@@ -3,8 +3,6 @@ import { motion, AnimatePresence, useMotionValue, useTransform, animate, useScro
 import { Laptop, Users, Trophy, Medal, Award, Star, ArrowRight, Clock } from "lucide-react";
 import WaterTextEffect from "./WaterTextEffect";
 import FloatingParticles from "./FloatingParticles";
-import RealisticGLBShark from "./RealisticGLBShark";
-import RealisticGLBTimelineFishes from "./RealisticGLBTimelineFishes";
 
 function AnimatedNumber({ value, delay = 0 }) {
   const count = useMotionValue(0);
@@ -78,8 +76,8 @@ const CountdownTimer = ({ targetDate, type }) => {
 const LargeCountdownTimer = ({ type }) => {
   const getTargetDate = () => {
     return type === 'virtual'
-      ? new Date('2026-12-20T00:00:00').getTime()
-      : new Date('2026-12-26T00:00:00').getTime();
+      ? new Date('2026-11-27T10:00:00').getTime()
+      : new Date('2026-12-28T09:00:00').getTime();
   };
   const calculateTime = () => {
     const now = new Date().getTime();
@@ -120,14 +118,14 @@ const LargeCountdownTimer = ({ type }) => {
         </h3>
       </div>
       <p className="text-muted-foreground">
-        {type === 'virtual' ? 'December 20, 2026' : 'December 26, 2026'}
+        {type === 'virtual' ? 'November 27, 2026 - 10:00 AM' : 'December 28, 2026 - 09:00 AM'}
       </p>
     </motion.div>
 
 
-    <div className="flex justify-center gap-4 md:gap-8">
+    <div className="flex justify-center gap-2 md:gap-8 px-2">
       {timeUnits.map((unit, index) => (<motion.div key={unit.label} initial={{ scale: 0.5, opacity: 0 }} whileInView={{ scale: 1, opacity: 1 }} viewport={{ once: true }} transition={{ delay: index * 0.1, type: "spring", stiffness: 200 }} className="relative group">
-        <div className="relative bg-card border-2 border-primary/40 rounded-2xl p-4 md:p-8 text-center overflow-hidden hover:border-primary transition-all duration-300 min-w-[80px] md:min-w-[140px]">
+        <div className="relative bg-card border-2 border-primary/40 rounded-xl md:rounded-2xl p-2 md:p-8 text-center overflow-hidden hover:border-primary transition-all duration-300 min-w-[65px] md:min-w-[140px]">
 
           <motion.div className="absolute inset-0 opacity-30 group-hover:opacity-50 transition-opacity" style={{
             background: 'radial-gradient(circle at center bottom, hsl(var(--primary) / 0.3), transparent 70%)',
@@ -141,7 +139,7 @@ const LargeCountdownTimer = ({ type }) => {
           }} transition={{ duration: 1.5, repeat: Infinity, delay: index * 0.2 }} />
 
 
-          <motion.span key={unit.value} initial={{ y: -20, opacity: 0 }} animate={{ y: 0, opacity: 1 }} className="relative block text-4xl md:text-7xl font-display font-black text-transparent bg-clip-text" style={{
+          <motion.span key={unit.value} initial={{ y: -20, opacity: 0 }} animate={{ y: 0, opacity: 1 }} className="relative block text-2xl md:text-7xl font-display font-black text-transparent bg-clip-text" style={{
             background: 'linear-gradient(180deg, hsl(var(--primary)), hsl(220, 85%, 55%))',
             backgroundClip: 'text',
             WebkitBackgroundClip: 'text',
@@ -150,7 +148,7 @@ const LargeCountdownTimer = ({ type }) => {
           </motion.span>
 
 
-          <span className="relative text-sm md:text-lg text-muted-foreground uppercase tracking-widest font-display mt-2 block">
+          <span className="relative text-[10px] md:text-lg text-muted-foreground uppercase tracking-widest font-display mt-1 md:mt-2 block">
             {unit.label}
           </span>
 
@@ -544,12 +542,17 @@ const Timeline = ({ type }) => {
   ];
   const physicalPhases = [
     {
-      title: 'Registration & Idea Submission',
+      title: 'Phase 1: Registration',
       description: [
         'Visit the Avishkaar portal and register your team (1-4 members).',
         'Submit the following:',
         'Abstract Document (Max 2 pages) in PDF format',
-        '1-Minute Video Pitch (YouTube Unlisted or Google Drive link)',
+        '1-Minute Video Pitch (YouTube Unlisted or Google Drive link)'
+      ]
+    },
+    {
+      title: 'Phase 1: Idea Submission Details',
+      description: [
         {
           type: 'subbox',
           title: 'Abstract',
@@ -611,7 +614,6 @@ const Timeline = ({ type }) => {
   ];
   const phases = type === 'virtual' ? virtualPhases : physicalPhases;
   return (<div ref={timelineRef} className="py-16 relative cursor-none md:cursor-none" style={{ cursor: 'none' }}>
-    <RealisticGLBTimelineFishes />
 
     <TimelineCursor containerRef={timelineRef} />
 
@@ -745,25 +747,25 @@ const PrizePoolDisplay = ({ type }) => {
 };
 const ImportantDates = ({ type }) => {
   const virtualDates = [
-    { event: 'Registrations Open', date: 'Oct 23, 2025' },
-    { event: 'Registrations Close', date: 'Nov 20, 2025' },
-    { event: 'Problem Statements Release', date: 'Nov 25, 2025 - 10:00 AM' },
-    { event: 'Hackathon Begins', date: 'Nov 25, 2025 - 11:00 AM' },
-    { event: 'Hackathon Ends', date: 'Nov 26, 2025 - 11:00 AM' },
-    { event: 'Project Submission Deadline', date: 'Nov 26, 2025 - 09:00 AM to 11:00 AM' },
-    { event: 'Online Pitching', date: 'Nov 26, 2025 - 10:00 AM Onwards' },
-    { event: 'Results Announcement', date: 'Nov 26, 2025' },
+    { event: 'Registrations Open', date: 'Aug 17, 2026' },
+    { event: 'Registrations Close', date: 'Nov 21, 2026' },
+    { event: 'Problem Statements Release', date: 'Nov 27, 2026 - 10:00 AM' },
+    { event: 'Hackathon Begins', date: 'Nov 27, 2026 - 11:00 AM' },
+    { event: 'Hackathon Ends', date: 'Nov 27, 2026 - 11:00 AM' },
+    { event: 'Project Submission Deadline', date: 'Nov 27, 2026 - 09:00 AM to 11:00 AM' },
+    { event: 'Online Pitching', date: 'Nov 27, 2026 - 10:00 AM Onwards' },
+    { event: 'Results Announcement', date: 'Nov 28, 2026' },
   ];
   const physicalDates = [
-    { event: 'Registrations Open', date: 'Oct 23, 2025' },
-    { event: 'Abstract & Video Submission', date: 'Nov 20, 2025' },
-    { event: 'Shortlisting Results', date: 'Nov 30, 2025' },
-    { event: 'Mentorship Phase Begins', date: 'Dec 1, 2025' },
-    { event: 'Mentorship Phase Ends', date: 'Dec 21, 2025' },
-    { event: 'Reporting at Campus', date: 'Dec 26, 2025 (Evening)' },
-    { event: 'Hackathon Begins', date: 'Dec 27, 2025 - 9:00 AM' },
-    { event: 'Hackathon Ends', date: 'Dec 29, 2025 - 9:00 AM' },
-    { event: 'Final Jury & Awards', date: 'Dec 29, 2025 - 2:00 PM onwards' },
+    { event: 'Registrations Open', date: 'Aug 17, 2026' },
+    { event: 'Abstract & Video Submission', date: 'Oct 17, 2026' },
+    { event: 'Shortlisting Results', date: 'Oct 26, 2026' },
+    { event: 'Mentorship Phase Begins', date: 'Nov 15, 2026' },
+    { event: 'Mentorship Phase Ends', date: 'Nov 28, 2026' },
+    { event: 'Reporting at Campus', date: 'Dec 27, 2026 (Evening)' },
+    { event: 'Hackathon Begins', date: 'Dec 28, 2026 - 9:00 AM' },
+    { event: 'Hackathon Ends', date: 'Dec 30, 2026 - 9:00 AM' },
+    { event: 'Final Jury & Awards', date: 'Dec 30, 2026 - 2:00 PM onwards' },
   ];
   const dates = type === 'virtual' ? virtualDates : physicalDates;
   return (<div className="py-12">
@@ -948,10 +950,7 @@ const HackathonSection = () => {
 
             <LargeCountdownTimer type={activeTab} />
 
-            {/* Render the 3D Shark here so it swims behind/between the sections */}
-            <div className="relative w-full">
-               <RealisticGLBShark />
-            </div>
+            {/* Shark was removed */}
 
             <ImportantDates type={activeTab} />
           </div>

@@ -27,7 +27,14 @@ const ScrollFrameAnimation = ({ children }) => {
 
     const onReady = () => {
       setVideoReady(true);
-      video.play().catch(() => {});
+      video.play().catch(() => {
+        // If unmuted autoplay fails, fallback to muted autoplay so the video can end and unlock the page
+        video.muted = true;
+        video.play().catch(() => {
+          // If it entirely fails, just unlock the website immediately
+          setVideoEnded(true);
+        });
+      });
     };
 
     const onEnded = () => setVideoEnded(true);
@@ -61,7 +68,6 @@ const ScrollFrameAnimation = ({ children }) => {
         <video
           ref={videoRef}
           src="/videos/hero-bg.mp4"
-          muted
           playsInline
           preload="auto"
           className="w-full h-full object-cover"

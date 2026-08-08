@@ -4,6 +4,7 @@ import { useGLTF, useAnimations } from '@react-three/drei';
 import * as THREE from 'three';
 import { Canvas } from '@react-three/fiber';
 import { SkeletonUtils } from 'three-stdlib';
+import { useDeviceCapability } from '@/hooks/use-device-capability';
 
 export function RisingJellyfish({ url, scale = 1, speed = 1, startOffset = 0, xOffset = 0, zOffset = 0, rotationYOffset = 0 }) {
   const groupRef = useRef();
@@ -20,21 +21,66 @@ export function RisingJellyfish({ url, scale = 1, speed = 1, startOffset = 0, xO
       const firstActionKey = Object.keys(actions)[0];
       const action = actions[firstActionKey];
       action.play();
-      action.setEffectiveTimeScale(speed * 0.8); // Jellyfish swim slower
+      action.setEffectiveTimeScale(speed * 0.8);
     }
-  }, [actions, speed]);
+
+    // Apply procedural vertex shader to make tentacles wave organically
+    clone.traverse((child) => {
+      if (child.isMesh) {
+        if (!child.geometry.boundingBox) child.geometry.computeBoundingBox();
+        const maxY = child.geometry.boundingBox.max.y;
+        const minY = child.geometry.boundingBox.min.y;
+        const height = maxY - minY;
+
+        // Clone material so we can apply custom uniforms safely
+        child.material = child.material.clone();
+        child.material.onBeforeCompile = (shader) => {
+          shader.uniforms.uTime = { value: 0 };
+          child.userData.shader = shader;
+
+          shader.vertexShader = `
+            uniform float uTime;
+            ${shader.vertexShader}
+          `;
+
+          shader.vertexShader = shader.vertexShader.replace(
+            `#include <begin_vertex>`,
+            `
+            #include <begin_vertex>
+            
+            // Normalized depth from top (0.0) to bottom (1.0)
+            float normalizedDepth = max(0.0, (${maxY.toFixed(5)} - position.y) / max(0.001, ${height.toFixed(5)}));
+            
+            // Tentacles are usually the bottom 70% of the mesh
+            float waveStrength = smoothstep(0.3, 1.0, normalizedDepth);
+            
+            // Apply organic sine waves based on Y position and time
+            transformed.x += sin(position.y * 3.0 + uTime * 2.5) * waveStrength * ${0.1 / scale};
+            transformed.z += cos(position.y * 2.5 + uTime * 2.0) * waveStrength * ${0.1 / scale};
+            `
+          );
+        };
+      }
+    });
+  }, [clone, actions, speed, scale]);
 
   useFrame(({ clock }) => {
     const t = clock.elapsedTime * speed + startOffset;
     
+    // Update custom shader time for waving tentacles
+    clone.traverse((child) => {
+      if (child.isMesh && child.userData.shader) {
+        child.userData.shader.uniforms.uTime.value = clock.elapsedTime * speed;
+      }
+    });
+
     if (groupRef.current) {
-        // Since canvas is now fixed 100vh, we loop through a standard viewport height (approx -15 to +15 in 3D space at Z=0)
-        // We use a range of -25 to +25 so they spawn out of bounds and rise completely off screen
+        // Since canvas is now fixed 100vh, we loop through a standard viewport height
         const yPos = ((t * 1.5) % 50) - 25;
         
         // Organic, wider X and Z weaving
         groupRef.current.position.x = Math.sin(t * 0.4) * 8 + Math.cos(t * 0.2) * 3 + xOffset;
-        groupRef.current.position.y = yPos + Math.sin(t * 2) * 0.5; // Slight pulsing up and down
+        groupRef.current.position.y = yPos + Math.sin(t * 2) * 0.5; 
         groupRef.current.position.z = Math.cos(t * 0.3) * 6 + zOffset;
         
         // Complex, realistic tilt as they drift
@@ -51,63 +97,104 @@ export function RisingJellyfish({ url, scale = 1, speed = 1, startOffset = 0, xO
   );
 }
 
-const RealisticGLBJellyfish = () => {
-  const containerRef = useRef(null);
-  const [opacity, setOpacity] = React.useState(0);
+export function SwimmingFish({ url, scale = 1, speed = 1, startOffset = 0, yOffset = 0, zOffset = 0, rotationYOffset = -Math.PI / 2 }) {
+  const groupRef = useRef();
+  const { scene, animations } = useGLTF(url);
+  
+  const clone = useMemo(() => SkeletonUtils.clone(scene), [scene]);
+  const { actions } = useAnimations(animations, groupRef);
 
-  React.useEffect(() => {
-    let ticking = false;
-    const handleScroll = () => {
-      if (!ticking) {
-        window.requestAnimationFrame(() => {
-          if (containerRef.current) {
-            const rect = containerRef.current.getBoundingClientRect();
-            // Start fading in as the container enters the screen from the bottom
-            const progress = 1 - (rect.top / window.innerHeight);
-            const clampedProgress = Math.max(0, Math.min(1, progress));
-            
-            // If the container is completely off screen, hide it
-            if (rect.bottom < 0 || rect.top > window.innerHeight) {
-              setOpacity(0);
-            } else {
-              setOpacity(clampedProgress);
-            }
-          }
-          ticking = false;
-        });
-        ticking = true;
-      }
-    };
+  useEffect(() => {
+    if (actions && Object.keys(actions).length > 0) {
+      const firstActionKey = Object.keys(actions)[0];
+      const action = actions[firstActionKey];
+      action.play();
+      action.setEffectiveTimeScale(speed * 0.8);
+    }
+  }, [clone, actions, speed]);
 
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    handleScroll(); // Initial check
+  useFrame(({ clock }) => {
+    const t = clock.elapsedTime * speed + startOffset;
     
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
+    if (groupRef.current) {
+        // Faster movement across a wider area
+        const xPos = ((t * 4) % 70) - 35;
+        
+        groupRef.current.position.x = xPos;
+        // More dynamic swimming height (wobble)
+        groupRef.current.position.y = yOffset + Math.sin(t * 2) * 1.5; 
+        groupRef.current.position.z = Math.cos(t * 0.8) * 4 + zOffset;
+        
+        // Dynamic pitch and roll based on sine waves for realism
+        groupRef.current.rotation.y = rotationYOffset + Math.cos(t * 1.2) * 0.15;
+        groupRef.current.rotation.z = Math.cos(t * 2) * 0.15; // tilt up/down naturally
+        groupRef.current.rotation.x = Math.sin(t * 0.8) * 0.2; // slight roll
+    }
+  });
 
   return (
-    <div ref={containerRef} className="absolute inset-0 z-[1] pointer-events-none">
+    <group ref={groupRef} scale={scale} dispose={null}>
+      <primitive object={clone} />
+    </group>
+  );
+}
+
+const RealisticGLBJellyfish = () => {
+  const { isLowEnd, isMobile, ready } = useDeviceCapability();
+  const [opacity, setOpacity] = React.useState(0);
+  const [isHeroSection, setIsHeroSection] = React.useState(true);
+
+  // Fade in smoothly when ready
+  React.useEffect(() => {
+    const onScroll = () => {
+      setIsHeroSection(window.scrollY < window.innerHeight * 0.8);
+    };
+    window.addEventListener('scroll', onScroll, { passive: true });
+    onScroll(); // initial check
+
+    if (ready) {
+      const timer = setTimeout(() => setOpacity(0.5), 500);
+      return () => {
+        clearTimeout(timer);
+        window.removeEventListener('scroll', onScroll);
+      };
+    }
+    return () => window.removeEventListener('scroll', onScroll);
+  }, [ready]);
+
+  if (!ready || isLowEnd || isHeroSection) return null; // Don't render on very low-end devices or while hidden behind hero video
+
+  return (
+    <div className="fixed inset-0 z-[1] pointer-events-none">
       <div 
-        className="fixed inset-0 w-full h-full overflow-hidden mix-blend-screen md:opacity-60 transition-opacity duration-300"
-        style={{ opacity: opacity * 0.5 }}
+        className="absolute inset-0 w-full h-full overflow-hidden mix-blend-screen transition-opacity duration-1000"
+        style={{ opacity: opacity }}
       >
-        {opacity > 0 && (
-          <Canvas
-            camera={{ position: [0, 0, 15], fov: 45 }}
-            gl={{ alpha: true, antialias: false, powerPreference: 'high-performance' }}
-            dpr={[1, 1]}
-          >
-            <ambientLight intensity={1.2} color="#0c4a6e" />
-            <directionalLight position={[10, 20, 10]} intensity={2.0} color="#38bdf8" />
-            <pointLight position={[-10, -10, -10]} intensity={4} color="#a855f7" />
-            
-            {/* Constant stream of jellyfish within the fixed 100vh viewport */}
-            <RisingJellyfish url="/models/jellyfish.glb" scale={5.5} speed={1.2} startOffset={0} xOffset={-8} zOffset={-5} rotationYOffset={0} />
-            <RisingJellyfish url="/models/jellyfish1.glb" scale={4.8} speed={1.5} startOffset={12} xOffset={5} zOffset={-8} rotationYOffset={Math.PI / 4} />
-            <RisingJellyfish url="/models/jellyfish.glb" scale={6.5} speed={1.0} startOffset={24} xOffset={-2} zOffset={-12} rotationYOffset={Math.PI / 6} />
-            <RisingJellyfish url="/models/jellyfish1.glb" scale={4.5} speed={1.3} startOffset={36} xOffset={9} zOffset={-6} rotationYOffset={Math.PI / 3} />
-          </Canvas>
-        )}
+        <Canvas
+          camera={{ position: [0, 0, 15], fov: 45 }}
+          gl={{ alpha: true, antialias: false, powerPreference: 'high-performance' }}
+          dpr={[1, 1]}
+          performance={{ min: 0.5 }}
+        >
+          <ambientLight intensity={1.2} color="#0c4a6e" />
+          <directionalLight position={[10, 20, 10]} intensity={2.0} color="#38bdf8" />
+          <pointLight position={[-10, -10, -10]} intensity={4} color="#a855f7" />
+          
+          {/* Constant stream of jellyfish within the fixed 100vh viewport */}
+          <RisingJellyfish url="/models/jellyfish.glb" scale={5.5} speed={1.2} startOffset={0} xOffset={-5} zOffset={-5} rotationYOffset={0} />
+          
+          {/* Reduced number of fishes, faster speed */}
+          <SwimmingFish url="/models/fish.glb" scale={2.5} speed={1.8} startOffset={0} yOffset={2} zOffset={-3} />
+          <SwimmingFish url="/models/fish3.glb" scale={3.5} speed={1.4} startOffset={25} yOffset={5} zOffset={-10} />
+
+          {/* Only render one more on non-mobile devices */}
+          {!isMobile && (
+            <>
+              <RisingJellyfish url="/models/jellyfish2.glb" scale={5.0} speed={1.4} startOffset={12} xOffset={4} zOffset={-8} rotationYOffset={Math.PI / 8} />
+              <SwimmingFish url="/models/fish1.glb" scale={3.0} speed={1.6} startOffset={15} yOffset={-3} zOffset={-6} />
+            </>
+          )}
+        </Canvas>
       </div>
     </div>
   );

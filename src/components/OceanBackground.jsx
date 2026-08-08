@@ -15,17 +15,17 @@ const OceanBackground = () => {
         camera.position.set(0, 30, 80);
         camera.lookAt(0, 0, 0);
 
-        const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+        const renderer = new THREE.WebGLRenderer({ antialias: false, alpha: true, powerPreference: "high-performance" });
         renderer.setSize(window.innerWidth, window.innerHeight);
-        renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1));
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.5));
         if (mountRef.current) {
             mountRef.current.appendChild(renderer.domElement);
         }
 
         // [3D Web Experience Pattern]: Adjust quality based on device capabilities
         const isMobile = window.innerWidth < 768;
-        const particleCount = isMobile ? 6400 : 25600;
-        const gridSize = isMobile ? 80 : 160;
+        const particleCount = isMobile ? 3600 : 10000;
+        const gridSize = isMobile ? 60 : 100;
         const geometry = new THREE.BufferGeometry();
         const positions = new Float32Array(particleCount * 3);
         const colors = new Float32Array(particleCount * 3);
@@ -100,6 +100,14 @@ const OceanBackground = () => {
         const mousePlane = new THREE.Plane(new THREE.Vector3(0, 0, 1), 0);
         const mouse3D = new THREE.Vector3(0, 0, 0);
         let isMouseActive = false;
+        
+        let isVisible = true;
+        const observer = new IntersectionObserver((entries) => {
+            isVisible = entries[0].isIntersecting;
+        });
+        if (mountRef.current) {
+            observer.observe(mountRef.current);
+        }
 
         const onMouseMove = (event) => {
             mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
@@ -112,9 +120,13 @@ const OceanBackground = () => {
         const onMouseOut = () => (isMouseActive = false);
 
         let scrollY = 0;
+        let isHeroSection = true;
         const onScroll = () => {
             scrollY = window.scrollY;
+            isHeroSection = scrollY < window.innerHeight * 0.8;
         };
+        // Initialize
+        onScroll();
 
         window.addEventListener('mousemove', onMouseMove);
         window.addEventListener('mouseout', onMouseOut);
@@ -125,7 +137,7 @@ const OceanBackground = () => {
 
         const animate = () => {
             animationFrameId = requestAnimationFrame(animate);
-            if (document.body.classList.contains('nav-open')) return;
+            if (!isVisible || isHeroSection || document.body.classList.contains('nav-open')) return;
             const time = clock.getElapsedTime();
 
             const currentTemplate = templateRef.current;
@@ -301,6 +313,7 @@ const OceanBackground = () => {
             window.removeEventListener('scroll', onScroll);
             window.removeEventListener('resize', handleResize);
             cancelAnimationFrame(animationFrameId);
+            observer.disconnect();
             const mountNode = mountRef.current;
             if (mountNode && renderer.domElement?.parentNode === mountNode) {
                 mountNode.removeChild(renderer.domElement);

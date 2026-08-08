@@ -2,7 +2,6 @@ import { motion } from "framer-motion";
 import { useRef } from "react";
 import { Code, Lightbulb, Trophy, Users } from "lucide-react";
 import FloatingParticles from "./FloatingParticles";
-import RealisticGLBFish from "./RealisticGLBFish";
 
 const features = [
   {
@@ -33,7 +32,6 @@ const AboutSection = () => {
     
     <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(34,211,238,0.1)_0%,transparent_60%)] pointer-events-none" />
     <FloatingParticles />
-    <RealisticGLBFish />
     <div className="relative z-10 container mx-auto px-4">
 
       <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.6 }} className="text-center mb-4">
@@ -59,7 +57,7 @@ const AboutSection = () => {
 
           <div className="p-6 space-y-6 font-mono text-base leading-relaxed text-white">
             <p className="text-slate-100">
-              <span className="text-cyan-300 font-black drop-shadow-[0_0_8px_rgba(34,211,238,0.7)]">Aavishkar</span> is a 48-hour innovation marathon that challenges bright minds to turn bold ideas into real-world solutions. After two successful seasons, Aavishkar returns bigger and better — now in two phases: a 24-hour online hackathon and an on-campus 48-hour grand finale.
+              <span className="text-cyan-300 font-black drop-shadow-[0_0_8px_rgba(34,211,238,0.7)]">Aavishkar</span> is a 48-hour innovation marathon that challenges bright minds to turn bold ideas into real-world solutions. After three successful seasons, Aavishkar returns bigger and better — now in two phases: a 24-hour online hackathon and an on-campus 48-hour grand finale.
             </p>
 
             <p className="text-slate-100">

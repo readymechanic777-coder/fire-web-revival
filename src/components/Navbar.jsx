@@ -53,9 +53,9 @@ const Navbar = () => {
   }, [isOpen]);
   const navItems = [
     { name: 'Home', to: '/' },
-    { name: 'About', to: '#about' },
-    { name: 'Hackathon', to: '#hackathon' },
-    { name: 'FAQ', to: '#faq' },
+    { name: 'About', to: '/about' },
+    { name: 'Hackathon', to: '/hackathon' },
+    { name: 'FAQ', to: '/faq' },
     { name: 'Team', to: '/team' },
     { name: 'Tracks', to: '/tracks' },
   ];
@@ -71,18 +71,35 @@ const Navbar = () => {
           pointer-events: none !important;
         }
         body.nav-open canvas:not(.navbar-overlay canvas),
-        body.nav-open video {
+        body.nav-open video,
+        body.nav-open .fixed:not(.z-50):not(.z-40) {
           display: none !important;
         }
         body.nav-open *:not(.navbar-overlay *):not(nav *):not(header *) {
           animation-play-state: paused !important;
         }
+
+        @keyframes floatBlob1 {
+          0%, 100% { transform: scale(1) translateZ(0); opacity: 0.2; }
+          50% { transform: scale(1.2) translateZ(0); opacity: 0.4; }
+        }
+        @keyframes floatBlob2 {
+          0%, 100% { transform: scale(1.2) translateZ(0); opacity: 0.3; }
+          50% { transform: scale(1) translateZ(0); opacity: 0.5; }
+        }
+        .blob-1 {
+          animation: floatBlob1 4s ease-in-out infinite;
+          will-change: transform, opacity;
+        }
+        .blob-2 {
+          animation: floatBlob2 5s ease-in-out infinite;
+          will-change: transform, opacity;
+        }
       `}</style>
     )}
-
-    <motion.nav initial={{ y: -100 }} animate={{ y: 0 }} className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 bg-transparent`}>
+    <motion.nav initial={{ y: -100 }} animate={{ y: 0 }} className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${scrolled ? 'bg-slate-950/50 backdrop-blur-xl border-b border-cyan-500/20 shadow-lg shadow-cyan-900/10' : 'bg-transparent'}`}>
       <div className="container mx-auto px-4">
-        <div className="flex items-center justify-between h-20 md:h-24">
+        <div className="flex items-center justify-between h-16 md:h-20">
 
           <Link to="/" className="flex items-center gap-3 group z-[60]">
             <span className="font-display font-bold text-xl tracking-[0.12em] text-cyan-50 group-hover:text-cyan-200 transition-colors">
@@ -108,14 +125,8 @@ const Navbar = () => {
           <div className="absolute inset-0 opacity-70">
             <LiquidEffectAnimation />
           </div>
-          <motion.div className="absolute top-1/4 left-1/4 w-96 h-96 bg-primary/10 rounded-full blur-3xl" animate={{
-            scale: [1, 1.2, 1],
-            opacity: [0.2, 0.4, 0.2],
-          }} transition={{ duration: 4, repeat: Infinity }} />
-          <motion.div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-secondary/10 rounded-full blur-3xl" animate={{
-            scale: [1.2, 1, 1.2],
-            opacity: [0.3, 0.5, 0.3],
-          }} transition={{ duration: 5, repeat: Infinity }} />
+          <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-primary/10 rounded-full blur-3xl blob-1" />
+          <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-secondary/10 rounded-full blur-3xl blob-2" />
         </div>
 
         <div className="container mx-auto px-4 pt-24 pb-12 relative z-10">
@@ -207,31 +218,37 @@ const Navbar = () => {
                 </div>
 
 
-                <div className="space-y-4">
-
-                  <h3 className="text-lg font-display font-bold text-foreground">
+                <div>
+                  <h3 className="text-lg font-display font-bold text-foreground mb-1">
                     Contact Us
                   </h3>
 
-                  <a href="tel:+917386759626" className="flex items-center gap-3 text-muted-foreground hover:text-primary transition-colors">
-                    <Phone className="w-4 h-4 text-primary" />
-                    <span className="text-sm">   </span>
-                  </a>
+                  <div className="flex flex-col gap-0">
+                    <a href="tel:+919553975331" className="flex items-center gap-3 py-0.5 text-muted-foreground hover:text-primary transition-colors">
+                      <Phone className="w-4 h-4 text-primary" />
+                      <span className="text-sm">G. Chinmay: +91 9553975331</span>
+                    </a>
 
-                  <a href="tel:+919866854604" className="flex items-center gap-3 text-muted-foreground hover:text-primary transition-colors">
-                    <Phone className="w-4 h-4 text-primary" />
-                    <span className="text-sm">S. Vinod Kumar: +91 9866854604</span>
-                  </a>
+                    <a href="tel:+919345192331" className="flex items-center gap-3 py-0.5 text-muted-foreground hover:text-primary transition-colors">
+                      <Phone className="w-4 h-4 text-primary" />
+                      <span className="text-sm">Smruti Sabujima: +91 9345192331</span>
+                    </a>
 
-                  <div className="flex items-start gap-3 text-muted-foreground">
-                    <MapPin className="w-4 h-4 text-primary mt-0.5" />
-                    <span className="text-sm">Aditya Institute of Technology and Management, Tekkali</span>
+                    <a href="tel:+918897809548" className="flex items-center gap-3 py-0.5 text-muted-foreground hover:text-primary transition-colors">
+                      <Phone className="w-4 h-4 text-primary" />
+                      <span className="text-sm">Niranjan Muddada: +91 8897809548</span>
+                    </a>
+
+                    <a href="mailto:avishkaar@adityatekkali.edu.in" className="flex items-center gap-3 py-0.5 text-muted-foreground hover:text-primary transition-colors">
+                      <Mail className="w-4 h-4 text-primary" />
+                      <span className="text-sm">avishkaar@adityatekkali.edu.in</span>
+                    </a>
+
+                    <a href="https://www.google.com/maps/search/?api=1&query=Aditya+Institute+of+Technology+and+Management+Tekkali" target="_blank" rel="noopener noreferrer" className="flex items-start gap-3 py-0.5 text-muted-foreground hover:text-primary transition-colors">
+                      <MapPin className="w-4 h-4 text-primary mt-0.5 shrink-0" />
+                      <span className="text-sm">Aditya Institute of Technology and Management, Tekkali</span>
+                    </a>
                   </div>
-
-                  <a href="mailto:avishkaar@adityatekkali.edu.in" className="flex items-center gap-3 text-muted-foreground hover:text-primary transition-colors">
-                    <Mail className="w-4 h-4 text-primary" />
-                    <span className="text-sm">avishkaar@adityatekkali.edu.in</span>
-                  </a>
                 </div>
               </div>
             </motion.div>
