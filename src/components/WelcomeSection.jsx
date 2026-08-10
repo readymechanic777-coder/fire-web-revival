@@ -49,7 +49,10 @@ const WelcomeSection = () => {
       </motion.div>
 
       <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.5 }} className="text-center mt-12">
-        <motion.button className="btn-ocean neon-border font-display font-bold text-lg px-10 py-5" aria-label="Join the Innovation on Unstop" whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} onClick={() => window.open('https://unstop.com/o/3C4O1aP?lb=O4B2h3r', '_blank')}>
+        <motion.button className="btn-ocean neon-border font-display font-bold text-lg px-10 py-5" aria-label="Join the Innovation" whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} onClick={() => {
+          const el = document.getElementById('hackathon-register');
+          if (el) el.scrollIntoView({ behavior: 'smooth' });
+        }}>
           <span className="relative z-10 flex items-center gap-3">
             JOIN THE INNOVATION
           </span>

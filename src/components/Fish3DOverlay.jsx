@@ -10,6 +10,7 @@ const SwimmingCreature = ({ children, startX, startY, startZ = 0, speed = 1, dir
   const offset = useRef(Math.random() * 100);
 
   useFrame(({ clock }) => {
+    if (document.body.classList.contains('nav-open')) return;
     if (!ref.current) return;
     const t = clock.elapsedTime + offset.current;
     ref.current.position.x += direction * speed * 0.012;
@@ -42,6 +43,7 @@ const ArticulatedFish = ({
   const dorsalRef = useRef();
 
   useFrame(({ clock }) => {
+    if (document.body.classList.contains('nav-open')) return;
     const t = clock.elapsedTime * speed;
     segRefs.current.forEach((ref, i) => {
       if (!ref) return;
@@ -142,6 +144,7 @@ const Jellyfish = ({ color = '#a855f7', size = 0.6, speed = 0.8, glowColor = '#c
   const tentacleRefs = useRef([]);
 
   useFrame(({ clock }) => {
+    if (document.body.classList.contains('nav-open')) return;
     const t = clock.elapsedTime * speed;
     if (domeRef.current) {
       domeRef.current.scale.y = 0.6 + Math.sin(t * 2) * 0.15;
@@ -206,6 +209,7 @@ const AnglerFish = ({ size = 0.8, speed = 0.6 }) => {
   const bodyRef = useRef();
 
   useFrame(({ clock }) => {
+    if (document.body.classList.contains('nav-open')) return;
     const t = clock.elapsedTime * speed;
     if (lureRef.current) {
       lureRef.current.rotation.z = Math.sin(t * 2) * 0.3;
@@ -283,6 +287,7 @@ const GhostFish = ({ size = 0.6, speed = 0.5, color = '#e0f2fe' }) => {
   const tailRef = useRef();
 
   useFrame(({ clock }) => {
+    if (document.body.classList.contains('nav-open')) return;
     const t = clock.elapsedTime * speed;
     if (bodyRef.current) {
       bodyRef.current.rotation.y = Math.sin(t * 2.5) * 0.06;
@@ -349,6 +354,7 @@ const BioSchool = ({ count = 12, size = 0.06, color = '#22d3ee', spread = 2, spe
 const SchoolDot = ({ offset, size, color, speed }) => {
   const ref = useRef();
   useFrame(({ clock }) => {
+    if (document.body.classList.contains('nav-open')) return;
     const t = clock.elapsedTime * speed;
     if (ref.current) {
       ref.current.position.x = offset.x + Math.sin(t * offset.speed + offset.phase) * 0.3;

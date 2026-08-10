@@ -4,21 +4,22 @@ import { useInView } from "framer-motion";
 import FloatingParticles from "./FloatingParticles";
 
 const sponsors = [
-  { name: "GeeksForGeeks", initials: "GFG" },
-  { name: "CCC", initials: "CCC" },
-  { name: "New Leaf", initials: "NL" },
-  { name: "Instack", initials: "IS" },
-  { name: "SmartBridge", initials: "SB" },
-  { name: "SHTC", initials: "SHTC" },
-  { name: "Matrix", initials: "MTX" },
-  { name: "GitHub", initials: "GH" },
-  { name: "DualityAI", initials: "DAI" },
-  { name: "Moonex", initials: "MX" },
-  { name: "Unstop", initials: "US" },
-  { name: "Interview Buddy", initials: "IB" },
-  { name: "XYZ", initials: "XYZ" },
-  { name: "Interview Cake", initials: "IC" },
-  { name: "Tech Corp", initials: "TC" },
+  { name: "GeeksForGeeks", image: "/sponsors/gfg.png" },
+  { name: "CCC", image: "/sponsors/ccc.png" },
+  { name: "New Leaf", image: "/sponsors/new-leaf.png" },
+  { name: "TrueScholar", image: "/sponsors/Truescholar.png" },
+  { name: "SmartBridge", image: "/sponsors/smartbridge.jpeg" },
+  { name: "SHTC", image: "/sponsors/shtc.png" },
+  { name: "Matrix", image: "/sponsors/matrix.png" },
+  { name: "GitHub", image: "/sponsors/github.png" },
+  { name: "DualityAI", image: "/sponsors/dualityai.png" },
+  { name: "Moonex", image: "/sponsors/moonex.png" },
+  { name: "Qualivon", image: "/sponsors/qualivon.png" },
+  { name: "Interview Buddy", image: "/sponsors/interview_buddy.png" },
+  { name: "XYZ", image: "/sponsors/xyz.png" },
+  { name: "Interview Cake", image: "/sponsors/interview-cake.jpg" },
+  { name: "Instack", image: "/sponsors/instacks.png" },
+  { name: "Unstop", image: "/sponsors/unstop.webp" },
 ];
 const SponsorsSection = () => {
   const ref = useRef(null);
@@ -66,7 +67,7 @@ const SponsorsSection = () => {
             background: 'linear-gradient(135deg, hsl(175, 100%, 45% / 0.6), hsl(195, 100%, 50% / 0.4), hsl(220, 85%, 55% / 0.6))',
           }} />
 
-          <div className="relative glass-card rounded-xl h-28 flex items-center justify-center p-4 overflow-hidden transition-all duration-500 group-hover:shadow-2xl group-hover:border-primary/50 group-hover:glow-bioluminescent">
+          <div className="relative bg-white rounded-xl h-28 flex items-center justify-center p-4 overflow-hidden transition-all duration-500 group-hover:shadow-2xl group-hover:border-primary/50 group-hover:glow-bioluminescent">
 
             <div className="absolute inset-0 rounded-xl overflow-hidden opacity-0 group-hover:opacity-100 transition-opacity duration-300 motion-reduce-hide">
 
@@ -100,18 +101,19 @@ const SponsorsSection = () => {
             </div>
 
 
-            <motion.div className="relative z-10 text-center" whileHover={{ scale: 1.1 }} transition={{ type: "spring", stiffness: 300 }}>
-              <div className="text-2xl font-display font-bold transition-all duration-300 group-hover:text-primary" style={{
-                background: 'linear-gradient(135deg, hsl(195, 100%, 40%), hsl(220, 85%, 45%))',
-                backgroundClip: 'text',
-                WebkitBackgroundClip: 'text',
-                color: 'transparent',
-              }}>
-                {sponsor.initials}
-              </div>
-              <p className="text-xs text-cyan-50 mt-1 transform translate-y-4 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-300">
-                {sponsor.name}
-              </p>
+            <motion.div className="relative z-10 text-center w-full h-full flex flex-col items-center justify-center" whileHover={{ scale: 1.1 }} transition={{ type: "spring", stiffness: 300 }}>
+              {sponsor.image ? (
+                <img src={sponsor.image} alt={sponsor.name} className="w-full h-20 object-contain filter drop-shadow-sm transition-all duration-300" />
+              ) : (
+                <div className="text-2xl font-display font-bold transition-all duration-300 group-hover:text-primary" style={{
+                  background: 'linear-gradient(135deg, hsl(195, 100%, 40%), hsl(220, 85%, 45%))',
+                  backgroundClip: 'text',
+                  WebkitBackgroundClip: 'text',
+                  color: 'transparent',
+                }}>
+                  {sponsor.initials}
+                </div>
+              )}
             </motion.div>
 
 

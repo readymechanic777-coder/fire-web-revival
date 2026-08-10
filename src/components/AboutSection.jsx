@@ -29,7 +29,7 @@ const AboutSection = () => {
   return (<section className="relative py-20 md:py-32 overflow-hidden min-h-[50vh]" id="about">
     {/* Top gradient bleed for seamless transition from hero */}
     <div className="absolute top-0 left-0 right-0 h-40 pointer-events-none" style={{ background: 'linear-gradient(180deg, #011627 0%, transparent 100%)' }} />
-    
+
     <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(34,211,238,0.1)_0%,transparent_60%)] pointer-events-none" />
     <FloatingParticles />
     <div className="relative z-10 container mx-auto px-4">
@@ -57,7 +57,7 @@ const AboutSection = () => {
 
           <div className="p-6 space-y-6 font-mono text-base leading-relaxed text-white">
             <p className="text-slate-100">
-              <span className="text-cyan-300 font-black drop-shadow-[0_0_8px_rgba(34,211,238,0.7)]">Aavishkar</span> is a 48-hour innovation marathon that challenges bright minds to turn bold ideas into real-world solutions. After three successful seasons, Aavishkar returns bigger and better — now in two phases: a 24-hour online hackathon and an on-campus 48-hour grand finale.
+              <span className="text-cyan-300 font-black drop-shadow-[0_0_8px_rgba(34,211,238,0.7)]">Avishkaar </span> is a 48-hour innovation marathon that challenges bright minds to turn bold ideas into real-world solutions. After three successful seasons, Avishkaar returns bigger and better — now in two phases: a 24-hour online hackathon and an on-campus 48-hour grand finale.
             </p>
 
             <p className="text-slate-100">
@@ -65,7 +65,7 @@ const AboutSection = () => {
             </p>
 
             <p className="text-cyan-100">
-              <span className="text-cyan-400 font-black">{">"}</span> Join us as we push boundaries, prototype the future, and shape ideas that can make a difference. Because at Aavishkar — innovation never sleeps.
+              <span className="text-cyan-400 font-black">{">"}</span> Join us as we push boundaries, prototype the future, and shape ideas that can make a difference. Because at Avishkaar— innovation never sleeps.
             </p>
           </div>
         </motion.div>

@@ -132,8 +132,8 @@ const ParticleAvishkaar = ({ text = "AVISHKAAR" }) => {
             let fontSize, scaleFactor, lineWidth, yOffset;
 
             if (width < 640) {
-                fontSize = 150;
-                scaleFactor = 0.15;
+                fontSize = 175;
+                scaleFactor = 0.17;
                 lineWidth = 3;
                 yOffset = 3;
             } else if (width < 1024) {
@@ -286,7 +286,7 @@ const ParticleAvishkaar = ({ text = "AVISHKAAR" }) => {
     }, []);
 
     return (
-        <div className="relative z-10 w-full mt-6 -mb-12 h-[110px] md:h-[220px] flex items-center justify-center pointer-events-none">
+        <div className="relative z-10 w-full mt-6 -mb-12 h-[150px] md:h-[220px] flex items-center justify-center pointer-events-none">
             <div ref={mountRef} className="w-full h-full cursor-crosshair" />
         </div>
     );

@@ -32,6 +32,7 @@ const ParticleKelp = ({ position, height = 2.5, color = '#10b981', speed = 1, de
     const positions = useMemo(() => new Float32Array(basePositions), [basePositions]);
 
     useFrame(({ clock }) => {
+    if (document.body.classList.contains('nav-open')) return;
         if (!pointsRef.current) return;
         const t = clock.getElapsedTime() * speed;
         const posArr = pointsRef.current.geometry.attributes.position.array;
@@ -120,6 +121,7 @@ const ParticleCoral = ({ position, color = '#ec4899', scale = 1, density = 300 }
     const positions = useMemo(() => new Float32Array(basePositions), [basePositions]);
 
     useFrame(({ clock }) => {
+    if (document.body.classList.contains('nav-open')) return;
         if (!pointsRef.current) return;
         const t = clock.getElapsedTime();
         const posArr = pointsRef.current.geometry.attributes.position.array;
@@ -183,6 +185,7 @@ const ParticleAnemone = ({ position, color = '#f472b6', tentacles = 10, radius =
     const positions = useMemo(() => new Float32Array(basePositions), [basePositions]);
 
     useFrame(({ clock }) => {
+    if (document.body.classList.contains('nav-open')) return;
         if (!pointsRef.current) return;
         const t = clock.getElapsedTime();
         const posArr = pointsRef.current.geometry.attributes.position.array;
@@ -242,6 +245,7 @@ const ParticleGem = ({ position, color = '#22d3ee', size = 0.12, speed = 0.4, de
     const positions = useMemo(() => new Float32Array(basePositions), [basePositions]);
 
     useFrame(({ clock }) => {
+    if (document.body.classList.contains('nav-open')) return;
         if (!pointsRef.current) return;
         const t = clock.getElapsedTime();
         // Rotate the whole gem
@@ -314,6 +318,7 @@ const ParticleGrass = ({ position, color = '#34d399', blades = 8, density = 120 
     const positions = useMemo(() => new Float32Array(basePositions), [basePositions]);
 
     useFrame(({ clock }) => {
+    if (document.body.classList.contains('nav-open')) return;
         if (!pointsRef.current) return;
         const t = clock.getElapsedTime();
         const posArr = pointsRef.current.geometry.attributes.position.array;
@@ -367,6 +372,7 @@ const BubbleField = ({ count = 80 }) => {
     }, [count]);
 
     useFrame(({ clock }) => {
+    if (document.body.classList.contains('nav-open')) return;
         if (!pointsRef.current) return;
         const pos = pointsRef.current.geometry.attributes.position.array;
         const t = clock.getElapsedTime();
@@ -409,6 +415,7 @@ const PlanktonField = ({ count = 100 }) => {
     }, [count]);
 
     useFrame(({ clock }) => {
+    if (document.body.classList.contains('nav-open')) return;
         if (!pointsRef.current) return;
         const pos = pointsRef.current.geometry.attributes.position.array;
         const t = clock.getElapsedTime();
@@ -435,6 +442,7 @@ const PlanktonField = ({ count = 100 }) => {
 const CausticLight = () => {
     const lightRef = useRef();
     useFrame(({ clock }) => {
+    if (document.body.classList.contains('nav-open')) return;
         if (!lightRef.current) return;
         const t = clock.getElapsedTime();
         lightRef.current.position.x = Math.sin(t * 0.3) * 3;
@@ -549,6 +557,7 @@ const FishSchool = ({ center = [0, 1.5, 0], count = 12, color = '#67e8f9' }) => 
     }, [count, center]);
 
     useFrame(({ clock }) => {
+    if (document.body.classList.contains('nav-open')) return;
         if (!pointsRef.current) return;
         const t = clock.getElapsedTime();
         const posArr = pointsRef.current.geometry.attributes.position.array;

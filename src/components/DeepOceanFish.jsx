@@ -11,6 +11,7 @@ const TropicalFish = ({ position, color, accentColor, size = 1, speed = 1, swimD
     const initialPos = useMemo(() => [...position], []);
 
     useFrame((state) => {
+    if (document.body.classList.contains('nav-open')) return;
         if (!groupRef.current) return;
         const t = state.clock.elapsedTime * speed;
         
@@ -209,6 +210,7 @@ const UnderwaterParticles = () => {
     }, []);
 
     useFrame((state) => {
+    if (document.body.classList.contains('nav-open')) return;
         if (!ref.current) return;
         const t = state.clock.elapsedTime;
         const posArr = ref.current.geometry.attributes.position.array;

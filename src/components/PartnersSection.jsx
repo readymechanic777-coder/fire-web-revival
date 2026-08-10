@@ -4,12 +4,12 @@ import { useInView } from "framer-motion";
 import FloatingParticles from "./FloatingParticles";
 
 const allPartners = [
-  { name: "GDG", initials: "GDG", type: "Outreach Partner" },
-  { name: "GFG", initials: "GFG", type: "Outreach Partner" },
-  { name: "Branding Jester", initials: "BJ", type: "Media Partner" },
-  { name: "Flashoot", initials: "FL", type: "Media Partner" },
-  { name: "AITAMRISE Incubator", initials: "ARI", type: "Incubation Partner" },
-  { name: "Unstop", initials: "US", type: "Platform Partner" },
+  { name: "GDG", initials: "GDG", type: "Outreach Partner", image: "/partners/gdglogo.png" },
+  { name: "GFG", initials: "GFG", type: "Outreach Partner", image: "/partners/gfg-body.jpg" },
+  { name: "Branding Jester", initials: "BJ", type: "Media Partner", image: "/partners/brandingjester.png" },
+  { name: "Flashoot", initials: "FL", type: "Media Partner", image: "/partners/Flashootlogo.png" },
+  { name: "AITAMRISE Incubator", initials: "ARI", type: "Incubation Partner", image: "/partners/Rise-Logo.webp" },
+  { name: "Unstop", initials: "US", type: "Platform Partner", image: "/partners/unstop.png" },
 ];
 const groupedPartners = allPartners.reduce((acc, partner) => {
   if (!acc[partner.type]) {
@@ -64,7 +64,7 @@ const PartnersSection = () => {
                 background: 'radial-gradient(circle, hsl(195, 100%, 50% / 0.6), hsl(175, 100%, 45% / 0.3), transparent)',
               }} />
 
-              <div className="relative bg-white/95 backdrop-blur-sm rounded-xl h-24 w-28 flex items-center justify-center p-3 overflow-hidden transition-all duration-500 group-hover:shadow-2xl border border-transparent group-hover:border-primary/30">
+              <div className="relative glass-card rounded-xl h-24 w-28 flex items-center justify-center p-3 overflow-hidden transition-all duration-500 group-hover:shadow-2xl border border-transparent group-hover:border-primary/30">
 
                 <div className="absolute inset-0 rounded-xl overflow-hidden opacity-0 group-hover:opacity-100 transition-opacity duration-300">
 
@@ -98,15 +98,19 @@ const PartnersSection = () => {
                 </div>
 
 
-                <motion.div className="relative z-10 text-center" whileHover={{ scale: 1.1 }}>
-                  <motion.div className="text-xl font-display font-bold" style={{
-                    background: 'linear-gradient(135deg, hsl(195, 100%, 40%), hsl(220, 85%, 45%))',
-                    backgroundClip: 'text',
-                    WebkitBackgroundClip: 'text',
-                    color: 'transparent',
-                  }}>
-                    {partner.initials}
-                  </motion.div>
+                <motion.div className="relative z-10 text-center w-full h-full flex items-center justify-center p-1" whileHover={{ scale: 1.1 }}>
+                  {partner.image ? (
+                    <img src={partner.image} alt={partner.name} className="w-full h-full object-contain filter drop-shadow-md brightness-110" />
+                  ) : (
+                    <motion.div className="text-xl font-display font-bold" style={{
+                      background: 'linear-gradient(135deg, hsl(195, 100%, 40%), hsl(220, 85%, 45%))',
+                      backgroundClip: 'text',
+                      WebkitBackgroundClip: 'text',
+                      color: 'transparent',
+                    }}>
+                      {partner.initials}
+                    </motion.div>
+                  )}
                 </motion.div>
 
 

@@ -65,6 +65,7 @@ export function RisingJellyfish({ url, scale = 1, speed = 1, startOffset = 0, xO
   }, [clone, actions, speed, scale]);
 
   useFrame(({ clock }) => {
+    if (document.body.classList.contains('nav-open')) return;
     const t = clock.elapsedTime * speed + startOffset;
     
     // Update custom shader time for waving tentacles
@@ -97,7 +98,7 @@ export function RisingJellyfish({ url, scale = 1, speed = 1, startOffset = 0, xO
   );
 }
 
-export function SwimmingFish({ url, scale = 1, speed = 1, startOffset = 0, yOffset = 0, zOffset = 0, rotationYOffset = -Math.PI / 2 }) {
+export function SwimmingFish({ url, scale = 1, speed = 1, startOffset = 0, yOffset = 0, zOffset = 0, rotationYOffset = Math.PI }) {
   const groupRef = useRef();
   const { scene, animations } = useGLTF(url);
   
@@ -114,6 +115,7 @@ export function SwimmingFish({ url, scale = 1, speed = 1, startOffset = 0, yOffs
   }, [clone, actions, speed]);
 
   useFrame(({ clock }) => {
+    if (document.body.classList.contains('nav-open')) return;
     const t = clock.elapsedTime * speed + startOffset;
     
     if (groupRef.current) {
@@ -182,6 +184,7 @@ const RealisticGLBJellyfish = () => {
           
           {/* Constant stream of jellyfish within the fixed 100vh viewport */}
           <RisingJellyfish url="/models/jellyfish.glb" scale={5.5} speed={1.2} startOffset={0} xOffset={-5} zOffset={-5} rotationYOffset={0} />
+          <RisingJellyfish url="/models/jellyfish1.glb" scale={4.5} speed={1.3} startOffset={5} xOffset={2} zOffset={-3} rotationYOffset={Math.PI / 4} />
           
           {/* Reduced number of fishes, faster speed */}
           <SwimmingFish url="/models/fish.glb" scale={2.5} speed={1.8} startOffset={0} yOffset={2} zOffset={-3} />
@@ -191,7 +194,6 @@ const RealisticGLBJellyfish = () => {
           {!isMobile && (
             <>
               <RisingJellyfish url="/models/jellyfish2.glb" scale={5.0} speed={1.4} startOffset={12} xOffset={4} zOffset={-8} rotationYOffset={Math.PI / 8} />
-              <SwimmingFish url="/models/fish1.glb" scale={3.0} speed={1.6} startOffset={15} yOffset={-3} zOffset={-6} />
             </>
           )}
         </Canvas>

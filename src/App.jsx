@@ -4,6 +4,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import SmoothScroll from "./components/SmoothScroll";
+import FloatingRegisterButton from "./components/FloatingRegisterButton";
 
 import Index from "./pages/Index";
 import AboutPage from "./pages/AboutPage";
@@ -24,7 +25,8 @@ const App = () => {
         <SmoothScroll />
         <Toaster />
         <Sonner />
-        <BrowserRouter future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
+        <BrowserRouter basename="/dist/dist/" future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
+          <FloatingRegisterButton />
           <Routes>
             <Route path="/" element={<Index />}/>
             <Route path="/about" element={<AboutPage />}/>

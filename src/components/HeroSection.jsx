@@ -244,16 +244,17 @@ const HeroSection = () => {
           transition={{ delay: 0.5 }}
           className="mb-4 flex flex-col items-center justify-center gap-3 md:flex-row md:gap-5"
         >
-          <a
-            href="https://unstop.com/o/3C4O1aP?lb=O4B2h3r"
-            target="_blank"
-            rel="noopener noreferrer"
+          <button
+            onClick={() => {
+              const el = document.getElementById('hackathon-register');
+              if (el) el.scrollIntoView({ behavior: 'smooth' });
+            }}
             className="btn-ocean neon-border text-sm md:text-base mb-4"
-            aria-label="Join the Ocean Hack on Unstop"
+            aria-label="Join the Ocean Hack"
           >
             <Code2 className="w-5 h-5 text-cyan-300 drop-shadow-[0_0_8px_rgba(34,211,238,0.8)]" />
             <span className="drop-shadow-[0_0_8px_rgba(34,211,238,0.8)]">Join the Ocean Hack</span>
-          </a>
+          </button>
         </motion.div>
         <motion.div className="mb-5">
           <div className="flex flex-wrap items-center justify-center gap-3 text-[11px] md:text-xs font-mono text-cyan-50">

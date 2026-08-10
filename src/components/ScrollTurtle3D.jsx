@@ -21,6 +21,7 @@ const BubbleTrail = ({ turtlePos }) => {
   const dummy = useMemo(() => new THREE.Object3D(), []);
 
   useFrame((_, delta) => {
+    if (document.body.classList.contains('nav-open')) return;
     if (!meshRef.current) return;
     spawnTimer.current += delta;
     if (spawnTimer.current > 0.12) {
@@ -101,6 +102,7 @@ const TurtleModel = ({ scrollProgress, mousePos }) => {
   }, [animations, clonedScene]);
 
   useFrame((state, delta) => {
+    if (document.body.classList.contains('nav-open')) return;
     if (!group.current || document.body.classList.contains('nav-open')) return;
 
     // Animation mixer

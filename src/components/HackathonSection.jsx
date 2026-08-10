@@ -924,7 +924,7 @@ const HackathonSection = () => {
         </motion.p>
 
 
-        <div className="flex justify-center mb-12">
+        <div id="hackathon-register" className="flex justify-center mb-12 scroll-mt-24">
           <div className="inline-flex bg-card border border-border rounded-full p-1">
             {tabs.map((tab) => (<motion.button key={tab.id} onClick={() => setActiveTab(tab.id)} className={`relative flex items-center gap-2 px-6 py-3 rounded-full font-display font-bold transition-colors ${activeTab === tab.id
               ? 'text-background'
